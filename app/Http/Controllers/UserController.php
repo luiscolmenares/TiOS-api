@@ -1,0 +1,343 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\User;
+use App\Role;
+use App\Organization;
+use App\Project;
+use Illuminate\Http\Request;
+use App\Http\Requests;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
+//use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    // public function __construct(){
+    //     $this->middleware('api.auth');
+    // }
+    
+/**
+* Get all users
+* @param 
+* return users
+*/
+public function index(){
+    return User::withTrashed()->get();
+}
+
+/**
+* Get current user
+* @param 
+* return users
+*/
+public function getLoggedUser($request){
+    return $request->user();
+}
+
+/**
+* Get all users with all details
+* @param 
+* return users
+*/
+public function getUsers(){
+    //$users =  User::withTrashed()->get();
+    $users =  User::all();
+    //$users = array("users" => $users);
+     $users_list = array();
+    foreach ($users as $u) {
+         $user = User::find($u->id);
+         $user_roleid = $u->role_id;
+         $user_organization_id = $u->organization_id;
+         $user_role = Role::find($user_roleid);
+         $user_organization = Organization::find($user_organization_id);
+         //$user_permissions = $this->getPermissionRoleNameList($user_roleid);
+
+        // //return $user;
+         $complete_user = array(
+        //     //'user' => array(
+        //         //$user,
+        //         'id' => $user->id,
+                    'id' => $u->id,
+                    'phone' => $u->phone,
+                    'name' => $u->name,
+                    'email' => $u->email,
+                    'active' => $u->active,
+                    'created_at' => $u->created_at,
+                    'updated_at' => $u->updated_at,
+                    'deleted_at' => $u->deleted_at,
+                    'notes' => $u->notes,
+                    'role_id' => $u->role_id,
+                    'role_name' => $user_role->name,
+                    'role_description' => $user_role->description,
+                    'organization_id' => $u->organization_id,
+                    'organization_name' => $user_organization->name,
+                    'active_sms' => $u->active_sms,
+                    'active_email' => $u->active_email,
+                    //'permissions' => $user_permissions,
+        //        // ),
+            
+         );
+         array_push($users_list, $complete_user);
+    }
+
+     $content = array('users' => $users_list);
+
+    return $content;
+
+}
+
+
+/*
+* This method will validate a user based on the access token.
+* @return mixed
+**/
+public function validateUser()
+{
+    $user = app('Dingo\Api\Auth\Auth')->user();
+
+    if(!$user) {
+        $responseArray = [
+        'message' => 'Not authorized. Please login again',
+        'status' => false
+        ];
+
+        return $this->response->array($responseArray)->setStatusCode(403);
+    }
+    else {
+        $responseArray = [
+        'message' => 'User is authorized',
+        'status' => true
+        ];
+
+        return $this->response->array($responseArray)->setStatusCode(200);
+    }
+}
+/**
+* Get role from a User
+* @param $userId
+* return user Role
+*/
+public function getUserRole($userId){
+    return User::find($userId)->roles;
+}
+/**
+* Get User from User Id
+* @param userId
+* return User
+*/
+public function getUser($userId){
+    $user = User::find($userId);
+    $user_roleid = $user->role_id;
+    $user_organization_id = $user->organization_id;
+    $user_role = Role::find($user_roleid);
+    $user_organization = Organization::find($user_organization_id);
+    $user_permissions = $this->getPermissionRoleNameList($user_roleid);
+
+
+    //return $user;
+    $complete_user = array(
+        'user' => array(
+            //$user,
+            'id' => $user->id,
+            'phone' => $user->phone,
+            'name' => $user->name,
+            'email' => $user->email,
+            'active' => $user->active,
+            'active_sms' => $user->active_sms,
+            'active_email' => $user->active_email,
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at,
+            'deleted_at' => $user->deleted_at,
+            'notes' => $user->notes,
+            'role_id' => $user->role_id,
+            'role_name' => $user_role->name,
+            'role_description' => $user_role->description,
+            'organization_id' => $user->organization_id,
+            'organization_name' => $user_organization->name,
+            'permissions' => $user_permissions,
+            ),
+        
+    );
+    //array('triggers' => $triggers);
+    
+    
+    return $complete_user;
+}
+
+/**
+* get User by Username
+* @param username
+* return user
+*/
+public function getUserByUsername ($username){
+
+    $user = User::where('email', $username)->first();
+
+    return $this->getUser($user->id);
+
+
+}
+
+/**
+* Delete User from user Id
+* @param userId
+* return boolean
+*/
+public function deleteUser($userId){
+
+    $user = User::find($userId);
+
+    $user->delete();
+
+}
+/**
+* Add Role to a user (deprecated)
+* @param userId role
+* return user
+*/
+public function attachUserRole($userId, $role){
+    $user = User::find($userId);
+    $roleId = Role::where('name', $role)->first();
+    $user->roles()->attach($roleId);
+    return $user;
+}
+/**
+* Create user
+* @param Request request
+* return User
+*/
+public function createUser(Request $request)
+{
+    $hash_pass = hash::make($request->password);
+    $user = new User($request->all());
+    $user->password = $hash_pass;
+    if (!$user->save()) {
+        abort(500, 'Could not save user.');
+    }
+    return $user;
+}
+/**
+* Update User
+* @param Request userId
+* return User
+*/
+public function updateUser(Request $request, $userId){
+    $user = User::find($userId);
+
+    if(isset($request->password)){$user->password = hash::make($request->password);}
+    if($request->name){$user->name = $request->name;}
+    if($request->phone){$user->phone = $request->phone;}
+    if($request->notes){$user->notes = $request->notes;}
+    if(isset($request->active) && $request->active == 0){$user->active = 0;}
+    if(isset($request->active) && $request->active == 1){$user->active = 1;}
+    if(isset($request->active_sms) && $request->active_sms == 0){$user->active_sms = 0;}
+    if(isset($request->active_sms) && $request->active_sms == 1){$user->active_sms = 1;}
+    if(isset($request->active_email) && $request->active_email == 0){$user->active_email = 0;}
+    if(isset($request->active_email) && $request->active_email == 1){$user->active_email = 1;}
+    if($request->role_id){$user->role_id = $request->role_id;}
+    if($request->organization_id){$user->organization_id = $request->organization_id;}
+
+    if (!$user->save()) {
+
+        abort(500, 'could not update user.');
+
+    }
+    return $user;
+}
+/**
+* Add user to a project
+* @param userId Request 
+* return project
+*/
+public function attachUserProject($userId, $projectId){
+    $project = Project::where('id', $projectId)->first();
+    $user = User::where('id', $userId)->first();
+    $project->users()->attach($userId);
+    return $project;
+}
+/**
+* Get role from user
+* @param userId
+* return role
+*/
+public function getRoleUser($userId){
+    $user = User::find($userId);
+    $roleId = $user->role_id;
+    $role = Role::find($roleId);
+    $role = array("role" => $role);
+    return $role;
+}
+
+/**
+* Get permissions from role
+* @param roleId
+* return permissions array
+*/
+public function getPermissionRoleNameList($roleId){
+    $permissions = \DB::table('permission_role')
+    ->where('permission_role.role_id', '=', $roleId)
+    ->join('permissions', 'permission_role.permission_id', '=', 'permissions.id')
+    //->select('permission_role.*', 'permissions.description', 'permissions.name as permission_name', 'permissions.display_name as permissions_display_name')
+    ->select('permissions.name')
+    ->get();
+    $permissions_list = array();
+    foreach ($permissions as $permission) {
+        array_push($permissions_list, $permission->name);
+    }
+    return $permissions_list;
+}
+/**
+* Get Organization from user 
+* @param userId
+* return mixed
+*/
+public function getOrganizationUser($userId){
+    $user = User::find($userId);
+    $organizationId = $user->organization_id;
+    $organization = Organization::find($organizationId);
+    $organization = array("organization" => $organization);
+    return $organization;
+}
+
+/**
+* Get user total count
+* @param 
+* return count int
+*/
+public function getTotalUsersCount(){
+    return User::all()->count();
+}
+
+/**
+* Add user to a organization
+* @param Request request
+* return organization
+*/
+public function attachUserOrganization($userId, $organizationId){
+    $organization = Organization::where('id', $organizationId)->first();
+    $user = User::where('id', $userId)->first();
+    $organization->users()->attach($userId);
+    return $organization;
+}
+
+/**
+* remove user form
+* @param Request request
+* return true
+*/
+ public function removeUserProject($userId, $projectId){
+    $data = \DB::table('project_user')
+                ->where([
+                        ['user_id' , '=', $userId],
+                        ['project_id', '=', $projectId]
+                        ])
+                ->delete();
+    $response = array(
+        'message' => 'User removed from project');
+    return $response;
+ }
+
+
+}
