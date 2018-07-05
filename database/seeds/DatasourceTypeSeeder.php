@@ -12,40 +12,53 @@ class DatasourceTypeSeeder extends Seeder
     public function run()
     {
         DB::table('datasource_type')->insert([
-            'name' => 'Gateway (Raspberry PI)'
-        ]);
-        DB::table('datasource_type')->insert([
-            'name' => 'Smart Gateway'
+            'name' => 'Vemetris Gateway',
+            'codename' => 'ds-vemetris-gateway'
         ]);
          DB::table('datasource_type')->insert([
-            'name' => 'Smart Bulb'
-        ]);
-        DB::table('datasource_type')->insert([
-            'name' => 'MQTT Temperature Sensor (Celsius)'
-        ]);
-        DB::table('datasource_type')->insert([
-            'name' => 'MQTT Temperature Sensor (Farenheit)'
-        ]);
-        DB::table('datasource_type')->insert([
-            'name' => 'MQTT Humidity Sensor'
-        ]);
-        DB::table('datasource_type')->insert([
-            'name' => 'MQTT Proximity Sensor'
-        ]);
-        DB::table('datasource_type')->insert([
-            'name' => 'MQTT Flood Sensor'
-        ]);
-        DB::table('datasource_type')->insert([
-            'name' => 'MQTT Voltage (V)'
-        ]);
-        DB::table('datasource_type')->insert([
-            'name' => 'MQTT Electric Current (A)'
-        ]);
-        DB::table('datasource_type')->insert([
-            'name' => 'MQTT Electric Power (W)'
+            'name' => 'Smart Bulb',
+            'codename' => 'ds-smart-bulb'
         ]);
          DB::table('datasource_type')->insert([
-            'name' => 'MQTT Electric Energy (E)'
+            'name' => 'Smart Switch',
+            'codename' => 'ds-smart-switch'
+        ]);
+        DB::table('datasource_type')->insert([
+            'name' => 'Temperature Sensor (Celsius)',
+            'codename' => 'ds-temperature-celsius'
+        ]);
+        DB::table('datasource_type')->insert([
+            'name' => 'Temperature Sensor (Farenheit)',
+            'codename' => 'ds-temperature-celsius-farenheit'
+        ]);
+        DB::table('datasource_type')->insert([
+            'name' => 'Humidity Sensor',
+            'codename' => 'ds-humidity'
+        ]);
+        DB::table('datasource_type')->insert([
+            'name' => 'Proximity Sensor',
+            'codename' => 'ds-proximity'
+        ]);
+        DB::table('datasource_type')->insert([
+            'name' => 'Flood Sensor',
+            'codename' => 'ds-flood'
+        ]);
+        DB::table('datasource_type')->insert([
+            'name' => 'Voltage (V)',
+            'codename' => 'ds-voltage'
+        ]);
+        DB::table('datasource_type')->insert([
+            'name' => 'Electric Current (A)',
+            'codename' => 'ds-current'
+
+        ]);
+        DB::table('datasource_type')->insert([
+            'name' => 'Electric Power (W)',
+            'codename' => 'ds-power'
+        ]);
+         DB::table('datasource_type')->insert([
+            'name' => 'Electric Energy (E)',
+            'codename' => 'ds-energy'
         ]);
     }
 }

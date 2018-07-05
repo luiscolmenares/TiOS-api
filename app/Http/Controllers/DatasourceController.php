@@ -77,6 +77,22 @@ class DatasourceController extends Controller {
         return $datasourcetype;
     }
 
+    
+
+    /**
+     * Get Datasource Type by Id
+     * @param datasourcetypeId
+     * return datasourcetype
+     */
+    public function getProjectByDatasourceId($datasourceId) {
+        // $datasource = \DB::table('datasources')->where('id', '=', $datasourceId)->get();
+        $datasource = Datasource::find($datasourceId);
+        $projectId = $datasource->project_id;
+        $project = Project::find($projectId);
+        $project = array("project" => $project);
+        return $project;
+    }
+
     /**
      * Get Datasource Name by id
      * @param datasourcetypeId

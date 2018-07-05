@@ -167,10 +167,10 @@ class DashboardController extends Controller {
                     if($datesource->ip == '0.0.0.0'){
                         //datasource ID as address to identify sensor data
                         $datesource->address=0;
-                        $datesource->type='MQTT Temperature Sensor (Celsius)';
+                        $datesource->type='ds-temperature-celsius';
                         //Its a SmartThing via MQTT (no datapoint)
                         // $panel->sensorData = $this->getLastSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
-                        $panel->sensorData = $this->getSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getSensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -182,10 +182,10 @@ class DashboardController extends Controller {
                     if($datesource->ip == '0.0.0.0'){
                         //datasource ID as address to identify sensor data
                         $datesource->address=0;
-                        $datesource->type='MQTT Humidity Sensor';
+                        $datesource->type='ds-humidity';
                         //Its a SmartThing via MQTT (no datapoint)
                         // $panel->sensorData = $this->getLastSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
-                        $panel->sensorData = $this->getSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getSensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -198,10 +198,10 @@ class DashboardController extends Controller {
                     if($datesource->ip == '0.0.0.0'){
                         //datasource ID as address to identify sensor data
                         $datesource->address=0;
-                        $datesource->type='MQTT Voltage (V)';
+                        $datesource->type='ds-voltage';
                         //Its a SmartThing via MQTT (no datapoint)
                         // $panel->sensorData = $this->getLastSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
-                        $panel->sensorData = $this->getSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getSensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -214,10 +214,10 @@ class DashboardController extends Controller {
                     if($datesource->ip == '0.0.0.0'){
                         //datasource ID as address to identify sensor data
                         $datesource->address=0;
-                        $datesource->type='MQTT electric power (W)';
+                        $datesource->type='ds-power';
                         //Its a SmartThing via MQTT (no datapoint)
                         // $panel->sensorData = $this->getLastSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
-                        $panel->sensorData = $this->getSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getSensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -230,10 +230,10 @@ class DashboardController extends Controller {
                     if($datesource->ip == '0.0.0.0'){
                         //datasource ID as address to identify sensor data
                         $datesource->address=0;
-                        $datesource->type=' MQTT electric current (A)';
+                        $datesource->type='ds-current';
                         //Its a SmartThing via MQTT (no datapoint)
                         // $panel->sensorData = $this->getLastSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
-                        $panel->sensorData = $this->getSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getSensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -246,9 +246,9 @@ class DashboardController extends Controller {
                     if($datesource->ip == '0.0.0.0'){
                         //datasource ID as address to identify sensor data
                         $datesource->address=0;
-                        $datesource->type='MQTT Temperature Sensor (Celsius)';
+                        $datesource->type='ds-temperature-celsius';
                         //Its a SmartThing via MQTT (no datapoint)
-                        $panel->sensorData = $this->getLastSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getLastSensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -260,9 +260,9 @@ class DashboardController extends Controller {
                     if($datesource->ip == '0.0.0.0'){
                         //datasource ID as address to identify sensor data
                         $datesource->address=0;
-                        $datesource->type='MQTT Humidity Sensor';
+                        $datesource->type='ds-humidity';
                         //Its a SmartThing via MQTT (no datapoint)
-                        $panel->sensorData = $this->getLastSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getLastSensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -277,9 +277,9 @@ class DashboardController extends Controller {
                     if($datesource->ip == '0.0.0.0'){
                         //datasource ID as address to identify sensor data
                         $datesource->address=0;
-                        $datesource->type='MQTT Temperature Sensor (Celsius)';
+                        $datesource->type='ds-temperature-celsius';
                         //Its a SmartThing via MQTT (no datapoint)
-                        $panel->sensorData = $this->getLast10SensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getLast10SensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -294,9 +294,9 @@ class DashboardController extends Controller {
                     if($datesource->ip == '0.0.0.0'){
                         //datasource ID as address to identify sensor data
                         $datesource->address=0;
-                        $datesource->type='MQTT Humidity Sensor';
+                        $datesource->type='ds-humidity';
                         //Its a SmartThing via MQTT (no datapoint)
-                        $panel->sensorData = $this->getLast10SensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getLast10SensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -312,9 +312,9 @@ class DashboardController extends Controller {
                     if($datesource->ip == '0.0.0.0'){
                         //datasource ID as address to identify sensor data
                         $datesource->address=0;
-                        $datesource->type='MQTT Voltage (V)';
+                        $datesource->type='ds-voltage';
                         //Its a SmartThing via MQTT (no datapoint)
-                        $panel->sensorData = $this->getLast10SensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getLast10SensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -330,9 +330,9 @@ class DashboardController extends Controller {
                     if($datesource->ip == '0.0.0.0'){
                         //datasource ID as address to identify sensor data
                         $datesource->address=0;
-                        $datesource->type='MQTT electric power (W)';
+                        $datesource->type='ds-energy';
                         //Its a SmartThing via MQTT (no datapoint)
-                        $panel->sensorData = $this->getLast10SensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getLast10SensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -348,9 +348,9 @@ class DashboardController extends Controller {
                     if($datesource->ip == '0.0.0.0'){
                         //datasource ID as address to identify sensor data
                         $datesource->address=0;
-                        $datesource->type='MQTT electric current (A)';
+                        $datesource->type='ds-current';
                         //Its a SmartThing via MQTT (no datapoint)
-                        $panel->sensorData = $this->getLast10SensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getLast10SensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -378,7 +378,7 @@ class DashboardController extends Controller {
                         $datesource->address=0;
                         $datesource->type='MQTT electric power (W)';
                         //Its a SmartThing via MQTT (no datapoint)
-                        $panel->sensorData = $this->getLastSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getLastSensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -400,7 +400,7 @@ class DashboardController extends Controller {
                         $datesource->address=0;
                         $datesource->type='MQTT Voltage (V)';
                         //Its a SmartThing via MQTT (no datapoint)
-                        $panel->sensorData = $this->getLastSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                        $panel->sensorData = $this->getLastSensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
                     } else {
                         //Modbus with datasource -> datapoint
                         $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -429,7 +429,7 @@ class DashboardController extends Controller {
         return $sensordata;
     }
 
-    public function getSensorDataFromDatapoint($datasource, $address, $ip, $port, $type, $unitid) {
+    public function getSensorDataFromDatasource($datasource, $address, $ip, $port, $type, $unitid) {
         $sensordata = \DB::table('sensordata')
                 ->select('created_at', 'data')
                 ->where([
@@ -462,7 +462,7 @@ class DashboardController extends Controller {
         return $lastsensordata;
     }
 
-     public function getLastSensorDataFromDatapoint($datasource, $address, $ip, $port, $type, $unitid) {
+     public function getLastSensorDataFromDatasource($datasource, $address, $ip, $port, $type, $unitid) {
         $lastsensordata = \DB::table('sensordata')
                 ->select('created_at', 'data')
                 ->where([
@@ -494,7 +494,7 @@ class DashboardController extends Controller {
         return $lastsensordata;
     }
 
-    public function getLast10SensorDataFromDatapoint($datasource, $address, $ip, $port, $type, $unitid) {
+    public function getLast10SensorDataFromDatasource($datasource, $address, $ip, $port, $type, $unitid) {
         $lastsensordata = \DB::table('sensordata')
                 ->select('created_at', 'data')
                 ->where([

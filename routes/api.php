@@ -66,6 +66,8 @@ Route::middleware('auth:api')->get('project/{projectParam}/users/count', 'Projec
 Route::middleware('auth:api')->get('project/{projectParam}/dashboards/count', 'ProjectController@getProjectDashboardsCount');
 Route::middleware('auth:api')->get('project/{project_id}/dashboards', 'ProjectController@getDashboardByProjectId');
 
+
+
 //Dashboard
 Route::middleware('auth:api')->post('dashboard/create', 'DashboardController@createDashboard');
 Route::middleware('auth:api')->get('dashboard/{dashboard_id}', 'DashboardController@getDashboard');
@@ -78,6 +80,18 @@ Route::middleware('auth:api')->post('panel/create', 'DashboardController@createP
 Route::middleware('auth:api')->get('panel/{panel_id}', 'DashboardController@getPanel');
 Route::middleware('auth:api')->get('panels/type', 'DashboardController@getPanelsType');
 Route::middleware('auth:api')->delete('panel/delete/{panel_id}', 'DashboardController@deletePanel');
+
+//Spaces
+Route::middleware('auth:api')->post('space/create', 'SpaceController@createSpace');
+Route::middleware('auth:api')->get('space/{space_id}', 'SpaceController@getSpace');
+Route::middleware('auth:api')->post('space/edit/{space_id}', 'SpaceController@updateSpace');
+Route::middleware('auth:api')->get('spaces', 'SpaceController@getSpaces');
+Route::middleware('auth:api')->get('project/{project_id}/spaces', 'SpaceController@getSpacesByProjectId');
+Route::middleware('auth:api')->get('organization/{organization_id}/spaces', 'SpaceController@getSpacesByOrganizationId');
+// Route::middleware('auth:api')->get('panels/type', 'DashboardController@getPanelsType');
+Route::middleware('auth:api')->delete('space/delete/{space_id}', 'SpaceController@deleteSpace');
+
+Route::middleware('auth:api')->get('project/{projectParam}/spaces/count', 'SpaceController@getProjectSpacesCount');
 
 
 //Datasources
@@ -96,6 +110,7 @@ Route::middleware('auth:api')->get('datasources/type', 'DatasourceController@get
 Route::middleware('auth:api')->get('datasource/types/{datasource_type_id}', 'DatasourceController@getDatasourceTypeNameById');
 Route::middleware('auth:api')->get('datasource/protocols/{datasource_protocol_type_id}', 'DatasourceController@getDatasourceProtocolTypeById');
 Route::middleware('auth:api')->get('datasource/protocols', 'DatasourceController@getDatasourceProtocolTypes');
+Route::middleware('auth:api')->get('datasource/{datasource_id}/project', 'DatasourceController@getProjectByDatasourceId');
 
 //Datapoints
 Route::middleware('auth:api')->get('datapoints', 'DatapointController@getDatapoints');

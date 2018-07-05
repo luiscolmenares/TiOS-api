@@ -12,33 +12,43 @@ class datapoint_typeTableSeeder extends Seeder
     public function run()
     {
         DB::table('datapoint_type')->insert([
-            'name' => 'Temperature'
+            'name' => 'Temperature',
+            'codename' => 'dp-temperature'
         ]);
         DB::table('datapoint_type')->insert([
-            'name' => 'Humidity'
+            'name' => 'Humidity',
+            'codename' => 'dp-humidity'
         ]);DB::table('datapoint_type')->insert([
-            'name' => 'Location'
+            'name' => 'Location',
+            'codename' => 'dp-location'
         ]);
         DB::table('datapoint_type')->insert([
-            'name' => 'Level (fluids)'
+            'name' => 'Level (fluids)',
+            'codename' => 'dp-flood'
         ]);
         DB::table('datapoint_type')->insert([
-            'name' => 'Light'
+            'name' => 'Light',
+            'codename' => 'dp-light'
         ]);
         DB::table('datapoint_type')->insert([
-            'name' => 'Proximity'
+            'name' => 'Proximity',
+            'codename' => 'dp-proximity'
         ]);
         DB::table('datapoint_type')->insert([
-            'name' => 'Pressure'
+            'name' => 'Pressure',
+            'codename' => 'dp-pressure'
         ]);
         DB::table('datapoint_type')->insert([
-            'name' => 'Water Quality'
+            'name' => 'Water Quality',
+            'codename' => 'dp-water'
         ]);
         DB::table('datapoint_type')->insert([
-            'name' => 'Infra Red'
+            'name' => 'Infra Red',
+            'codename' => 'dp-infrared'
         ]);
         DB::table('datapoint_type')->insert([
-            'name' => 'Chemical/Smoke'
+            'name' => 'Chemical/Smoke',
+            'codename' => 'dp-smoke'
         ]);
     }
 }
