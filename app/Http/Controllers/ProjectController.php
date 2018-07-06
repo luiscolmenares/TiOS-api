@@ -12,32 +12,67 @@ use Illuminate\Support\Facades\Hash;
 class ProjectController extends Controller
 {
 /**
-* Get all projects.
-* @param 
-* return projects
+* @SWG\Get(
+*      path="/projects",
+*      operationId="getProjects",
+*      tags={"Projects"},
+*      summary="Get list of projects",
+*      description="Returns list of projects",
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*       @SWG\Response(response=400, description="Bad request"),
+*       security={
+*           {"passport": {}}
+*       }
+*     )
+*
+* Returns list of projects
 */
 public function getProjects(){
-    //2$projects = Project::withTrashed()->get();
-    // $projects = Project::all();
-    // $projects = array('projects' => $projects);
-    // return $projects;
+//2$projects = Project::withTrashed()->get();
+// $projects = Project::all();
+// $projects = array('projects' => $projects);
+// return $projects;
 
 
-$projects = \DB::table('projects')
-            ->where('projects.deleted_at', '=', null)
-            ->join('organizations', 'organizations.id', '=','projects.organization_id')
-            ->select('projects.*', 'organizations.name as organization_name')
-            ->orderBy('organization_name', 'desc')->get();
+    $projects = \DB::table('projects')
+    ->where('projects.deleted_at', '=', null)
+    ->join('organizations', 'organizations.id', '=','projects.organization_id')
+    ->select('projects.*', 'organizations.name as organization_name')
+    ->orderBy('organization_name', 'desc')->get();
 
-        $projects = array("projects" => $projects);
-        return $projects;
+    $projects = array("projects" => $projects);
+    return $projects;
 }
 
 /**
-* Get Project by projectId
-* @param $projectId
-* return project
-*/
+* @SWG\Get(
+*      path="/project/{id}",
+*      operationId="getProject",
+*      tags={"Projects"},
+*      summary="Get project information",
+*      description="Returns project data",
+*      @SWG\Parameter(
+*          name="id",
+*          description="Project id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 public function getProject($projectId){
     $project = Project::find($projectId);
     $project = array("project" => $project);
@@ -45,19 +80,54 @@ public function getProject($projectId){
 }
 
 /**
-* Get project total count
-* @param 
-* return count int
+* @SWG\Get(
+*      path="/projects/count",
+*      operationId="getTotalProjectsCount",
+*      tags={"Projects"},
+*      summary="Get count of projects",
+*      description="Returns count of projects",
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*       @SWG\Response(response=400, description="Bad request"),
+*       security={
+*           {"passport": {}}
+*       }
+*     )
+*
+* Returns list of organizations
 */
 public function getTotalProjectsCount(){
     return Project::all()->count();
 }
 
 /**
-* Get Organizations by projectId
-* @param $projectId
-* return organization
-*/
+* @SWG\Get(
+*      path="/project/{project_id}/organization",
+*      operationId="getOrganizationByProjectId",
+*      tags={"Organizations"},
+*      summary="Get Organization information by Project ID",
+*      description="Returns Organization data by Project ID",
+*      @SWG\Parameter(
+*          name="id",
+*          description="project id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 public function getOrganizationByProjectId($projectId){
 
     $project = Project::find($projectId);
@@ -101,48 +171,132 @@ public function updateProject(Request $request, $projectId){
 }
 
 /**
-* Get all users related to the project.
-* @param $projectParam (id)
-* return users
-*/
+* @SWG\Get(
+*      path="/project/{project_id}/users",
+*      operationId="getProjectUsers",
+*      tags={"Users"},
+*      summary="Get users by Project ID",
+*      description="Returns list of users by Project ID",
+*      @SWG\Parameter(
+*          name="id",
+*          description="project id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 
-public function getProjectUsers($projectParam){
+public function getProjectUsers($projectId){
 
-      $users = \DB::table('project_user')
-            ->where('project_user.project_id', '=', $projectParam)
-            ->join('users', 'users.id', '=', 'project_user.user_id')
-            ->select('users.*')->get();
+    $users = \DB::table('project_user')
+    ->where('project_user.project_id', '=', $projectId)
+    ->join('users', 'users.id', '=', 'project_user.user_id')
+    ->select('users.*')->get();
 
-        $users = array("users" => $users);
-        return $users;
+    $users = array("users" => $users);
+    return $users;
 }
 
 /**
-* Get all users count related to the project.
-* @param $organizationParam
-* return mixed
-*/
+* @SWG\Get(
+*      path="/project/{project_id}/users/count",
+*      operationId="getProjectUsersCount",
+*      tags={"Users"},
+*      summary="Get Users count by Project",
+*      description="Returns Users count by project id",
+*      @SWG\Parameter(
+*          name="project_id",
+*          description="project id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 
-public function getProjectUsersCount($projectParam){
-    $project = Project::where('id', $projectParam)->first();
+public function getProjectUsersCount($projectId){
+    $project = Project::where('id', $projectId)->first();
     return $project->users->count();
 }
 
 /**
-* Get  dashboards count related to the project
-* @param $projectParam
-* return count (int)
-*/
+* @SWG\Get(
+*      path="/project/{project_id}/dashboards/count",
+*      operationId="getProjectDashboardsCount",
+*      tags={"Dashboards"},
+*      summary="Get Dashboards count by Project",
+*      description="Returns Dashboards count by project id",
+*      @SWG\Parameter(
+*          name="project_id",
+*          description="project id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 
-public function getProjectDashboardsCount($projectParam){
-    return Dashboard::where('project_id', '=', $projectParam)->count();
+public function getProjectDashboardsCount($projectId){
+    return Dashboard::where('project_id', '=', $projectId)->count();
 }
 
 /**
-* Get all users related to the organization.
-* @param $organizationParam
-* return mixed
-*/
+* @SWG\Get(
+*      path="/project/{project_id}/dashboards",
+*      operationId="getDashboardByProjectId",
+*      tags={"Dashboards"},
+*      summary="Get Dashboards by Project ID",
+*      description="Returns Dashboards data by project id",
+*      @SWG\Parameter(
+*          name="project_id",
+*          description="project id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 
 public function getDashboardByProjectId($projectId){
     $dashboards = Dashboard::with('panels')->where('project_id', '=', $projectId)->get();
@@ -164,14 +318,14 @@ public function deleteProject($projectId){
 
 
 /**
-    * Add Datasource to a Project
-    * @param Request request
-    * return mixed
-    */
-    public function attachDatasourceProject($datasourceId, $projectId){
-        $datasource = Datasource::where('id', $datasourceId)->first();
-        $project = Project::where('id', $projectId)->first();
-        $project->Datasources()->attach($datasourceId);
-        return $project;
-    }
+* Add Datasource to a Project
+* @param Request request
+* return mixed
+*/
+public function attachDatasourceProject($datasourceId, $projectId){
+    $datasource = Datasource::where('id', $datasourceId)->first();
+    $project = Project::where('id', $projectId)->first();
+    $project->Datasources()->attach($datasourceId);
+    return $project;
+}
 }

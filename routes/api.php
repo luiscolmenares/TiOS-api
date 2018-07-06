@@ -45,12 +45,12 @@ Route::middleware('auth:api')->get('organization/{organization_id}', 'Organizati
 Route::middleware('auth:api')->post('organization/create', 'OrganizationController@createOrganization');
 Route::middleware('auth:api')->post('organization/edit/{organization_id}', 'OrganizationController@updateOrganization');	
 Route::middleware('auth:api')->get('organization/{organization_id}/project/{project_id}', 'OrganizationController@attachProjectOrganization');
-Route::middleware('auth:api')->get('organization/{organizationParam}/users', 'OrganizationController@getOrgUsers');
-Route::middleware('auth:api')->get('organization/{organizationParam}/users/count', 'OrganizationController@getOrgUsersCount');
-Route::middleware('auth:api')->get('organization/{organizationParam}/projects', 'OrganizationController@getOrgProjects');
-Route::middleware('auth:api')->get('organization/{organizationParam}/projects/count', 'OrganizationController@getOrgProjectsCount');
-Route::middleware('auth:api')->get('organization/{organizationParam}/dashboards/count', 'OrganizationController@getOrgDashboardsCount');
-Route::middleware('auth:api')->get('organization/{organizationParam}/triggers/count', 'OrganizationController@getOrgTriggersCount');
+Route::middleware('auth:api')->get('organization/{organization_id}/users', 'OrganizationController@getOrgUsers');
+Route::middleware('auth:api')->get('organization/{organization_id}/users/count', 'OrganizationController@getOrgUsersCount');
+Route::middleware('auth:api')->get('organization/{organization_id}/projects', 'OrganizationController@getOrgProjects');
+Route::middleware('auth:api')->get('organization/{organization_id}/projects/count', 'OrganizationController@getOrgProjectsCount');
+Route::middleware('auth:api')->get('organization/{organization_id}/dashboards/count', 'OrganizationController@getOrgDashboardsCount');
+Route::middleware('auth:api')->get('organization/{organization_id}/triggers/count', 'OrganizationController@getOrgTriggersCount');
 Route::middleware('auth:api')->get('organizations/projects/dashboards', 'OrganizationController@getOrgProjectsDasboards');
 
 //Projects
@@ -61,14 +61,15 @@ Route::middleware('auth:api')->get('project/{project_id}', 'ProjectController@ge
 Route::middleware('auth:api')->get('project/{project_id}/organization', 'ProjectController@getOrganizationByProjectId');
 Route::middleware('auth:api')->post('project/create', 'ProjectController@createProject');
 Route::middleware('auth:api')->post('project/edit/{project_id}', 'ProjectController@updateProject');
-Route::middleware('auth:api')->get('project/{projectParam}/users', 'ProjectController@getProjectUsers');
-Route::middleware('auth:api')->get('project/{projectParam}/users/count', 'ProjectController@getProjectUsersCount');
-Route::middleware('auth:api')->get('project/{projectParam}/dashboards/count', 'ProjectController@getProjectDashboardsCount');
+Route::middleware('auth:api')->get('project/{project_id}/users', 'ProjectController@getProjectUsers');
+Route::middleware('auth:api')->get('project/{project_id}/users/count', 'ProjectController@getProjectUsersCount');
+Route::middleware('auth:api')->get('project/{project_id}/dashboards/count', 'ProjectController@getProjectDashboardsCount');
 Route::middleware('auth:api')->get('project/{project_id}/dashboards', 'ProjectController@getDashboardByProjectId');
 
 
 
 //Dashboard
+Route::middleware('auth:api')->get('dashboards', 'DashboardController@getDashboards');
 Route::middleware('auth:api')->post('dashboard/create', 'DashboardController@createDashboard');
 Route::middleware('auth:api')->get('dashboard/{dashboard_id}', 'DashboardController@getDashboard');
 Route::middleware('auth:api')->get('dashboards/count', 'DashboardController@getTotalDashboardscount');
@@ -91,7 +92,7 @@ Route::middleware('auth:api')->get('organization/{organization_id}/spaces', 'Spa
 // Route::middleware('auth:api')->get('panels/type', 'DashboardController@getPanelsType');
 Route::middleware('auth:api')->delete('space/delete/{space_id}', 'SpaceController@deleteSpace');
 
-Route::middleware('auth:api')->get('project/{projectParam}/spaces/count', 'SpaceController@getProjectSpacesCount');
+Route::middleware('auth:api')->get('project/{project_id}/spaces/count', 'SpaceController@getProjectSpacesCount');
 
 
 //Datasources

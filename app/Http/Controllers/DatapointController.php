@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Datapoint;
@@ -15,60 +14,153 @@ use App\Http\Controllers\Controller;
 
 class DatapointController extends Controller
 {
+/**
+* @SWG\Get(
+*      path="/datapoints",
+*      operationId="getDatapoints",
+*      tags={"Datapoints"},
+*      summary="Get list of datapoints",
+*      description="Returns list of datapoints",
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*       @SWG\Response(response=400, description="Bad request"),
+*       security={
+*           {"passport": {}}
+*       }
+*     )
+*
+* Returns list of dashboards
+*/
+public function getDatapoints(){
+    $datapoints = Datapoint::all();
+    $datapoints = array("datapoints" => $datapoints);
+    return $datapoints;
+}
 
-    public function getDatapoints(){
-        $datapoints = Datapoint::all();
-        $datapoints = array("datapoints" => $datapoints);
-        return $datapoints;
+/**
+* @SWG\Get(
+*      path="/datapoint/{id}",
+*      operationId="getDatapoint",
+*      tags={"Datapoints"},
+*      summary="Get datapoint information",
+*      description="Returns datapoint data",
+*      @SWG\Parameter(
+*          name="id",
+*          description="datapoint id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
+
+public function getDatapoint($datapointId){
+    $datapoint = Datapoint::find($datapointId);
+    $datapoint = array("datapoint" => $datapoint);
+    return $datapoint;
+}
+
+
+public function createDatapoint(Request $request)
+{
+    $datapoint = new Datapoint($request->all());
+    if (!$datapoint->save()) {
+        abort(500, 'Could not save datapoint.');
     }
+    return $datapoint;
+}
+/**
+* @SWG\Get(
+*      path="/datapoints/types",
+*      operationId="getDatapointTypes",
+*      tags={"Datapoints"},
+*      summary="Get list of datapoints types",
+*      description="Returns list of datapoint types",
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*       @SWG\Response(response=400, description="Bad request"),
+*       security={
+*           {"passport": {}}
+*       }
+*     )
+*
+* Returns list of dashboards
+*/
 
-    public function getDatapoint($datapointId){
-        $datapoint = Datapoint::find($datapointId);
-        $datapoint = array("datapoint" => $datapoint);
-        return $datapoint;
-    }
-
-    public function createDatapoint(Request $request)
-    {
-        $datapoint = new Datapoint($request->all());
-        if (!$datapoint->save()) {
-            abort(500, 'Could not save datapoint.');
-        }
-        return $datapoint;
-    }
+public function getDatapointTypes(){
+    $types = \DB::table('datapoint_type')->select('id', 'name', 'codename')->get();
+    $datapointtypes = array('datapointtypes' => $types);
+    return $datapointtypes;
+} 
 
 
-    public function getDatapointTypes(){
-        $types = \DB::table('datapoint_type')->select('id', 'name')->get();
-        $datapointtypes = array('datapointtypes' => $types);
-        return $datapointtypes;
-    } 
 
-    public function getDatapointsByName($datapointName){
-        $datapoints = Datapoint::where('name', $datapointName)->get();
-        $labels = [];
-        $data =[];
-        foreach ($datapoints as $datapoint) {
+public function getDatapointsByName($datapointName){
+    $datapoints = Datapoint::where('name', $datapointName)->get();
+    $labels = [];
+    $data =[];
+    foreach ($datapoints as $datapoint) {
 //$datepoint = array('date'=>$datapoint->created_at);
-            array_push($labels, array('date'=>$datapoint->created_at,'data'=>json_decode($datapoint->data)));
+        array_push($labels, array('date'=>$datapoint->created_at,'data'=>json_decode($datapoint->data)));
 //array_push($data, json_decode($datapoint->data));
-        }
-        $content = array('datapoints' => $labels);
+    }
+    $content = array('datapoints' => $labels);
 
-        return $content;
-    }
+    return $content;
+}
 
-    public function getDataPointByDataSource($datasourceId){
-        $datapoints = Datapoint::where('datasource_id', $datasourceId)->get();
-        $datapoints = array("datapoints" => $datapoints);
-        return $datapoints;
-    }
-    public function getActiveDataPointByDataSource($datasourceId){
-        $datapoints = Datapoint::where('datasource_id', $datasourceId)
-                                ->where('active', 1)->get();
-        $datapoints = array("datapoints" => $datapoints);
-        return $datapoints;
-    }
+/**
+* @SWG\Get(
+*      path="/datapoint/datasource/{datasource_id}",
+*      operationId="getDataPointByDataSource",
+*      tags={"Datapoints"},
+*      summary="Get datapoints information by Datasource",
+*      description="Returns datapoints information",
+*      @SWG\Parameter(
+*          name="datasource_id",
+*          description="Datasource id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
+
+public function getDataPointByDataSource($datasourceId){
+    $datapoints = Datapoint::where('datasource_id', $datasourceId)->get();
+    $datapoints = array("datapoints" => $datapoints);
+    return $datapoints;
+}
+public function getActiveDataPointByDataSource($datasourceId){
+    $datapoints = Datapoint::where('datasource_id', $datasourceId)
+    ->where('active', 1)->get();
+    $datapoints = array("datapoints" => $datapoints);
+    return $datapoints;
+}
 /**
 * Deletes an datapoint
 * @param datapointId
@@ -138,16 +230,16 @@ public function getDatapointValuesByDateRange($datapoint_id, $from_date, $to_dat
     $totalmaxvalue = 0;
     $totalminvalue=0;
     foreach ($sensordata as $datapointvalue) {
-         $sum = $sum + $datapointvalue->data;
-         $totalsum = $totalsum + $datapointvalue->data;
-         $count = $count + 1;
-         $totalcount = $totalcount + 1;
-         if ($totalmaxvalue < $datapointvalue->data){
+        $sum = $sum + $datapointvalue->data;
+        $totalsum = $totalsum + $datapointvalue->data;
+        $count = $count + 1;
+        $totalcount = $totalcount + 1;
+        if ($totalmaxvalue < $datapointvalue->data){
             $totalmaxvalue = $datapointvalue->data;
-         }
-         if ($totalminvalue > $datapointvalue->data){
+        }
+        if ($totalminvalue > $datapointvalue->data){
             $totalminvalue = $datapointvalue->data;
-         }
+        }
         $datapointvalue->_blank = "";
         $datapointvalue->date_created = strtotime($datapointvalue->created_at);
 
@@ -165,12 +257,12 @@ public function getDatapointValuesByDateRange($datapoint_id, $from_date, $to_dat
                 $filtered_count = $filtered_count + 1;
                 if ($filtered_maxvalue < $datapointvalue->data){
                     $filtered_maxvalue = $datapointvalue->data;
-                 }
-                 if ($filtered_minvalue > $datapointvalue->data){
-                    $filtered_minvalue = $datapointvalue->data;
-                 }
-                    }
                 }
+                if ($filtered_minvalue > $datapointvalue->data){
+                    $filtered_minvalue = $datapointvalue->data;
+                }
+            }
+        }
 
         $datapointvaluelist = array(
             'datasource_name' => $datasource->name,
@@ -194,27 +286,27 @@ public function getDatapointValuesByDateRange($datapoint_id, $from_date, $to_dat
     } else {
 
         $sensordata = array(
-        'datasource_name' => $datasource->name,
-        'project_name' => $project->name,
-        'organization_name' => $organization->name,
-        'sum' => $sum,
-        'count' => $count,
-        'totalcount' => $totalcount,
-        'average' => ($sum/$count),
-        'totalaverage' => ($totalsum/$totalcount),
-        'highest' => $totalmaxvalue,
-        'lowest' => $totalminvalue,
-        'totalhighest' => $totalmaxvalue,
-        'totallowest' => $totalminvalue,
-        'toptriggersnotifications' => $toptriggersnotifications,
-        'triggersnotifications' => $triggersnotifications,
-        'sensordata' => $sensordata
-    );
+            'datasource_name' => $datasource->name,
+            'project_name' => $project->name,
+            'organization_name' => $organization->name,
+            'sum' => $sum,
+            'count' => $count,
+            'totalcount' => $totalcount,
+            'average' => ($sum/$count),
+            'totalaverage' => ($totalsum/$totalcount),
+            'highest' => $totalmaxvalue,
+            'lowest' => $totalminvalue,
+            'totalhighest' => $totalmaxvalue,
+            'totallowest' => $totalminvalue,
+            'toptriggersnotifications' => $toptriggersnotifications,
+            'triggersnotifications' => $triggersnotifications,
+            'sensordata' => $sensordata
+        );
 
-    return $sensordata;
+        return $sensordata;
 
     }
-    
+
 
 }
 
@@ -257,9 +349,5 @@ public function GetOrganizationByDatapointId($datapointId){
 
     return $organization;
 }
-
-
-
-
 
 }

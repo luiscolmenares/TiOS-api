@@ -1,0 +1,1632 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "TiOS API",
+        "description": "Welcolme to TiOS Platfor API documentation.",
+        "termsOfService": "",
+        "contact": {
+            "email": "luis@tiosplatform.com"
+        },
+        "license": {
+            "name": "Private License",
+            "url": "URL to the license"
+        },
+        "version": "1.0.0"
+    },
+    "host": "127.0.0.1:5000/api",
+    "basePath": "/",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/dashboards": {
+            "get": {
+                "tags": [
+                    "Dashboards"
+                ],
+                "summary": "Get list of dashboards for the web app",
+                "description": "Returns list of dashboards",
+                "operationId": "getDashboards",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/dashboards/count": {
+            "get": {
+                "tags": [
+                    "Dashboards"
+                ],
+                "summary": "Get count of dashboards",
+                "description": "Returns count of dashboards",
+                "operationId": "getTotalDashboardsCount",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/dashboard/{id}": {
+            "get": {
+                "tags": [
+                    "Dashboards"
+                ],
+                "summary": "Get dashboard information",
+                "description": "Returns dashboard data",
+                "operationId": "getDashboard",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "dashboard id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/panels/type": {
+            "get": {
+                "tags": [
+                    "Panels"
+                ],
+                "summary": "Get list of Panels type",
+                "description": "Returns list of Panels type",
+                "operationId": "getPanelsType",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/panel/{id}": {
+            "get": {
+                "tags": [
+                    "Panels"
+                ],
+                "summary": "Get panel information",
+                "description": "Returns panel data",
+                "operationId": "getPanel",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "panel id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/dashboard/{id}/panels": {
+            "get": {
+                "tags": [
+                    "Panels"
+                ],
+                "summary": "Get panels information from a particular dashboard",
+                "description": "Returns panel data",
+                "operationId": "getPanelsByDashboardId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "dashboard id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/node-red/sensor-data/address/{address}/ip/{ip}/port/{port}/type/{type}/unitid/{unitid}": {
+            "get": {
+                "tags": [
+                    "Sensors"
+                ],
+                "summary": "Get sensor data",
+                "description": "Returns sensor data (last 20 entries recorded in DB). This data gets collected from a datapoint (for example, a temperature sensor) connected to a datasource (for example, a Vemetris Gateway)",
+                "operationId": "getSensorData",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "path",
+                        "description": "Datasource address",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ip",
+                        "in": "path",
+                        "description": "Datasource ip",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "port",
+                        "in": "path",
+                        "description": "Datasource port",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "description": "Datapoint type",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "unitid",
+                        "in": "path",
+                        "description": "Datapoint Unit ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/node-red/last-sensor-data/address/{address}/ip/{ip}/port/{port}/type/{type}/unitid/{unitid}": {
+            "get": {
+                "tags": [
+                    "Sensors"
+                ],
+                "summary": "Get last sensor data",
+                "description": "Returns sensor data (last entry recorded in DB). This data gets collected from a datapoint (for example, a temperature sensor) connected to a datasource (for example, a Vemetris Gateway)",
+                "operationId": "getLastSensorData",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "path",
+                        "description": "Datasource address",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ip",
+                        "in": "path",
+                        "description": "Datasource ip",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "port",
+                        "in": "path",
+                        "description": "Datasource port",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "description": "Datapoint type",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "unitid",
+                        "in": "path",
+                        "description": "Datapoint Unit ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/datapoints": {
+            "get": {
+                "tags": [
+                    "Datapoints"
+                ],
+                "summary": "Get list of datapoints",
+                "description": "Returns list of datapoints",
+                "operationId": "getDatapoints",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/datapoint/{id}": {
+            "get": {
+                "tags": [
+                    "Datapoints"
+                ],
+                "summary": "Get datapoint information",
+                "description": "Returns datapoint data",
+                "operationId": "getDatapoint",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "datapoint id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/datapoints/types": {
+            "get": {
+                "tags": [
+                    "Datapoints"
+                ],
+                "summary": "Get list of datapoints types",
+                "description": "Returns list of datapoint types",
+                "operationId": "getDatapointTypes",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/datapoint/datasource/{datasource_id}": {
+            "get": {
+                "tags": [
+                    "Datapoints"
+                ],
+                "summary": "Get datapoints information by Datasource",
+                "description": "Returns datapoints information",
+                "operationId": "getDataPointByDataSource",
+                "parameters": [
+                    {
+                        "name": "datasource_id",
+                        "in": "path",
+                        "description": "Datasource id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/datasources": {
+            "get": {
+                "tags": [
+                    "Datasources"
+                ],
+                "summary": "Get list of datasources",
+                "description": "Returns list of datasources",
+                "operationId": "getDatasources",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/datasource/{id}": {
+            "get": {
+                "tags": [
+                    "Datasources"
+                ],
+                "summary": "Get datasource information",
+                "description": "Returns datasource data",
+                "operationId": "getDatasource",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "datasource id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/datasources/type": {
+            "get": {
+                "tags": [
+                    "Datasources"
+                ],
+                "summary": "Get list of datasources type",
+                "description": "Returns list of datasources type",
+                "operationId": "getDatasourcesType",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/datasource/types/{datasource_type_id}": {
+            "get": {
+                "tags": [
+                    "Datasources"
+                ],
+                "summary": "Get Datasource Type by ID",
+                "description": "Returns Datasource type name",
+                "operationId": "getDatasourceTypeNameById",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/project/{project_id}/datasources": {
+            "get": {
+                "tags": [
+                    "Datasources"
+                ],
+                "summary": "Get Datasources related to a particular project",
+                "description": "Returns List of datasources from a project",
+                "operationId": "getProjectDatasources",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "Project ID",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/project/{project_id}/datasources/actives": {
+            "get": {
+                "tags": [
+                    "Datasources"
+                ],
+                "summary": "Get Active Datasources related to a particular project",
+                "description": "Returns List of active datasources from a project",
+                "operationId": "getActiveProjectDatasources",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "Project ID",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/project/{project_id}/datasources/count": {
+            "get": {
+                "tags": [
+                    "Datasources"
+                ],
+                "summary": "Get count of  Datasources related to a particular project",
+                "description": "Returns count of active datasources from a project",
+                "operationId": "getProjectDatasourcesCount",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "Project ID",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/datasource/{datasource_id}/datapoints": {
+            "get": {
+                "tags": [
+                    "Datapoints"
+                ],
+                "summary": "Get list of  Datapoints of a parrticular Datasource",
+                "description": "Returns list of  Datapoints of a parrticular Datasource",
+                "operationId": "getDatasourceDatapoints",
+                "parameters": [
+                    {
+                        "name": "datasource_id",
+                        "in": "path",
+                        "description": "Datasource_ ID",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/event/create": {
+            "post": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Create new event entry",
+                "operationId": "createEventDB",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "JSON Payload",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "event_id": {
+                                    "description": "event id",
+                                    "type": "integer",
+                                    "example": "1512581640"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "example": "Send email"
+                                },
+                                "action": {
+                                    "type": "string",
+                                    "example": "[{'action':'send-email','recipients':'[6]','message':'custom message','triggered':0}]"
+                                },
+                                "valueFrom": {
+                                    "type": "string",
+                                    "example": "1512581640"
+                                },
+                                "color": {
+                                    "type": "string",
+                                    "example": "#fac5a5"
+                                },
+                                "organization_id": {
+                                    "type": "integer",
+                                    "example": "1"
+                                },
+                                "project_id": {
+                                    "type": "integer",
+                                    "example": "1"
+                                },
+                                "datasource_id": {
+                                    "type": "integer",
+                                    "example": "1"
+                                },
+                                "datapoint_id": {
+                                    "type": "integer",
+                                    "example": "1"
+                                },
+                                "active": {
+                                    "type": "integer",
+                                    "example": "1"
+                                },
+                                "end": {
+                                    "type": "string",
+                                    "example": "end"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "json",
+                        "format": "application/json"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/events": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get list of events",
+                "description": "Returns list of events",
+                "operationId": "getEventsDB",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/event/{id}": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get event information",
+                "description": "Returns event data",
+                "operationId": "getEventDB",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "event id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/events/organization/{organization_id}": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get event information By Organization",
+                "description": "Returns event data by organization",
+                "operationId": "getEventsDBByOrgId",
+                "parameters": [
+                    {
+                        "name": "organization_id",
+                        "in": "path",
+                        "description": "organization id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/events/actions": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get list of events actions",
+                "description": "Returns list of events actions",
+                "operationId": "getEventsDBActions",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/organizations": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Get list of organizations",
+                "description": "Returns list of organizations",
+                "operationId": "getOrganizations",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/organizations/count": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Get count of organizations",
+                "description": "Returns count of organizations",
+                "operationId": "getTotalOrganizationsCount",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/organization/{id}": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Get organization information",
+                "description": "Returns organization data",
+                "operationId": "getOrganization",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "organization id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/organization/{organization_id}/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get organization's users information",
+                "description": "Returns organization's users data",
+                "operationId": "getOrgUsers",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "organization id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/organization/{organization_id}/users/count": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get organization's users count",
+                "description": "Returns organization's users count",
+                "operationId": "getOrgUsersCount",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "organization id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/organization/{organization_id}/projects": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get organization's projects",
+                "description": "Returns organization's project",
+                "operationId": "getOrgProjects",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "organization id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/organizations/projects/dashboards": {
+            "get": {
+                "tags": [
+                    "Dashboards"
+                ],
+                "summary": "Get organization's project dashboards",
+                "description": "Returns organization's project dashboards",
+                "operationId": "getOrgProjectsDasboards",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/organization/{organization_id}/projects/count": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get organization's projects count",
+                "description": "Returns organization's projects count",
+                "operationId": "getOrgProjectsCount",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "organization id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/organization/{organization_id}/dashboards/count": {
+            "get": {
+                "tags": [
+                    "Dashboards"
+                ],
+                "summary": "Get organization's dashboards count",
+                "description": "Returns organization's dashboards count",
+                "operationId": "getOrgDashboardsCount",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "organization id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/organization/{organization_id}/triggers/count": {
+            "get": {
+                "tags": [
+                    "Triggers"
+                ],
+                "summary": "Get organization's triggers count",
+                "description": "Returns organization's dashboards count",
+                "operationId": "getOrgTriggersCount",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "organization id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/projects": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get list of projects",
+                "description": "Returns list of projects",
+                "operationId": "getProjects",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/project/{id}": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get project information",
+                "description": "Returns project data",
+                "operationId": "getProject",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Project id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/projects/count": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get count of projects",
+                "description": "Returns count of projects",
+                "operationId": "getTotalProjectsCount",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/project/{project_id}/organization": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Get Organization information by Project ID",
+                "description": "Returns Organization data by Project ID",
+                "operationId": "getOrganizationByProjectId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "project id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/project/{project_id}/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get users by Project ID",
+                "description": "Returns list of users by Project ID",
+                "operationId": "getProjectUsers",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "project id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/project/{project_id}/users/count": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get Users count by Project",
+                "description": "Returns Users count by project id",
+                "operationId": "getProjectUsersCount",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "project id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/project/{project_id}/dashboards/count": {
+            "get": {
+                "tags": [
+                    "Dashboards"
+                ],
+                "summary": "Get Dashboards count by Project",
+                "description": "Returns Dashboards count by project id",
+                "operationId": "getProjectDashboardsCount",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "project id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/project/{project_id}/dashboards": {
+            "get": {
+                "tags": [
+                    "Dashboards"
+                ],
+                "summary": "Get Dashboards by Project ID",
+                "description": "Returns Dashboards data by project id",
+                "operationId": "getDashboardByProjectId",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "project id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/spaces": {
+            "get": {
+                "tags": [
+                    "Spaces"
+                ],
+                "summary": "Get list of spaces",
+                "description": "Returns list of spaces",
+                "operationId": "getSpaces",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/space/{id}": {
+            "get": {
+                "tags": [
+                    "Spaces"
+                ],
+                "summary": "Get space information",
+                "description": "Returns space data",
+                "operationId": "getSpace",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Space id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/project/{project_id}/spaces/count": {
+            "get": {
+                "tags": [
+                    "Spaces"
+                ],
+                "summary": "Get spaces count information by project",
+                "description": "Returns sspaces count information by project",
+                "operationId": "getProjectSpacesCount",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "Project id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/project/{project_id}/spaces": {
+            "get": {
+                "tags": [
+                    "Spaces"
+                ],
+                "summary": "Get spaces information by project",
+                "description": "Returns spaces information by project",
+                "operationId": "getSpacesByProjectId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Project id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/organization/{organization_id}/spaces": {
+            "get": {
+                "tags": [
+                    "Spaces"
+                ],
+                "summary": "Get spaces information by organization",
+                "description": "Returns spaces information by organization",
+                "operationId": "getSpacesByOrganizationId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Organization id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get list of users",
+                "description": "Returns list of users",
+                "operationId": "getUsers",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {},
+    "securityDefinitions": {
+        "passport": {
+            "type": "oauth2",
+            "flow": "password",
+            "tokenUrl": "/oauth/token",
+            "scopes": {}
+        }
+    },
+    "externalDocs": {
+        "description": "For more Info",
+        "url": "https://tiosplatform.com"
+    }
+}
