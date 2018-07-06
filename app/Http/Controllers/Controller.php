@@ -9,9 +9,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 /**
  * @SWG\Swagger(
- *     schemes={"http","https"},
- *     host="127.0.0.1:5000/api",
- *     basePath="/",
+ *     schemes={https"},
+ *     host="api.tiosplatform.com",
+ *     basePath="/api",
  *     @SWG\Info(
  *         version="1.0.0",
  *         title="TiOS API",
