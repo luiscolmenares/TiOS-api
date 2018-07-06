@@ -16,10 +16,24 @@ use App\Http\Controllers\Controller;
 class SpaceController extends Controller
 {
     /**
-     * Get all spaces
-     * @param 
-     * return spaces
-     */
+* @SWG\Get(
+*      path="/spaces",
+*      operationId="getSpaces",
+*      tags={"Spaces"},
+*      summary="Get list of spaces",
+*      description="Returns list of spaces",
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*       @SWG\Response(response=400, description="Bad request"),
+*       security={
+*           {"passport": {}}
+*       }
+*     )
+*
+* Returns list of spaces
+*/
     public function getSpaces() {
         return Space::all();
     }
@@ -66,10 +80,31 @@ public function updateSpace(Request $request, $space_id) {
     }
 
 	/**
-	* Get Space from Space Id
-	* @param spaceId
-	* return Space
-	*/
+* @SWG\Get(
+*      path="/space/{id}",
+*      operationId="getSpace",
+*      tags={"Spaces"},
+*      summary="Get space information",
+*      description="Returns space data",
+*      @SWG\Parameter(
+*          name="id",
+*          description="Space id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 	public function getSpace($spaceId){
 	$space = Space::find($spaceId);
 	// $space_datapoints = $this->getSpacesDatapoints;
@@ -89,20 +124,62 @@ public function updateSpace(Request $request, $space_id) {
 	}
 
 	/**
-     * Get all datasources related to the project Count.
-     * @param $projectParam
-     * return int
-     */
+* @SWG\Get(
+*      path="/project/{project_id}/spaces/count",
+*      operationId="getProjectSpacesCount",
+*      tags={"Spaces"},
+*      summary="Get spaces count information by project",
+*      description="Returns sspaces count information by project",
+*      @SWG\Parameter(
+*          name="project_id",
+*          description="Project id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
     public function getProjectSpacesCount($projectId) {
         return  Space::where('project_id', $projectId)->count(); 
     }
 
 
 	/**
-	* Get Space from Space Id
-	* @param spaceId
-	* return Space
-	*/
+* @SWG\Get(
+*      path="/project/{project_id}/spaces",
+*      operationId="getSpacesByProjectId",
+*      tags={"Spaces"},
+*      summary="Get spaces information by project",
+*      description="Returns spaces information by project",
+*      @SWG\Parameter(
+*          name="project_id",
+*          description="Project id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 	public function getSpacesByProjectId($projectId){
 	$spaces = Space::where('project_id', $projectId)->get();
 	$project = Project:: find($projectId);
@@ -128,11 +205,32 @@ public function updateSpace(Request $request, $space_id) {
 	return $spaces;
 	}		
 			
-    /**
-	* Get Space from Space Id
-	* @param spaceId
-	* return Space
-	*/
+   /**
+* @SWG\Get(
+*      path="/organization/{organization_id}/spaces",
+*      operationId="getSpacesByOrganizationId",
+*      tags={"Spaces"},
+*      summary="Get spaces information by organization",
+*      description="Returns spaces information by organization",
+*      @SWG\Parameter(
+*          name="organization_id",
+*          description="Organization id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 	public function getSpacesByOrganizationId($projectId){
 	$spaces = Space::where('organization_id', $projectId)->get();
 	return $spaces;

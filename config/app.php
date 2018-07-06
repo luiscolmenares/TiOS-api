@@ -189,6 +189,10 @@ return [
          * Twilio Provider...
          */
         Aloha\Twilio\Support\Laravel\ServiceProvider::class,
+        /*
+         * Swagger Provider...
+         */
+        L5Swagger\L5SwaggerServiceProvider::class,
 
 
     ],

@@ -37,10 +37,24 @@ public function getLoggedUser($request){
 }
 
 /**
-* Get all users with all details
-* @param 
-* return users
-*/
+    * @SWG\Get(
+    *      path="/users",
+    *      operationId="getUsers",
+    *      tags={"Users"},
+    *      summary="Get list of users",
+    *      description="Returns list of users",
+    *      @SWG\Response(
+    *          response=200,
+    *          description="successful operation"
+    *       ),
+    *       @SWG\Response(response=400, description="Bad request"),
+    *       security={
+    *           {"passport": {}}
+    *       }
+    *     )
+    *
+    * Returns list of dashboards
+    */
 public function getUsers(){
     //$users =  User::withTrashed()->get();
     $users =  User::all();

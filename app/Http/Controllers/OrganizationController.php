@@ -36,10 +36,24 @@ class OrganizationController extends Controller {
     }
 
     /**
-     * Gets anlorganizations
-     * @param organizationId
-     * return organizations
-     */
+* @SWG\Get(
+*      path="/organizations",
+*      operationId="getOrganizations",
+*      tags={"Organizations"},
+*      summary="Get list of organizations",
+*      description="Returns list of organizations",
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*       @SWG\Response(response=400, description="Bad request"),
+*       security={
+*           {"passport": {}}
+*       }
+*     )
+*
+* Returns list of organizations
+*/
     public function getOrganizations() {
         //$organizations = Organization::withTrashed()->get();
         $organizations = Organization::all();
@@ -48,19 +62,54 @@ class OrganizationController extends Controller {
     }
 
     /**
-* Get org total count
-* @param 
-* return count int
+* @SWG\Get(
+*      path="/organizations/count",
+*      operationId="getTotalOrganizationsCount",
+*      tags={"Organizations"},
+*      summary="Get count of organizations",
+*      description="Returns count of organizations",
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*       @SWG\Response(response=400, description="Bad request"),
+*       security={
+*           {"passport": {}}
+*       }
+*     )
+*
+* Returns count of organizations
 */
 public function getTotalOrganizationsCount(){
     return Organization::all()->count();
 }
 
     /**
-     * Gets an organization by Id
-     * @param organizationId
-     * return organization
-     */
+* @SWG\Get(
+*      path="/organization/{id}",
+*      operationId="getOrganization",
+*      tags={"Organizations"},
+*      summary="Get organization information",
+*      description="Returns organization data",
+*      @SWG\Parameter(
+*          name="id",
+*          description="organization id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
     public function getOrganization($organizationId) {
         $organization = Organization::find($organizationId);
         $organization = array("organization" => $organization);
@@ -118,22 +167,64 @@ public function getTotalOrganizationsCount(){
     }
 
     /**
-     * Get all users related to the organization.
-     * @param $organizationParam
-     * return mixed
-     */
-    public function getOrgUsers($organizationParam) {
-        $users = User::where('organization_id', $organizationParam)->get();
+* @SWG\Get(
+*      path="/organization/{organization_id}/users",
+*      operationId="getOrgUsers",
+*      tags={"Users"},
+*      summary="Get organization's users information",
+*      description="Returns organization's users data",
+*      @SWG\Parameter(
+*          name="id",
+*          description="organization id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
+    public function getOrgUsers($organization_id) {
+        $users = User::where('organization_id', $organization_id)->get();
         $users = array("users" => $users);
         return $users;
 
     }
 
     /**
-     * Get all users related to the organization Count.
-     * @param $organizationParam
-     * return int
-     */
+* @SWG\Get(
+*      path="/organization/{organization_id}/users/count",
+*      operationId="getOrgUsersCount",
+*      tags={"Users"},
+*      summary="Get organization's users count",
+*      description="Returns organization's users count",
+*      @SWG\Parameter(
+*          name="id",
+*          description="organization id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
     public function getOrgUsersCount($organizationParam) {
          $userscount = User::where('organization_id', $organizationParam)->count();
         // return $organization->users->count();
@@ -141,14 +232,35 @@ public function getTotalOrganizationsCount(){
     }
 
     /**
-     * Get all projects related to the organization.
-     * @param $organizationParam
-     * return mixed
-     */
-    public function getOrgProjects($organizationParam) {
-        //$organization = Organization::where('id', $organizationParam)->first();
+* @SWG\Get(
+*      path="/organization/{organization_id}/projects",
+*      operationId="getOrgProjects",
+*      tags={"Projects"},
+*      summary="Get organization's projects",
+*      description="Returns organization's project",
+*      @SWG\Parameter(
+*          name="id",
+*          description="organization id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
+    public function getOrgProjects($organization_id) {
+        //$organization = Organization::where('id', $organization_id)->first();
         $projects_list = array();
-        $projects = Project::where('organization_id', $organizationParam)->get();
+        $projects = Project::where('organization_id', $organization_id)->get();
         //return $this->response->array($organization->projects);
         foreach ($projects  as $project) {
             # code...
@@ -175,6 +287,26 @@ public function getTotalOrganizationsCount(){
         return $projects_list;
     }
 
+    /**
+* @SWG\Get(
+*      path="/organizations/projects/dashboards",
+*      operationId="getOrgProjectsDasboards",
+*      tags={"Dashboards"},
+*      summary="Get organization's project dashboards",
+*      description="Returns organization's project dashboards",
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
+
     public function getOrgProjectsDasboards(){
         $organizations = Organization::all();
         $org_list = array();
@@ -198,24 +330,66 @@ public function getTotalOrganizationsCount(){
     }
 
     /**
-     * Get all projects related to the organization count.
-     * @param $organizationParam
-     * return mixed
-     */
-    public function getOrgProjectsCount($organizationParam) {
-        $projectscount = Project::where('organization_id', $organizationParam)->count();
+* @SWG\Get(
+*      path="/organization/{organization_id}/projects/count",
+*      operationId="getOrgProjectsCount",
+*      tags={"Projects"},
+*      summary="Get organization's projects count",
+*      description="Returns organization's projects count",
+*      @SWG\Parameter(
+*          name="id",
+*          description="organization id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
+    public function getOrgProjectsCount($organization_id) {
+        $projectscount = Project::where('organization_id', $organization_id)->count();
         // return $organization->users->count();
         return $projectscount;
     }
 
-    /**
-     * Get all dashboards related to the organization count.
-     * @param $organizationParam
-     * return mixed
-     */
-    public function getOrgDashboardsCount($organizationParam) {
+   /**
+* @SWG\Get(
+*      path="/organization/{organization_id}/dashboards/count",
+*      operationId="getOrgDashboardsCount",
+*      tags={"Dashboards"},
+*      summary="Get organization's dashboards count",
+*      description="Returns organization's dashboards count",
+*      @SWG\Parameter(
+*          name="id",
+*          description="organization id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
+    public function getOrgDashboardsCount($organization_id) {
         $dashboardscounts = \DB::table('projects')
-            ->where('projects.organization_id', '=', $organizationParam)
+            ->where('projects.organization_id', '=', $organization_id)
             ->join('dashboards', 'dashboards.project_id', '=', 'projects.id')
             //->select('dashboards.name')
             ->count();
@@ -223,16 +397,37 @@ public function getTotalOrganizationsCount(){
         
     }
     /**
-     * Get all triggers related to the organization count.
-     * @param $organizationParam
-     * return mixed
-     */
-    public function getOrgTriggersCount($organizationParam) {
+* @SWG\Get(
+*      path="/organization/{organization_id}/triggers/count",
+*      operationId="getOrgTriggersCount",
+*      tags={"Triggers"},
+*      summary="Get organization's triggers count",
+*      description="Returns organization's dashboards count",
+*      @SWG\Parameter(
+*          name="id",
+*          description="organization id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
+    public function getOrgTriggersCount($organization_id) {
         $triggerscount = \DB::table('triggers')
             ->where('triggers.deleted_at', '=', null)
              ->join('projects', 'triggers.project_id', '=', 'projects.id')
              ->join('organizations', 'projects.organization_id', '=', 'organizations.id')
-             ->where('organizations.id', '=', $organizationParam)
+             ->where('organizations.id', '=', $organization_id)
             ->count();
         return $triggerscount;
         
