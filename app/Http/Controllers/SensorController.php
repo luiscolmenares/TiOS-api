@@ -15,10 +15,47 @@ use App\Mail\TriggerEmail;
 class SensorController extends Controller
 {
 /**
-* Creates Sensor Data
-* @param Request $request
-* return boolean
-*/
+*
+* @SWG\Post(
+*      path="/node-red/sensor-data",
+*      tags={"Sensors"},
+*      operationId="createSensorData",
+*      summary="Create new sensordata entry",
+*      @SWG\Parameter(
+*          name="body",
+*          in="body",
+*          description="JSON Payload",
+*          required=true,
+*          type="json",
+*          format="application/json",
+*          @SWG\Schema(
+*              type="object",
+*              @SWG\Property(property="name", description="name", type="string", example="ModbusTCP"),
+*              @SWG\Property(property="type", description="type", type="string", example="Temperature"),
+*              @SWG\Property(property="unitid", type="integer", example="1"),
+*              @SWG\Property(property="ip", type="string", example="192.168.1.11"),
+*              @SWG\Property(property="port", type="string", example="8899"),
+*              @SWG\Property(property="data", type="string", example="23.44"),
+*              @SWG\Property(property="fc", type="string", example="FC4"),
+*              @SWG\Property(property="address", type="integer", example="0"),
+*              @SWG\Property(property="quantity", type="integer", example="1"),
+*         
+
+*          )
+*
+*      ),
+
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*       @SWG\Response(response=400, description="Bad request"),
+*       security={
+*           {"passport": {}}
+*       }
+*  )
+*
+*/ 
 
 public function createSensorData(Request $request)
 {

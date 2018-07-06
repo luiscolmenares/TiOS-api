@@ -5,6 +5,7 @@ use App\Datapoint;
 use App\Datasource;
 use App\Project;
 use App\Organization;
+use App\Space;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -321,6 +322,39 @@ public function GetDatasourceByDatapointId($datapointId){
     $datasource = Datasource::find($datapoint->datasource_id);
 
     return $datasource;
+}
+
+/**
+* @SWG\Get(
+*      path="/space/{space_id}/datapoints",
+*      operationId="GetDatapointsBySpaceId",
+*      tags={"Datapoints"},
+*      summary="Get datapoint information related to space",
+*      description="Returns datapoint data related to space",
+*      @SWG\Parameter(
+*          name="space_id",
+*          description="space id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
+public function GetDatapointsBySpaceId($spaceId){
+    $datapoints = Datapoint::where('space_id', '=', $spaceId)->get();
+    // $datasource = Datasource::find($datapoint->datasource_id);
+
+    return $datapoints;
 }
 
 /**

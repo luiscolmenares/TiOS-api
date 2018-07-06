@@ -158,6 +158,39 @@ public function getDatasourceTypeNameById($datasourcetypeId) {
 }
 
 /**
+* @SWG\Get(
+*      path="/space/{space_id}/datasources",
+*      operationId="GetDatasourcesBySpaceId",
+*      tags={"Datasources"},
+*      summary="Get datasources information related to space",
+*      description="Returns datasources data related to space",
+*      @SWG\Parameter(
+*          name="space_id",
+*          description="space id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
+public function GetDatasourcesBySpaceId($spaceId){
+    $datasources = Datasource::where('space_id', '=', $spaceId)->get();
+    // $datasource = Datasource::find($datasources->datasource_id);
+
+    return $datasources;
+}
+
+/**
 * Get Datasoutce Protocol type by Id
 * @param datasourceprotocoltypeId
 * return datasourceprotocoltype

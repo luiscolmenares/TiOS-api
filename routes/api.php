@@ -112,6 +112,7 @@ Route::middleware('auth:api')->get('datasource/types/{datasource_type_id}', 'Dat
 Route::middleware('auth:api')->get('datasource/protocols/{datasource_protocol_type_id}', 'DatasourceController@getDatasourceProtocolTypeById');
 Route::middleware('auth:api')->get('datasource/protocols', 'DatasourceController@getDatasourceProtocolTypes');
 Route::middleware('auth:api')->get('datasource/{datasource_id}/project', 'DatasourceController@getProjectByDatasourceId');
+Route::middleware('auth:api')->get('space/{space_id}/datasources', 'DatasourceController@GetDatasourcesBySpaceId');
 
 //Datapoints
 Route::middleware('auth:api')->get('datapoints', 'DatapointController@getDatapoints');
@@ -123,6 +124,8 @@ Route::middleware('auth:api')->get('datapoint/datasource/{datasource_id}', 'Data
 Route::middleware('auth:api')->get('datapoint/datasource/{datasource_id}/actives', 'DatapointController@getActiveDataPointByDataSource');
 Route::middleware('auth:api')->get('datapoints/types', 'DatapointController@getDatapointTypes');
 Route::middleware('auth:api')->get('datapoint/{datapoint_id}/fromdate/{from_date}/todate/{to_date}', 'DatapointController@getDatapointValuesByDateRange');
+Route::middleware('auth:api')->get('space/{space_id}/datapoints', 'DatapointController@GetDatapointsBySpaceId');
+
 
 //Triggers
 Route::middleware('auth:api')->get('trigger/types', 'TriggerController@getTriggerTypes');

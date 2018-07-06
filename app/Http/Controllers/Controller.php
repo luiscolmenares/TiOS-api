@@ -9,13 +9,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 /**
  * @SWG\Swagger(
- *     schemes={https"},
+ *     schemes={"http","https"},
  *     host="api.tiosplatform.com",
  *     basePath="/api",
  *     @SWG\Info(
  *         version="1.0.0",
  *         title="TiOS API",
- *         description="Welcolme to TiOS Platfor API documentation.",
+ *         description="Welcolme to TiOS Platform API documentation.",
  *         termsOfService="",
  *         @SWG\Contact(
  *             email="luis@tiosplatform.com"
