@@ -210,8 +210,33 @@ public function GetDatasourcesBySpaceId($space_id){
     $datasources = Datasource::where('space_id', '=', $space_id)->get();
     // $datasource = Datasource::find($datasources->datasource_id);
     // $datasources = \DB::table('datasources')->where('space_id', '=', $space_id)->get();
+    $datasources_list = array();
+        foreach ($datasources as $datasource) {
+            $options_array = json_decode($datasource->options, true);
+            $d = array(
+                    'id' => $datasource->id,
+                    'name' => $datasource->name,
+                    'type' => $datasource->type,
+                    'unitid' => $datasource->image,
+                    'ip' => $datasource->ip,
+                    'port' => $datasource->port,
+                    'options' => $datasource->options,
+                    'options_array' => $options_array,
+                    'data' => $datasource->data,
+                    'notes' => $datasource->notes,
+                    'active' => $datasource->active,
+                    'project_id' => $datasource->project_id,
+                    'created_at' => $datasource->created_at,
+                    'updated_at' => $datasource->updated_at,
+                    'deleted_at' => $datasource->deleted_at,
+                    'space_id' => $datasource->space_id,
+                    
+         );
+         array_push($datasources_list, $d);
+     }
 
-    return $datasources;
+
+    return $datasources_list;
 }
 
 /**

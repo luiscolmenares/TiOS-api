@@ -107,6 +107,7 @@ public function updateSpace(Request $request, $space_id) {
 */ 
 	public function getSpace($spaceId){
 	$space = Space::find($spaceId);
+	$datasources = app('App\Http\Controllers\DatasourceController')->GetDatasourcesBySpaceId($spaceId);
 
 	$complete_space = array(
 	'id' => $space->id,
@@ -114,6 +115,7 @@ public function updateSpace(Request $request, $space_id) {
 	'image' => $space->image,
 	'organization_id' => $space->organization_id,
 	'project_id' => $space->project_id,
+	'datasources' => $datasources,
 	
 	);
 
