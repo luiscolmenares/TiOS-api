@@ -19,9 +19,13 @@ class DatasourceTypeSeeder extends Seeder
             'name' => 'Smart Bulb',
             'codename' => 'ds-smart-bulb'
         ]);
-         DB::table('datasource_type')->insert([
-            'name' => 'Smart Switch',
-            'codename' => 'ds-smart-switch'
+        DB::table('datasource_type')->insert([
+            'name' => 'Smart Switch (Light)',
+            'codename' => 'ds-smart-switch-light'
+        ]);
+        DB::table('datasource_type')->insert([
+            'name' => 'Smart Switch (AC)',
+            'codename' => 'ds-smart-switch-ac'
         ]);
         DB::table('datasource_type')->insert([
             'name' => 'Temperature Sensor (Celsius)',
