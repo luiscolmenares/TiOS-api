@@ -80,6 +80,12 @@ class PanelstypeTableSeeder extends Seeder
         DB::table('panels_type')->insert([
             'name' => 'History Log - Electric Current',
         ]);
+        DB::table('panels_type')->insert([
+            'name' => 'MQTT Widget - Gauge - Temperature',
+        ]);
+        DB::table('panels_type')->insert([
+            'name' => 'MQTT Widget - Temperature',
+        ]);
 
 
     }

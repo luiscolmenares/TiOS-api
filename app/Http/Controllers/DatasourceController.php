@@ -61,9 +61,32 @@ public function getDatasources() {
 * )
 *
 */ 
+
 public function getDatasource($DatasourceId) {
     $datasource = Datasource::find($DatasourceId);
-    $datasource = array("datasource" => $datasource);
+    $options_array = json_decode($datasource->options, true);
+    $complete_datasource = array(
+    'id' => $datasource->id,
+    'name' => $datasource->name,
+    'type' => $datasource->type,
+    'unitid' => $datasource->image,
+    'ip' => $datasource->ip,
+    'port' => $datasource->port,
+    'options' => $datasource->options,
+    'options_array' => $options_array,
+    'data' => $datasource->data,
+    'notes' => $datasource->notes,
+    'active' => $datasource->active,
+    'project_id' => $datasource->project_id,
+    'created_at' => $datasource->created_at,
+    'updated_at' => $datasource->updated_at,
+    'deleted_at' => $datasource->deleted_at,
+    'space_id' => $datasource->space_id,
+    
+    );
+
+    // return $complete_space;
+    $datasource = array("datasource" => $complete_datasource);
     return $datasource;
 }
 

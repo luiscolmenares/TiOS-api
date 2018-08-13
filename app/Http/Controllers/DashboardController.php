@@ -263,6 +263,7 @@ public function getPanelsByDashboardId($dashboardId) {
     $chartTypePanelsChartVoltage = ['14', '15'];
     $chartTypePanelsChartPower = ['17', '18'];
     $chartTypePanelsChartCurrent = ['21', '22'];
+    $chartTypePanelsWidgetTemperatureMQTT = ['24', '25'];
 // $chartTypePanelsWidgetVoltage = ['13', '8'];
     foreach ($panels as $panel) {
 // if (in_array($panel->type, $chartTypePanels)) {
@@ -363,7 +364,29 @@ public function getPanelsByDashboardId($dashboardId) {
                 $panel->sensorData = $this->getLastSensorData($datepoint->address, $datesource->ip, $datesource->port, 'Temperature', $datepoint->unitid);
             }
 
-        } else if (in_array($panel->type, $chartTypePanelsWidgetHumidity)) {
+        } else if (in_array($panel->type, $chartTypePanelsWidgetTemperatureMQTT)) {
+            $datesource = \App\Datasource::find($panel->datasource_id);
+            if($datesource->ip == '0.0.0.0'){
+//datasource ID as address to identify sensor data
+                $datesource->address=0;
+                $datesource->type='ds-temperature-celsius';
+                $mqtt_info = json_decode($datesource->options, true);
+//Its a SmartThing via MQTT (no datapoint)
+                // $mqtt_info = array(
+                //         'host' => "mqtt.tiosplatform.com",
+                //         'port' => "8083",
+                //         'id' => "id_".$panel->id,
+                //         'topic' => 'org1/room1/monitor/temperature',                   
+                //         );
+                $panel->MQTTInfo = $mqtt_info;
+            } else {
+//Modbus with datasource -> datapoint
+                $datepoint = \App\Datapoint::find($panel->datapoint_id);
+                $panel->sensorData = $this->getLastSensorData($datepoint->address, $datesource->ip, $datesource->port, 'Temperature', $datepoint->unitid);
+            }
+
+        } 
+        else if (in_array($panel->type, $chartTypePanelsWidgetHumidity)) {
             $datesource = \App\Datasource::find($panel->datasource_id);
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
@@ -680,6 +703,22 @@ public function getLastSensorData($address, $ip, $port, $type, $unitid) {
 
 
 public function getLastSensorDataFromDatasource($datasource, $address, $ip, $port, $type, $unitid) {
+    $lastsensordata = \DB::table('sensordata')
+    ->select('created_at', 'data')
+    ->where([
+        ['type', '=', $type],
+        ['unitid', '=', $unitid],
+        ['address', '=', $address],
+        ['ip', '=', $ip],
+        ['port', '=', $port],
+        ['datasource', '=', $datasource],
+    ])
+    ->orderBy('created_at', 'desc')
+    ->first();
+    return $lastsensordata;
+}
+
+public function getLastSensorDataFromDatasourceMQTT($datasource, $address, $ip, $port, $type, $unitid) {
     $lastsensordata = \DB::table('sensordata')
     ->select('created_at', 'data')
     ->where([
