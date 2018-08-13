@@ -107,16 +107,13 @@ public function updateSpace(Request $request, $space_id) {
 */ 
 	public function getSpace($spaceId){
 	$space = Space::find($spaceId);
-	// $space_datapoints = $this->getSpacesDatapoints;
-	// $space_datasources = $this->getSpacesDatasources;
 
-
-	//return $user;
 	$complete_space = array(
 	'id' => $space->id,
 	'name' => $space->name,
 	'image' => $space->image,
 	'organization_id' => $space->organization_id,
+	'project_id' => $space->project_id,
 	
 	);
 

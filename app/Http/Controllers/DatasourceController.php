@@ -206,9 +206,10 @@ public function getDatasourceTypeNameById($datasourcetypeId) {
 * )
 *
 */ 
-public function GetDatasourcesBySpaceId($spaceId){
-    $datasources = Datasource::where('space_id', '=', $spaceId)->get();
+public function GetDatasourcesBySpaceId($space_id){
+    $datasources = Datasource::where('space_id', '=', $space_id)->get();
     // $datasource = Datasource::find($datasources->datasource_id);
+    // $datasources = \DB::table('datasources')->where('space_id', '=', $space_id)->get();
 
     return $datasources;
 }
