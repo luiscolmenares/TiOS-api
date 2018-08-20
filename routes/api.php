@@ -164,6 +164,11 @@ Route::middleware('auth:api')->get('events/organization/{organization_id}', 'Eve
 //Route::middleware('auth:api')->post('event/update/{event_id}', 'EventController@updateEvent');
 Route::middleware('auth:api')->delete('event/delete/{event_id}', 'EventDBController@deleteEventDB');
 
+//Mobile 
+Route::middleware('auth:api')->get('mobile/about', 'MenuController@getMobileAbout');
+
+
+
 //Pusher Implementation
 Route::get('/push/{message}', 'NotificationController@PostNotify');
 Route::get('/pusherapi/{message}', function($message) {
