@@ -66,6 +66,7 @@ public function updateSpace(Request $request, $space_id) {
     if ($request->image) {$space->image = $request->image;}
     if ($request->organization_id) {$space->organization_id = $request->organization_id;}
     if ($request->project_id) {$space->project_id = $request->project_id;}
+    if ($request->icon_image) {$space->icon_image = $request->icon_image;}
     if (!$space->save()) {
         abort(500, 'Could not update space.');
     }
@@ -118,6 +119,8 @@ public function updateSpace(Request $request, $space_id) {
 	'name' => $space->name,
 	'image' => $space->image,
 	'image_url' => $url.'/spaces/images/'.$space->image,
+	'icon_image' => $space->icon_image,
+	'icon_image_url' => $url.'/spaces/icons/'.$space->icon_image,
 	'organization_id' => $space->organization_id,
 	'project_id' => $space->project_id,
 	'datasources' => $datasources,
@@ -185,6 +188,7 @@ public function updateSpace(Request $request, $space_id) {
 *
 */ 
 	public function getSpacesByProjectId($projectId){
+	$url = url('/');
 	$spaces = Space::where('project_id', $projectId)->get();
 	$project = Project:: find($projectId);
 	$organization_id = $project->organization_id;
@@ -197,6 +201,9 @@ public function updateSpace(Request $request, $space_id) {
                     'organization_id' => $space->organization_id,
                     'project_id' => $space->project_id,
                     'image' => $space->image,
+                    'image_url' => $url.'/spaces/images/'.$space->image,
+					'icon_image' => $space->icon_image,
+					'icon_image_url' => $url.'/spaces/icons/'.$space->icon_image,
                     'organization_name' => $organization->name,
                     'project_name' => $project->name,
                     

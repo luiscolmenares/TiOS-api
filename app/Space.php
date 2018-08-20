@@ -20,6 +20,6 @@ class Space extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'image', 'organization_id', 'project_id',
+        'name', 'image', 'organization_id', 'project_id', 'icon_image',
     ];
 }
