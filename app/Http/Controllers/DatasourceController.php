@@ -82,6 +82,7 @@ public function getDatasource($DatasourceId) {
     'updated_at' => $datasource->updated_at,
     'deleted_at' => $datasource->deleted_at,
     'space_id' => $datasource->space_id,
+    'type_codename' => $datasource->type_codename,
     
     );
 
@@ -217,6 +218,7 @@ public function GetDatasourcesBySpaceId($space_id){
                     'id' => $datasource->id,
                     'name' => $datasource->name,
                     'type' => $datasource->type,
+                    // 'type_codename' => $datasource->codename,
                     'unitid' => $datasource->image,
                     'ip' => $datasource->ip,
                     'port' => $datasource->port,

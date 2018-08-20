@@ -89,10 +89,9 @@ Route::middleware('auth:api')->post('space/edit/{space_id}', 'SpaceController@up
 Route::middleware('auth:api')->get('spaces', 'SpaceController@getSpaces');
 Route::middleware('auth:api')->get('project/{project_id}/spaces', 'SpaceController@getSpacesByProjectId');
 Route::middleware('auth:api')->get('organization/{organization_id}/spaces', 'SpaceController@getSpacesByOrganizationId');
-// Route::middleware('auth:api')->get('panels/type', 'DashboardController@getPanelsType');
 Route::middleware('auth:api')->delete('space/delete/{space_id}', 'SpaceController@deleteSpace');
-
 Route::middleware('auth:api')->get('project/{project_id}/spaces/count', 'SpaceController@getProjectSpacesCount');
+Route::post('space/upload/{space_id}', 'SpaceController@uploadImage');
 
 
 //Datasources

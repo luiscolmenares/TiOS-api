@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use Validator;
+
 class SpaceController extends Controller
 {
     /**
@@ -233,6 +235,44 @@ public function updateSpace(Request $request, $space_id) {
 	public function getSpacesByOrganizationId($projectId){
 	$spaces = Space::where('organization_id', $projectId)->get();
 	return $spaces;
-	}		
+	}	
+
+	/**
+     * Upload new File
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadImage(Request $request, $space_id)
+    {
+       
+        $validator = Validator::make($request->file(), [
+            'file' => 'required|image|max:1000',
+        ]);
+
+        if ($validator->fails()) {
+
+            $errors = [];
+            foreach ($validator->messages()->all() as $error) {
+                array_push($errors, $error);
+            }
+
+            return response()->json(['errors' => $errors, 'status' => 400], 400);
+        }
+
+         $space = Space::find($space_id);
+            //$sportevent = Sportevent::find($re);
+            $space->image = $request->file('file')->getClientOriginalName();
+           // $sportevent->logo = 'imagen33.png';
+            if (!$space->save()) {
+            abort(500, 'Could not update space image.');
+            }
+            $request->file('file')->move(__DIR__ . '/../../../public/spaces/images/', $request->file('file')->getClientOriginalName());
+
+        return response()->json(['errors' => [], 'space' => Space::find($request->space_id), 'status' => 200], 200);
+    }	
 
 }
+
+
