@@ -36,6 +36,8 @@ Route::middleware('auth:api')->get('user/{user_id}/organization', 'UserControlle
 Route::middleware('auth:api')->get('users/count', 'UserController@getTotalUsersCount');
 Route::middleware('auth:api')->get('user/{user_id}/organization/{organization_id}', 'UserController@attachUserOrganization');
 Route::middleware('auth:api')->get('remove/user/{user_id}/project/{project_id}', 'UserController@removeUserProject');
+Route::middleware('auth:api')->get('user/password/reset/{user_email}', 'UserController@passwordReset');
+
 
 //Organizations
 Route::middleware('auth:api')->delete('organization/delete/{organization_id}', 'OrganizationController@deleteOrganization');

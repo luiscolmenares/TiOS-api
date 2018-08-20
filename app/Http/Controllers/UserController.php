@@ -307,6 +307,21 @@ public function getPermissionRoleNameList($roleId){
 * @param userId
 * return mixed
 */
+public function passwordReset($email){
+    // To be completed
+    $array = array(
+        'email' => $email,
+        'reset' => true
+        
+    );
+    return $array;
+}
+
+/**
+* Get Organization from user 
+* @param userId
+* return mixed
+*/
 public function getOrganizationUser($userId){
     $user = User::find($userId);
     $organizationId = $user->organization_id;

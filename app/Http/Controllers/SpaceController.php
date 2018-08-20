@@ -14,6 +14,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Validator;
+use Illuminate\Routing\UrlGenerator;
 
 class SpaceController extends Controller
 {
@@ -108,6 +109,7 @@ public function updateSpace(Request $request, $space_id) {
 *
 */ 
 	public function getSpace($spaceId){
+	$url = url('/');
 	$space = Space::find($spaceId);
 	$datasources = app('App\Http\Controllers\DatasourceController')->GetDatasourcesBySpaceId($spaceId);
 
@@ -115,6 +117,7 @@ public function updateSpace(Request $request, $space_id) {
 	'id' => $space->id,
 	'name' => $space->name,
 	'image' => $space->image,
+	'image_url' => $url.'/spaces/images/'.$space->image,
 	'organization_id' => $space->organization_id,
 	'project_id' => $space->project_id,
 	'datasources' => $datasources,
