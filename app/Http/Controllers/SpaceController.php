@@ -38,7 +38,34 @@ class SpaceController extends Controller
 * Returns list of spaces
 */
     public function getSpaces() {
-        return Space::all();
+        // return Space::all();
+        $url = url('/');
+        $spaces_list = array();
+        $spaces = Space::all();
+        foreach ($spaces as $space) {
+        	$space = Space::find($space->id);
+        	$datasources = app('App\Http\Controllers\DatasourceController')->GetDatasourcesBySpaceId($space->id);
+
+			$complete_space = array(
+			'id' => $space->id,
+			'name' => $space->name,
+			'image' => $space->image,
+			'image_url' => $url.'/spaces/images/'.$space->image,
+			'icon_image' => $space->icon_image,
+			'icon_image_url' => $url.'/spaces/icons/'.$space->icon_image,
+			'organization_id' => $space->organization_id,
+			'project_id' => $space->project_id,
+			'datasources' => $datasources,
+			
+			);
+
+
+        	array_push($spaces_list, $complete_space);
+
+
+        }
+	
+	return $spaces_list;
     }
 
     /**
@@ -195,6 +222,7 @@ public function updateSpace(Request $request, $space_id) {
 	$organization = Organization::find($organization_id);
 	$spaces_list = array();
         foreach ($spaces as $space) {
+        	$datasources = app('App\Http\Controllers\DatasourceController')->GetDatasourcesBySpaceId($space->id);
             $s = array(
                     'id' => $space->id,
                     'name' => $space->name,
@@ -206,6 +234,7 @@ public function updateSpace(Request $request, $space_id) {
 					'icon_image_url' => $url.'/spaces/icons/'.$space->icon_image,
                     'organization_name' => $organization->name,
                     'project_name' => $project->name,
+                    'datasources' => $datasources,
                     
          );
          array_push($spaces_list, $s);
