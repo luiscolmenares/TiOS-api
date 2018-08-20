@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Role;
 use App\Menu;
 use App\Http\Requests;
+use Illuminate\Routing\UrlGenerator;
 
 class MenuController extends Controller
 {
@@ -26,7 +27,10 @@ class MenuController extends Controller
 	* return items
 	*/
 	public function getMobileAbout(){
-	    $content = array('about' => 'TIoS Smart Home gives you control of your smart devices in one place.');
+		$url = url('/');
+	    $content = array(
+	    	'icon' => $url.'/spaces/icons/about-us.png',
+	    	'about' => 'TIoS Smart Home gives you control of your smart devices in one place.');
 	    return $content;
 	}
     
