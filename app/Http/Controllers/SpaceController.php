@@ -268,7 +268,7 @@ public function updateSpace(Request $request, $space_id) {
             if (!$space->save()) {
             abort(500, 'Could not update space image.');
             }
-            $request->file('file')->move(__DIR__ . '/../../../public/', $request->file('file')->getClientOriginalName());
+            $request->file('file')->move(__DIR__ . '/../../../public/spaces/images/', $request->file('file')->getClientOriginalName());
 
         return response()->json(['errors' => [], 'space' => Space::find($request->space_id), 'status' => 200], 200);
     }	
