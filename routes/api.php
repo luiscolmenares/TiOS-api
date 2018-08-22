@@ -149,6 +149,11 @@ Route::middleware('auth:api')->get('notifications', 'TriggerController@getTrigge
 Route::middleware('auth:api')->get('organization/{organizationParam}/notifications', 'TriggerController@getTriggersNotificationsByOrgId');
 Route::middleware('auth:api')->delete('notification/delete/{notification_id}', 'TriggerController@deleteTriggerNotification');
 
+//Mobile Notifications
+Route::post('mobile/notification/create', 'MobileNotificationsController@createMobileNotification');
+Route::middleware('auth:api')->get('/mobile/notifications', 'MobileNotificationsController@getMobileNotifications');
+Route::middleware('auth:api')->get('project/{project_id}/mobile/notifications', 'MobileNotificationsController@getMobileNotificationsByProjectId');
+
 //Sensors
 Route::post('node-red/data', 'SensorController@createData');
 Route::post('node-red/sensor-data', 'SensorController@createSensorData');
