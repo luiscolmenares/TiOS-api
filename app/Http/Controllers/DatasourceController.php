@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Project;
 use App\Datapoint;
 use App\Datasource;
+use App\Space;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests;
@@ -64,6 +65,7 @@ public function getDatasources() {
 
 public function getDatasource($DatasourceId) {
     $datasource = Datasource::find($DatasourceId);
+    $space = Space::find($datasource->space_id);
     $options_array = json_decode($datasource->options, true);
     $complete_datasource = array(
     'id' => $datasource->id,
@@ -82,6 +84,7 @@ public function getDatasource($DatasourceId) {
     'updated_at' => $datasource->updated_at,
     'deleted_at' => $datasource->deleted_at,
     'space_id' => $datasource->space_id,
+    'space_name' => $space->name,
     'type_codename' => $datasource->type_codename,
     
     );
@@ -265,6 +268,7 @@ public function updateDatasource(Request $request, $datasourceId) {
     if ($request->unitid) {$datasource->unitid = $request->unitid;}
     if ($request->ip) {$datasource->ip = $request->ip;}
     if ($request->port) {$datasource->port = $request->port;}
+    if ($request->space_id) {$datasource->space_id = $request->space_id;}
     if ($request->notes) {$datasource->notes = $request->notes;}
     if ($request->active == 0) {
         $datasource->active = 0;
