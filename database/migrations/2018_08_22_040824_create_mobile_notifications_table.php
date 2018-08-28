@@ -15,7 +15,7 @@ class CreateMobileNotificationsTable extends Migration
     {
         Schema::create('mobile_notifications', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable();;
+            $table->string('name')->nullable();
             $table->string('space')->nullable();
             $table->string('topic')->nullable();
             $table->string('value')->nullable();

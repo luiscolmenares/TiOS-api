@@ -12,42 +12,42 @@ class EventEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * The eventdb instance.
-     *
-     * @var eventdb
-     */
-    protected $eventdb;
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct(EventDB $eventdb)
-    {
-        //
-         $this->eventdb = $eventdb;
+/**
+* The eventdb instance.
+*
+* @var eventdb
+*/
+protected $eventdb;
+/**
+* Create a new message instance.
+*
+* @return void
+*/
+public function __construct(EventDB $eventdb)
+{
+//
+    $this->eventdb = $eventdb;
+}
+
+/**
+* Build the message.
+*
+* @return $this
+*/
+public function build()
+{
+    if($this->eventdb->custommessage != null){
+        $message = $this->eventdb->custommessage;                  
+    } else {
+        $message = "Auto message - Event Activated. Please login into your TiOS account";
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
-    {
-        if($this->eventdb->custommessage != null){
-                        $message = $this->eventdb->custommessage;
-                      } else {
-                        $message = "Auto message - Event Activated. Please login into your TiOS account";
-                      }
-        return $this->view('emails.events')
-                ->with([
-                    'eventId' => $this->eventdb->id,
-                    'eventTitle' => $this->eventdb->title,
-                    'eventFromDate' => $this->eventdb->valueFrom,
-                    //'triggerMessage' => $message,
-
-                ]);
-    }
+    return $this->view('emails.events')
+    ->with([
+        'eventId' => $this->eventdb->id,
+        'eventTitle' => $this->eventdb->title,
+        'eventFromDate' => date("m-d-Y h:i:sa", $this->eventdb->valueFrom),
+        'eventMessage' => $message,
+    ]);
+}
 }
