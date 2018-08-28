@@ -64,10 +64,43 @@ public function getMobileNotificationsByProjectId($project_id){
 }
 
 /**
-* Create mobile notification
-* @param Request request
-* return mobile notification
-*/
+*
+* @SWG\Post(
+*      path="/mobile/notification/create",
+*      tags={"Mobile Notifications"},
+*      operationId="createMobileNotification",
+*      summary="Create Mobile Notification",
+*      @SWG\Parameter(
+*          name="body",
+*          in="body",
+*          description="JSON Payload",
+*          required=true,
+*          type="json",
+*          format="application/json",
+*          @SWG\Schema(
+*              type="object",
+*              @SWG\Property(property="name", description="name", type="string", example="Lights"),
+*              @SWG\Property(property="space", description="space", type="string", example="Bedroom"),
+*              @SWG\Property(property="topic", description="topic", type="string", example="tios000001/s00002/sw001"),
+*              @SWG\Property(property="value", type="string", example="ON"),
+*              @SWG\Property(property="project_id", type="integer", example="1"),
+*              @SWG\Property(property="timestamp", type="string", example="1534913055338"),
+*       
+*          )
+*
+*      ),
+
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*       @SWG\Response(response=400, description="Bad request"),
+*       security={
+*           {"passport": {}}
+*       }
+*  )
+*
+*/ 
 public function createMobileNotification(Request $request)
 {
     $mn = new MobileNotification($request->all());
