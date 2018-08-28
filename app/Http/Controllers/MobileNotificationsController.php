@@ -52,12 +52,32 @@ public function getMobileNotifications(){
 }
 
 /**
-* Get User from User Id
-* @param userId
-* return User
-*/
+* @SWG\Get(
+*      path="/project/{project_id}/mobile/notifications",
+*      operationId="getMobileNotificationsByProjectId",
+*      tags={"Mobile Notifications"},
+*      summary="Get Mobile Notifications by Project",
+*      description="Returns Mobile Notifications",
+*      @SWG\Parameter(
+*          name="project_id",
+*          description="project id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 public function getMobileNotificationsByProjectId($project_id){
-    //$users =  User::withTrashed()->get();
     $mobilenotifications =  MobileNotification::where('project_id', $project_id)->get();
     return $mobilenotifications;
 
