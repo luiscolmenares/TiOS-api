@@ -235,24 +235,17 @@ public function getDatasourceTypeNameById($datasourcetypeId) {
 *
 */ 
 public function GetDatasourcesBySpaceId($space_id){
-    $url = url('/');
     $datasources = Datasource::where('space_id', '=', $space_id)->get();
-
+    // $datasource = Datasource::find($datasources->datasource_id);
+    // $datasources = \DB::table('datasources')->where('space_id', '=', $space_id)->get();
     $datasources_list = array();
         foreach ($datasources as $datasource) {
             $options_array = json_decode($datasource->options, true);
-            // $datasourcetype = \DB::table('datasource_type')->where('name', '=', $datasource->name)->value('id', 'name', 'codename', 'icon_image')->get();
-            // $datasourcetype = \DB::table('datasource_type')->where('name', '=', $datasource->name)->select('id', 'name', 'codename', 'icon_image')->get();
-            $datasourcetype = \DB::table('datasource_type')
-                                   ->where('name', '=', $datasource->type)->select('id', 'name', 'codename', 'icon_image')->get();
             $d = array(
                     'id' => $datasource->id,
                     'name' => $datasource->name,
-                    'datasource_type' => $datasource->type,
-                    'datasource_type_codename' => $datasourcetype[0]->codename,
-                    'datasource_type_icon_image' => $datasourcetype[0]->icon_image,
-                    'datasource_type_icon_image_on_url' => $url.'/datasources/icons/'.$datasourcetype[0]->icon_image.'_ON.png', 
-                    'datasource_type_icon_image_off_url' => $url.'/datasources/icons/'.$datasourcetype[0]->icon_image.'_OFF.png',
+                    'type' => $datasource->type,
+                    // 'type_codename' => $datasource->codename,
                     'unitid' => $datasource->image,
                     'ip' => $datasource->ip,
                     'port' => $datasource->port,
