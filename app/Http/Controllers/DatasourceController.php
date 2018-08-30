@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Validator;
+use Illuminate\Routing\UrlGenerator;
 
 class DatasourceController extends Controller {
 
@@ -127,9 +129,24 @@ public function createDatasource(Request $request) {
 * Returns list of Type of datasources
 */
 public function getDatasourcesType() {
-    $types = \DB::table('datasource_type')->select('id', 'name', 'codename')->get();
-    $datasourcestype = array('datasourcestype' => $types);
-    return $datasourcestype;
+    $url = url('/');
+    $types = \DB::table('datasource_type')->select('id', 'name', 'codename', 'icon_image')->get();
+    $types_list = array();
+    foreach ($types as $type) {
+        $complete_type = array(
+            'id' => $type->id,
+            'name' => $type->name,
+            'codename' => $type->codename,
+            'icon_image' => $type->icon_image,
+            'icon_image_on_url' => $url.'/datasources/icons/'.$type->icon_image.'_ON.png', 
+            'icon_image_off_url' => $url.'/datasources/icons/'.$type->icon_image.'_OFF.png'         
+            );
+
+
+            array_push($types_list, $complete_type);
+    }
+    $types_list = array('datasourcestype' => $types_list);
+    return $types_list;
 }
 
 
@@ -167,6 +184,13 @@ public function getProjectByDatasourceId($datasourceId) {
 *      tags={"Datasources"},
 *      summary="Get Datasource Type by ID",
 *      description="Returns Datasource type name",
+*      @SWG\Parameter(
+*          name="datasource_type_id",
+*          description="Datasource type id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
 *      @SWG\Response(
 *          response=200,
 *          description="successful operation"
@@ -211,17 +235,24 @@ public function getDatasourceTypeNameById($datasourcetypeId) {
 *
 */ 
 public function GetDatasourcesBySpaceId($space_id){
+    $url = url('/');
     $datasources = Datasource::where('space_id', '=', $space_id)->get();
-    // $datasource = Datasource::find($datasources->datasource_id);
-    // $datasources = \DB::table('datasources')->where('space_id', '=', $space_id)->get();
+
     $datasources_list = array();
         foreach ($datasources as $datasource) {
             $options_array = json_decode($datasource->options, true);
+            // $datasourcetype = \DB::table('datasource_type')->where('name', '=', $datasource->name)->value('id', 'name', 'codename', 'icon_image')->get();
+            // $datasourcetype = \DB::table('datasource_type')->where('name', '=', $datasource->name)->select('id', 'name', 'codename', 'icon_image')->get();
+            $datasourcetype = \DB::table('datasource_type')
+                                   ->where('name', '=', $datasource->type)->select('id', 'name', 'codename', 'icon_image')->get();
             $d = array(
                     'id' => $datasource->id,
                     'name' => $datasource->name,
-                    'type' => $datasource->type,
-                    // 'type_codename' => $datasource->codename,
+                    'datasource_type' => $datasource->type,
+                    'datasource_type_codename' => $datasourcetype[0]->codename,
+                    'datasource_type_icon_image' => $datasourcetype[0]->icon_image,
+                    'datasource_type_icon_image_on_url' => $url.'/datasources/icons/'.$datasourcetype[0]->icon_image.'_ON.png', 
+                    'datasource_type_icon_image_off_url' => $url.'/datasources/icons/'.$datasourcetype[0]->icon_image.'_OFF.png',
                     'unitid' => $datasource->image,
                     'ip' => $datasource->ip,
                     'port' => $datasource->port,
