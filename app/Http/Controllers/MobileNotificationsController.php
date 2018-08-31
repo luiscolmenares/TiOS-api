@@ -83,12 +83,11 @@ public function getMobileNotificationsByProjectId($project_id){
     $mobilenotifications =  MobileNotification::where('project_id', $project_id)->get();
     $mobilenotifications_list = array();
     foreach ($mobilenotifications as $mobilenotification) {
-        // $datasource = Datasource::all();
         $datasource = $this->GetDatasourceByTopic($mobilenotification->topic);
         $datasourcetype = $this->GetDatasourceTypeByTypeName($datasource[0]['type']);
-        // $datasource = $this->GetDatasourceByTopic('tios000001/s00002/sw001');
+
         $mn = array(
-        'id'=> $mobilenotification->id ,
+        'id'=> $mobilenotification->id,
         'name'=> $mobilenotification->name,
         'space'=> $mobilenotification->space,
         'topic'=> $mobilenotification->topic,
@@ -104,7 +103,7 @@ public function getMobileNotificationsByProjectId($project_id){
 
 
     }
-    // $datasources = Datasource::where('space_id', '=', $space_id)->get();
+
     return $mobilenotifications_list;
 
 }
@@ -184,7 +183,6 @@ public function GetDatasourceTypeByTypeName($type){
         'icon_image_on_url' => $url.'/datasources/icons/'.$datasourcetype[0]->icon_image.'_ON.png', 
         'icon_image_off_url' => $url.'/datasources/icons/'.$datasourcetype[0]->icon_image.'_OFF.png'
     );
-    // $datasourcetype = \DB::table('datasource_type')->select('id', 'name', 'codename', 'icon_image')->get();
     return $dstype; 
 }
 
