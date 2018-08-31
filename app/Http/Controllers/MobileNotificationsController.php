@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Validator;
+use Illuminate\Routing\UrlGenerator;
 //use Illuminate\Http\Request;
 
 class MobileNotificationsController extends Controller
@@ -79,7 +81,31 @@ public function getMobileNotifications(){
 */ 
 public function getMobileNotificationsByProjectId($project_id){
     $mobilenotifications =  MobileNotification::where('project_id', $project_id)->get();
-    return $mobilenotifications;
+    $mobilenotifications_list = array();
+    foreach ($mobilenotifications as $mobilenotification) {
+        // $datasource = Datasource::all();
+        $datasource = $this->GetDatasourceByTopic($mobilenotification->topic);
+        $datasourcetype = $this->GetDatasourceTypeByTypeName($datasource[0]['type']);
+        // $datasource = $this->GetDatasourceByTopic('tios000001/s00002/sw001');
+        $mn = array(
+        'id'=> $mobilenotification->id ,
+        'name'=> $mobilenotification->name,
+        'space'=> $mobilenotification->space,
+        'topic'=> $mobilenotification->topic,
+        'value'=> $mobilenotification->value,
+        'project_id'=> $mobilenotification->project_id,
+        'timestamp'=> $mobilenotification->timestamp,
+        'created_at'=> $mobilenotification->created_at,
+        'updated_at'=> $mobilenotification->updated_at,
+        'datasource' => $datasource,
+        'datasourcetype' => $datasourcetype
+    );
+         array_push($mobilenotifications_list, $mn);
+
+
+    }
+    // $datasources = Datasource::where('space_id', '=', $space_id)->get();
+    return $mobilenotifications_list;
 
 }
 
@@ -138,6 +164,28 @@ public function createMobileNotification(Request $request)
 public function GetProjectIdByTopic($topic){
 	$datasource = Datasource::where('options', 'like', '%'.$topic.'%')->get();
     return $datasource[0]->project_id;
+}
+
+public function GetDatasourceByTopic($topic){
+    $datasource = Datasource::where('options', 'like', '%'.$topic.'%')->get();
+    return $datasource;
+}
+
+public function GetDatasourceTypeByTypeName($type){
+    $url = url('/');
+    $datasourcetype = \DB::table('datasource_type')
+                        ->where('name', '=', $type)
+                        ->select('id', 'name', 'codename', 'icon_image')->get();
+    $dstype = array(
+        'id' => $datasourcetype[0]->id,
+        'name' => $datasourcetype[0]->name,
+        'codename' => $datasourcetype[0]->codename,
+        'icon_image' => $datasourcetype[0]->icon_image,
+        'icon_image_on_url' => $url.'/datasources/icons/'.$datasourcetype[0]->icon_image.'_ON.png', 
+        'icon_image_off_url' => $url.'/datasources/icons/'.$datasourcetype[0]->icon_image.'_OFF.png'
+    );
+    // $datasourcetype = \DB::table('datasource_type')->select('id', 'name', 'codename', 'icon_image')->get();
+    return $dstype; 
 }
 
 
