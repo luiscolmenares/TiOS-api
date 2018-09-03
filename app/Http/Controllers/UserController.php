@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 //use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -137,9 +138,30 @@ public function getUserRole($userId){
     return User::find($userId)->roles;
 }
 /**
-* Get User from User Id
-* @param userId
-* return User
+* @SWG\Get(
+*      path="/user/{user_id}",
+*      operationId="getUser",
+*      tags={"Users"},
+*      summary="Get User by ID",
+*      description="Returns User",
+*      @SWG\Parameter(
+*          name="user_id",
+*          description="Userid",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*       @SWG\Response(response=400, description="Bad request"),
+*       security={
+*           {"passport": {}}
+*       }
+*     )
+*
+* Returns list of Type of datasources
 */
 public function getUser($userId){
     $user = User::find($userId);
@@ -148,12 +170,13 @@ public function getUser($userId){
     $user_role = Role::find($user_roleid);
     $user_organization = Organization::find($user_organization_id);
     $user_permissions = $this->getPermissionRoleNameList($user_roleid);
+    $user_projects = \DB::table('project_user')
+    ->where('project_user.user_id', '=', $userId)
+    ->select('project_user.project_id')
+    ->get();
 
-
-    //return $user;
     $complete_user = array(
         'user' => array(
-            //$user,
             'id' => $user->id,
             'phone' => $user->phone,
             'name' => $user->name,
@@ -169,8 +192,10 @@ public function getUser($userId){
             'role_name' => $user_role->name,
             'role_description' => $user_role->description,
             'organization_id' => $user->organization_id,
+            'projects' => $user_projects[0],
             'organization_name' => $user_organization->name,
-            'permissions' => $user_permissions,
+            'permissions' => $user_permissions
+
             ),
         
     );
