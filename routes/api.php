@@ -154,6 +154,9 @@ Route::post('mobile/notification/create', 'MobileNotificationsController@createM
 Route::middleware('auth:api')->get('/mobile/notifications', 'MobileNotificationsController@getMobileNotifications');
 Route::middleware('auth:api')->get('project/{project_id}/mobile/notifications', 'MobileNotificationsController@getMobileNotificationsByProjectId');
 
+//Mobile Support
+Route::middleware('auth:api')->post('mobile/support/create', 'MenuController@createMobileSupport');
+
 //Sensors
 Route::post('node-red/data', 'SensorController@createData');
 Route::post('node-red/sensor-data', 'SensorController@createSensorData');
