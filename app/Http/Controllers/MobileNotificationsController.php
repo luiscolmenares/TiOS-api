@@ -49,7 +49,37 @@ public function index(){
 public function getMobileNotifications(){
     //$users =  User::withTrashed()->get();
     $mobilenotifications =  MobileNotification::all();
-    return $mobilenotifications;
+    $mobilenotifications_list = array();
+    foreach ($mobilenotifications as $mobilenotification) {
+        $datasource = $this->GetDatasourceByTopic($mobilenotification->topic);
+        if($datasource == '0') { 
+            $datasourcetype = 0;
+                
+            } else{
+                $datasourcetype = $this->GetDatasourceTypeByTypeName($datasource[0]['type']);
+            }
+        
+
+        $mn = array(
+        'id'=> $mobilenotification->id,
+        'name'=> $mobilenotification->name,
+        'space'=> $mobilenotification->space,
+        'topic'=> $mobilenotification->topic,
+        'value'=> $mobilenotification->value,
+        'project_id'=> $mobilenotification->project_id,
+        'timestamp'=> $mobilenotification->timestamp,
+        'created_at'=> $mobilenotification->created_at,
+        'updated_at'=> $mobilenotification->updated_at,
+        'datasourcetype' => $datasourcetype,
+        'datasource' => $datasource
+        
+    );
+         array_push($mobilenotifications_list, $mn);
+
+
+    }
+
+    return $mobilenotifications_list;
 
 }
 
@@ -96,8 +126,9 @@ public function getMobileNotificationsByProjectId($project_id){
         'timestamp'=> $mobilenotification->timestamp,
         'created_at'=> $mobilenotification->created_at,
         'updated_at'=> $mobilenotification->updated_at,
-        'datasource' => $datasource,
-        'datasourcetype' => $datasourcetype
+        'datasourcetype' => $datasourcetype,
+        'datasource' => $datasource
+        
     );
          array_push($mobilenotifications_list, $mn);
 
@@ -162,11 +193,21 @@ public function createMobileNotification(Request $request)
 
 public function GetProjectIdByTopic($topic){
 	$datasource = Datasource::where('options', 'like', '%'.$topic.'%')->get();
+    if(count($datasource) == 0) { 
+    /* do something */ 
+        return 0;
+    }
+
     return $datasource[0]->project_id;
 }
 
 public function GetDatasourceByTopic($topic){
     $datasource = Datasource::where('options', 'like', '%'.$topic.'%')->get();
+    if(count($datasource) == 0) { 
+    /* do something */ 
+        return 0;
+    }
+ 
     return $datasource;
 }
 
