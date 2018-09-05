@@ -193,23 +193,16 @@ public function createMobileNotification(Request $request)
 
     }
 
-function updateDatasourceToggle($value, $topic){
-    $datasource = Datasource::where('options', 'like', '%'.$topic.'%')->get();
-    if(count($datasource) == 0) { 
-    /* do something */ 
-        return 0;
-    }
+function updateDatasourceToggle($topic, $value){
+    if($value === 'ON'){ $toggle = 1; }
+    if($value === 'OFF'){ $toggle = 0; }
+    if($value === 'on'){ $toggle = 1; }
+    if($value === 'off'){ $toggle = 0; }
+    if($value === 1){ $toggle = 1; }
+    if($value === 0){ $toggle = 0; }
+     $datasource = Datasource::where('options', 'like', '%'.$topic.'%')
+                             ->update(['toggle' => $toggle]);
 
-    if($value == 'ON'){ $toggle = 1 }
-    if($value == 'OFF'){ $toggle = 0 }
-    if($value == 'on'){ $toggle = 1 }
-    if($value == 'off'){ $toggle = 0 }
-
-    $datasource->toggle = $toggle;
-
-    $datasource->save();
- 
-    // return $datasource;
 }
 
 public function GetProjectIdByTopic($topic){
