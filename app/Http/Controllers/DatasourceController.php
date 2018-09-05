@@ -150,6 +150,24 @@ public function getDatasourcesType() {
     return $types_list;
 }
 
+public function getDatasourcesTypebyTypeName($typename) {
+    $url = url('/');
+    $type = \DB::table('datasource_type')
+            ->where('name', '=', $typename)
+            ->select('id', 'name', 'codename', 'icon_image')
+            ->get();
+
+        $complete_type = array(
+            'id' => $type[0]->id,
+            'name' => $type[0]->name,
+            'codename' => $type[0]->codename,
+            'icon_image' => $type[0]->icon_image,
+            'icon_image_on_url' => $url.'/datasources/icons/'.$type[0]->icon_image.'_ON.png', 
+            'icon_image_off_url' => $url.'/datasources/icons/'.$type[0]->icon_image.'_OFF.png'         
+            );
+    return $complete_type;
+}
+
 
 public function getDatasourceProtocolTypes() {
     $types = \DB::table('datasource_protocol_types')->select('id', 'name')->get();
@@ -236,11 +254,14 @@ public function getDatasourceTypeNameById($datasourcetypeId) {
 *
 */ 
 public function GetDatasourcesBySpaceId($space_id){
+    $url = url('/');
     $datasources = Datasource::where('space_id', '=', $space_id)->get();
     // $datasource = Datasource::find($datasources->datasource_id);
     // $datasources = \DB::table('datasources')->where('space_id', '=', $space_id)->get();
     $datasources_list = array();
         foreach ($datasources as $datasource) {
+                // $datasourcetype = \DB::table('datasource_type')->where('name', '=', $datasource->type)->get();
+            $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
             $options_array = json_decode($datasource->options, true);
             $d = array(
                     'id' => $datasource->id,
@@ -260,6 +281,7 @@ public function GetDatasourcesBySpaceId($space_id){
                     'deleted_at' => $datasource->deleted_at,
                     'space_id' => $datasource->space_id,
                     'toggle' => $datasource->toggle,
+                    'datasourcetype' =>$datasourcetype
 
                     
          );
@@ -349,9 +371,40 @@ public function attachDatapointDatasource($datapointId, $datasourceId) {
 * Returns list of datasources
 */
 public function getProjectDatasources($project_id) {
+    $url = url('/');
     $datasources = Datasource::where('project_id', $project_id)->get();
-    $datasources = array("datasources" => $datasources);
-    return $datasources;
+    $datasources_list = array();
+        foreach ($datasources as $datasource) {
+            $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
+            $options_array = json_decode($datasource->options, true);
+            $d = array(
+                    'id' => $datasource->id,
+                    'name' => $datasource->name,
+                    'type' => $datasource->type,
+                    'unitid' => $datasource->image,
+                    'ip' => $datasource->ip,
+                    'port' => $datasource->port,
+                    'options' => $datasource->options,
+                    'options_array' => $options_array,
+                    'data' => $datasource->data,
+                    'notes' => $datasource->notes,
+                    'active' => $datasource->active,
+                    'project_id' => $datasource->project_id,
+                    'created_at' => $datasource->created_at,
+                    'updated_at' => $datasource->updated_at,
+                    'deleted_at' => $datasource->deleted_at,
+                    'space_id' => $datasource->space_id,
+                    'toggle' => $datasource->toggle,
+                    'datasourcetype' =>$datasourcetype
+
+                    
+         );
+         array_push($datasources_list, $d);
+     }
+     $datasources_list = array("datasources" => $datasources_list);
+
+    return $datasources_list;
+
 }
 
 /**
@@ -381,11 +434,41 @@ public function getProjectDatasources($project_id) {
 * Returns list of active datasources
 */
 public function getActiveProjectDatasources($project_id) {
+    $url = url('/');
     $datasources = Datasource::where('project_id', $project_id)
     ->where('active', 1)
     ->get();
-    $datasources = array("datasources" => $datasources);
-    return $datasources;
+    $datasources_list = array();
+        foreach ($datasources as $datasource) {
+            $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
+            $options_array = json_decode($datasource->options, true);
+            $d = array(
+                    'id' => $datasource->id,
+                    'name' => $datasource->name,
+                    'type' => $datasource->type,
+                    'unitid' => $datasource->image,
+                    'ip' => $datasource->ip,
+                    'port' => $datasource->port,
+                    'options' => $datasource->options,
+                    'options_array' => $options_array,
+                    'data' => $datasource->data,
+                    'notes' => $datasource->notes,
+                    'active' => $datasource->active,
+                    'project_id' => $datasource->project_id,
+                    'created_at' => $datasource->created_at,
+                    'updated_at' => $datasource->updated_at,
+                    'deleted_at' => $datasource->deleted_at,
+                    'space_id' => $datasource->space_id,
+                    'toggle' => $datasource->toggle,
+                    'datasourcetype' =>$datasourcetype
+
+                    
+         );
+         array_push($datasources_list, $d);
+     }
+     $datasources_list = array("datasources" => $datasources_list);
+
+    return $datasources_list;
 }
 
 
