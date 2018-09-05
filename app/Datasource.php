@@ -21,7 +21,7 @@ class Datasource extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'type', 'unitid', 'ip', 'port', 'options', 'data', 'notes', 'active', 'project_id', 'space_id', 'type_codename',
+        'name', 'type', 'unitid', 'ip', 'port', 'options', 'data', 'notes', 'active', 'project_id', 'space_id', 'type_codename', 'toggle',
     ];
     
     public function Datapoints()
