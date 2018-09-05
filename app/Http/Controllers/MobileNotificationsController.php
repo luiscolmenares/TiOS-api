@@ -181,15 +181,36 @@ public function createMobileNotification(Request $request)
 {
     $mn = new MobileNotification($request->all());
     $mn->project_id = $this->GetProjectIdByTopic($request->topic);
+
     if (!$mn->save()) {
         abort(500, 'Could not save Mobile Notification.');
     }
+    $this->updateDatasourceToggle($request->topic, $request->value);
     return $mn;
 
 	// $datasource = Datasource::where('options', 'like', '%'.$request->topic.'%')->get();
  //    return $datasource[0]->project_id;
 
     }
+
+function updateDatasourceToggle($value, $topic){
+    $datasource = Datasource::where('options', 'like', '%'.$topic.'%')->get();
+    if(count($datasource) == 0) { 
+    /* do something */ 
+        return 0;
+    }
+
+    if($value == 'ON'){ $toggle = 1 }
+    if($value == 'OFF'){ $toggle = 0 }
+    if($value == 'on'){ $toggle = 1 }
+    if($value == 'off'){ $toggle = 0 }
+
+    $datasource->toggle = $toggle;
+
+    $datasource->save();
+ 
+    // return $datasource;
+}
 
 public function GetProjectIdByTopic($topic){
 	$datasource = Datasource::where('options', 'like', '%'.$topic.'%')->get();
