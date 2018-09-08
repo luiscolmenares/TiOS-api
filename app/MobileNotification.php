@@ -20,6 +20,6 @@ class MobileNotification extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'space', 'topic', 'value', 'project_id', 'timestamp'
+        'name', 'space', 'topic', 'value', 'project_id', 'timestamp', 'data',
     ];
 }
