@@ -48,8 +48,26 @@ public function index(){
     */
 public function getMobileNotifications(){
     //$users =  User::withTrashed()->get();
-    $mobilenotifications =  MobileNotification::all();
+    // $mobilenotifications =  MobileNotification::all();
+    $mobilenotifications =  MobileNotification::paginate(10);
     $mobilenotifications_list = array();
+    $pagination = array(
+        'count' => $mobilenotifications->count(),
+        'currentPage' => $mobilenotifications->currentPage(),
+        'firstItem' => $mobilenotifications->firstItem(),
+        'hasMorePages' => $mobilenotifications->hasMorePages(),
+        'lastItem' => $mobilenotifications->lastItem(),
+        'lastPage' => $mobilenotifications->lastPage(), //(Not available when using simplePaginate)
+        'nextPageUrl' => $mobilenotifications->nextPageUrl(),
+        'onFirstPage' => $mobilenotifications->onFirstPage(),
+        'perPage' => $mobilenotifications->perPage(),
+        'previousPageUrl' => $mobilenotifications->previousPageUrl(),
+        'total' => $mobilenotifications->total(), //(Not available when using simplePaginate)
+        // 'url' => $mobilenotifications->url($page)
+
+    );
+    $pagination = array('pagination' => $pagination);
+    array_push($mobilenotifications_list, $pagination);
     foreach ($mobilenotifications as $mobilenotification) {
         $datasource = $this->GetDatasourceByTopic($mobilenotification->topic);
         if($datasource == '0') { 
@@ -73,6 +91,7 @@ public function getMobileNotifications(){
         'updated_at'=> $mobilenotification->updated_at,
         'datasourcetype' => $datasourcetype,
         'datasource' => $datasource
+        
         
     );
          array_push($mobilenotifications_list, $mn);
@@ -111,8 +130,25 @@ public function getMobileNotifications(){
 *
 */ 
 public function getMobileNotificationsByProjectId($project_id){
-    $mobilenotifications =  MobileNotification::where('project_id', $project_id)->get();
+    $mobilenotifications =  MobileNotification::where('project_id', $project_id)->paginate(10);
     $mobilenotifications_list = array();
+    $pagination = array(
+        'count' => $mobilenotifications->count(),
+        'currentPage' => $mobilenotifications->currentPage(),
+        'firstItem' => $mobilenotifications->firstItem(),
+        'hasMorePages' => $mobilenotifications->hasMorePages(),
+        'lastItem' => $mobilenotifications->lastItem(),
+        'lastPage' => $mobilenotifications->lastPage(), //(Not available when using simplePaginate)
+        'nextPageUrl' => $mobilenotifications->nextPageUrl(),
+        'onFirstPage' => $mobilenotifications->onFirstPage(),
+        'perPage' => $mobilenotifications->perPage(),
+        'previousPageUrl' => $mobilenotifications->previousPageUrl(),
+        'total' => $mobilenotifications->total(), //(Not available when using simplePaginate)
+        // 'url' => $mobilenotifications->url($page)
+
+    );
+    $pagination = array('pagination' => $pagination);
+    array_push($mobilenotifications_list, $pagination);
     foreach ($mobilenotifications as $mobilenotification) {
         $datasource = $this->GetDatasourceByTopic($mobilenotification->topic);
         $datasourcetype = $this->GetDatasourceTypeByTypeName($datasource[0]['type']);
