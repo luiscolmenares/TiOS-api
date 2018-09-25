@@ -67,7 +67,17 @@ public function getDatasources() {
 
 public function getDatasource($DatasourceId) {
     $datasource = Datasource::find($DatasourceId);
-    $space = Space::find($datasource->space_id);
+    if ($datasource->space_id > 0){
+        $space = Space::find($datasource->space_id);
+        $datasource_space_id = $space->id;
+        $datasource_space_name =  $space->name;
+
+    } else {
+        $datasource_space_id = 0;
+        $datasource_space_name =  null;
+
+    }
+    
     $options_array = json_decode($datasource->options, true);
     $complete_datasource = array(
     'id' => $datasource->id,
@@ -85,11 +95,12 @@ public function getDatasource($DatasourceId) {
     'created_at' => $datasource->created_at,
     'updated_at' => $datasource->updated_at,
     'deleted_at' => $datasource->deleted_at,
-    'space_id' => $datasource->space_id,
-    'space_name' => $space->name,
+    'space_id' => $datasource_space_id,
+    'space_name' => $datasource_space_name,
     'type_codename' => $datasource->type_codename,
     'toggle' => $datasource->toggle,
-    
+    'verification_enable' => $datasource->verification_enable,
+    'verification_digits' => $datasource->verification_digits,
     );
 
     // return $complete_space;
@@ -281,6 +292,8 @@ public function GetDatasourcesBySpaceId($space_id){
                     'deleted_at' => $datasource->deleted_at,
                     'space_id' => $datasource->space_id,
                     'toggle' => $datasource->toggle,
+                    'verification_enable' => $datasource->verification_enable,
+                    'verification_digits' => $datasource->toggle,
                     'datasourcetype' =>$datasourcetype
 
                     
@@ -319,6 +332,8 @@ public function updateDatasource(Request $request, $datasourceId) {
     if ($request->space_id) {$datasource->space_id = $request->space_id;}
     if ($request->notes) {$datasource->notes = $request->notes;}
     if ($request->toggle) {$datasource->toggle = $request->toggle;}
+    if ($request->verification_enable) {$datasource->verification_enable = $request->verification_enable;}
+    if ($request->verification_digits) {$datasource->verification_digits = $request->verification_digits;}
     if ($request->active == 0) {
         $datasource->active = 0;
     }
@@ -395,6 +410,8 @@ public function getProjectDatasources($project_id) {
                     'deleted_at' => $datasource->deleted_at,
                     'space_id' => $datasource->space_id,
                     'toggle' => $datasource->toggle,
+                    'verification_enable' => $datasource->verification_enable,
+                    'verification_digits' => $datasource->toggle,
                     'datasourcetype' =>$datasourcetype
 
                     
@@ -460,6 +477,8 @@ public function getActiveProjectDatasources($project_id) {
                     'deleted_at' => $datasource->deleted_at,
                     'space_id' => $datasource->space_id,
                     'toggle' => $datasource->toggle,
+                    'verification_enable' => $datasource->verification_enable,
+                    'verification_digits' => $datasource->toggle,
                     'datasourcetype' =>$datasourcetype
 
                     
