@@ -293,7 +293,7 @@ public function GetDatasourcesBySpaceId($space_id){
                     'space_id' => $datasource->space_id,
                     'toggle' => $datasource->toggle,
                     'verification_enable' => $datasource->verification_enable,
-                    'verification_digits' => $datasource->toggle,
+                    'verification_digits' => $datasource->verification_digits,
                     'datasourcetype' =>$datasourcetype
 
                     
@@ -411,7 +411,7 @@ public function getProjectDatasources($project_id) {
                     'space_id' => $datasource->space_id,
                     'toggle' => $datasource->toggle,
                     'verification_enable' => $datasource->verification_enable,
-                    'verification_digits' => $datasource->toggle,
+                    'verification_digits' => $datasource->verification_digits,
                     'datasourcetype' =>$datasourcetype
 
                     
@@ -478,7 +478,7 @@ public function getActiveProjectDatasources($project_id) {
                     'space_id' => $datasource->space_id,
                     'toggle' => $datasource->toggle,
                     'verification_enable' => $datasource->verification_enable,
-                    'verification_digits' => $datasource->toggle,
+                    'verification_digits' => $datasource->verification_digits,
                     'datasourcetype' =>$datasourcetype
 
                     
