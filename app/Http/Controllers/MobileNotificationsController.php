@@ -243,9 +243,9 @@ function updateDatasourceToggle($topic, $value){
     if($value === 0){ $toggle = 0; }
      $datasource = Datasource::where('options', 'like', '%'.$topic.'%')
                              ->update(['toggle' => $toggle]);
-    $url_o = $nodered.'/thingstatus?topic='.$topic.'&value='.$value;
-    $client = new Client(); //GuzzleHttp\Client
-    $response = $client->get($url_o;
+    // $url_o = $nodered.'/thingstatus?topic='.$topic.'&value='.$value;
+    // $client = new Client(); //GuzzleHttp\Client
+    // $response = $client->get($url_o;
 
 }
 
