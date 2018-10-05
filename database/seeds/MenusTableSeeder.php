@@ -137,6 +137,20 @@ class MenusTableSeeder extends Seeder
             'active' => '1',
             'menu_order' => 9,
         ]);
+          DB::table('menus')->insert([
+            'name' => 'Node Red',
+            'type' => 'main',
+            'role_id' => 1,
+            //'parent_id' => '',
+            'data_ui_sref' => 'nodered',
+            'data_ui_sref_active' => 'active',
+            //'data_ng_class' => '2017-04-13 02:40:09',
+            //'data_toggle' => '2017-04-13 02:40:09',
+            'icon_class' => 'si si-share',
+            'span_class' => 'sidebar-mini-hide',
+            'active' => '1',
+            'menu_order' => 10,
+        ]);
 
          DB::table('menus')->insert([
             'name' => 'Log out',
@@ -150,7 +164,7 @@ class MenusTableSeeder extends Seeder
             'icon_class' => 'si si-logout',
             'span_class' => 'sidebar-mini-hide',
             'active' => '1',
-            'menu_order' => 10,
+            'menu_order' => 11,
             'ng_click' => 'logout()',
         ]);
 
