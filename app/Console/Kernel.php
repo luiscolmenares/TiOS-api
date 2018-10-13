@@ -32,6 +32,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $noderedurl = "https://node-red.tiosplatform.com:1080"
         $schedule->call(function () {
             $now =  \Carbon\Carbon::now()->format('Y-m-d H:i');
             $now_timestamp =  strtotime($now);
@@ -87,14 +88,16 @@ class Kernel extends ConsoleKernel
                     case 'turn-off':
                     //     # code...
                      $this->disableEvent($activeevent->id);
-                    $url_off = $action[0]['broker'].'/thingstatus?topic='.$action[0]['topic'].'&value=OFF';
+                    // $url_off = $action[0]['broker'].'/thingstatus?topic='.$action[0]['topic'].'&value=OFF';
+                     $url_off = $noderedurl.'/thingstatus?topic='.$action[0]['topic'].'&value=OFF';
                      $client = new Client(); //GuzzleHttp\Client
                      $response = $client->get($url_off);
                     // $response = $client->get('http://ec2-54-208-184-235.compute-1.amazonaws.com:1880/thingstatus?topic=room/b1&value=0');
                         break;
                      case 'turn-on':
                         # code...
-                      $url_on = $action[0]['broker'].'/thingstatus?topic='.$action[0]['topic'].'&value=ON';
+                      // $url_on = $action[0]['broker'].'/thingstatus?topic='.$action[0]['topic'].'&value=ON';
+                      $url_on = $noderedurl.'/thingstatus?topic='.$action[0]['topic'].'&value=ON';
                      //$url_on = 'http://ec2-54-208-184-235.compute-1.amazonaws.com:1880/thingstatus?topic=room/b1&value=1';
                       $this->disableEvent($activeevent->id);
                     $client = new Client(); //GuzzleHttp\Cliente
