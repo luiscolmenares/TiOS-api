@@ -106,6 +106,16 @@ public function getMobileNotifications(){
 }
 
 /**
+* Deletes an mobilenotification
+* @param mobilenotificationid
+* return boolean
+*/
+public function deleteMobileNotification($mobilenotificationid) {
+
+    return MobileNotification::destroy($mobilenotificationid);
+}
+
+/**
 * @SWG\Get(
 *      path="/project/{project_id}/mobile/notifications",
 *      operationId="getMobileNotificationsByProjectId",

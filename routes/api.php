@@ -153,6 +153,7 @@ Route::middleware('auth:api')->delete('notification/delete/{notification_id}', '
 Route::post('mobile/notification/create', 'MobileNotificationsController@createMobileNotification');
 Route::middleware('auth:api')->get('/mobile/notifications', 'MobileNotificationsController@getMobileNotifications');
 Route::middleware('auth:api')->get('project/{project_id}/mobile/notifications', 'MobileNotificationsController@getMobileNotificationsByProjectId');
+Route::middleware('auth:api')->delete('mobile/notification/delete/{mobilenotification_id}', 'MobileNotificationsController@deleteMobileNotification');
 
 //Mobile Support
 Route::middleware('auth:api')->post('mobile/support/create', 'MenuController@createMobileSupport');
