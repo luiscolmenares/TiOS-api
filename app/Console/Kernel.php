@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $noderedurl = "https://node-red.tiosplatform.com:1080"
+        $noderedurl = "https://node-red.tiosplatform.com:1080";
         $schedule->call(function () {
             $now =  \Carbon\Carbon::now()->format('Y-m-d H:i');
             $now_timestamp =  strtotime($now);
