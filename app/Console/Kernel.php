@@ -54,9 +54,9 @@ class Kernel extends ConsoleKernel
                  */
                 $action = json_decode($activeevent->action, true);
                 //$recipients = $this->getEventsRecipientsArray($action[0]['recipients']);
-                switch ($action[0]['action']) {
+                switch ($action['action']) {
                     case 'send-email':
-                        $recipients = $this->getEventsRecipientsArray($action[0]['recipients']);
+                        $recipients = $this->getEventsRecipientsArray($action['recipients']);
                         foreach ($recipients as $recipient_id) {
                             $user = User::find($recipient_id);
                             //Update Event Record
@@ -66,22 +66,22 @@ class Kernel extends ConsoleKernel
                         }
                         break;
                     case 'sms-message':
-                       $recipients = $this->getEventsRecipientsArray($action[0]['recipients']);
+                       $recipients = $this->getEventsRecipientsArray($action['recipients']);
                     foreach ($recipients as $recipient_id) {
                             $user = User::find($recipient_id);
                             //Save in triggers_notifiactions table
                              $this->disableEvent($activeevent->id);                    
                            //Send to Twillio
-                            Twilio::message($user->phone, $action[0]['message']);
+                            Twilio::message($user->phone, $action['message']);
                         }    
                     case 'system-notification':
-                       $recipients = $this->getEventsRecipientsArray($action[0]['recipients']);
+                       $recipients = $this->getEventsRecipientsArray($action['recipients']);
                     foreach ($recipients as $recipient_id) {
                             $user = User::find($recipient_id);
                             //Save in triggers_notifiactions table
                              $this->disableEvent($activeevent->id);                    
                            //Send to Twillio
-                            Twilio::message($user->phone, $action[0]['message']);
+                            Twilio::message($user->phone, $action['message']);
                         }    
                     //Twilio::message('+17862032077', $action[0]['message']);
                         break;
@@ -89,7 +89,7 @@ class Kernel extends ConsoleKernel
                     //     # code...
                      $this->disableEvent($activeevent->id);
                     // $url_off = $action[0]['broker'].'/thingstatus?topic='.$action[0]['topic'].'&value=OFF';
-                     $url_off = $noderedurl.'/thingstatus?topic='.$action[0]['topic'].'&value=OFF';
+                     $url_off = $noderedurl.'/thingstatus?topic='.$action['topic'].'&value=OFF';
                      $client = new Client(); //GuzzleHttp\Client
                      $response = $client->get($url_off);
                     // $response = $client->get('http://ec2-54-208-184-235.compute-1.amazonaws.com:1880/thingstatus?topic=room/b1&value=0');
@@ -97,7 +97,7 @@ class Kernel extends ConsoleKernel
                      case 'turn-on':
                         # code...
                       // $url_on = $action[0]['broker'].'/thingstatus?topic='.$action[0]['topic'].'&value=ON';
-                      $url_on = $noderedurl.'/thingstatus?topic='.$action[0]['topic'].'&value=ON';
+                      $url_on = $noderedurl.'/thingstatus?topic='.$action['topic'].'&value=ON';
                      //$url_on = 'http://ec2-54-208-184-235.compute-1.amazonaws.com:1880/thingstatus?topic=room/b1&value=1';
                       $this->disableEvent($activeevent->id);
                     $client = new Client(); //GuzzleHttp\Cliente
