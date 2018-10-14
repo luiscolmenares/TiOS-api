@@ -243,12 +243,105 @@ public function getEventDB($eventId) {
 *
 */ 
 public function getEventsDBByOrgId($organization_id) {
-    $events = \DB::table('events')
-    ->where('events.organization_id', '=', $organization_id)
-    ->select('events.*')
-    ->get();
-    $events = array('events' => $events);
-    return $events;
+    // $events = \DB::table('events')
+    // ->where('events.organization_id', '=', $organization_id)
+    // ->select('events.*')
+    // ->get();
+    // $events = array('events' => $events);
+    // return $events;
+    $events =  EventDB::where('organization_id', $organization_id)->paginate(10);
+    $events_list = array();
+    $pagination = array(
+        'count' => $events->count(),
+        'currentPage' => $events->currentPage(),
+        'firstItem' => $events->firstItem(),
+        'hasMorePages' => $events->hasMorePages(),
+        'lastItem' => $events->lastItem(),
+        'lastPage' => $events->lastPage(), //(Not available when using simplePaginate)
+        'nextPageUrl' => $events->nextPageUrl(),
+        'onFirstPage' => $events->onFirstPage(),
+        'perPage' => $events->perPage(),
+        'previousPageUrl' => $events->previousPageUrl(),
+        'total' => $events->total(), //(Not available when using simplePaginate)
+        // 'url' => $mobilenotifications->url($page)
+
+    );
+
+    $pagination = array('pagination' => $pagination);
+    array_push($events_list, $pagination);
+
+    foreach ($events as $event) {
+       
+         array_push($events_list, $event);
+     }
+
+    // $pagination = array('pagination' => $pagination);
+    // array_push($events, $pagination);
+    $events_list = array('events' => $events_list);
+    return $events_list;
+}
+
+/**
+* @SWG\Get(
+*      path="/events/project/{project_id}",
+*      operationId="getEventsDBByProjectId",
+*      tags={"Events"},
+*      summary="Get event information By Project",
+*      description="Returns event data by project",
+*      @SWG\Parameter(
+*          name="project_id",
+*          description="project id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
+public function getEventsDBByProjectId($project_id) {
+    $events =  EventDB::where('project_id', $project_id)->paginate(10);
+    $events_list = array();
+    // $events = \DB::table('events')
+    // ->where('events.project_id', '=', $project_id)
+    // ->select('events.*')
+    // ->get();
+    $pagination = array(
+        'count' => $events->count(),
+        'currentPage' => $events->currentPage(),
+        'firstItem' => $events->firstItem(),
+        'hasMorePages' => $events->hasMorePages(),
+        'lastItem' => $events->lastItem(),
+        'lastPage' => $events->lastPage(), //(Not available when using simplePaginate)
+        'nextPageUrl' => $events->nextPageUrl(),
+        'onFirstPage' => $events->onFirstPage(),
+        'perPage' => $events->perPage(),
+        'previousPageUrl' => $events->previousPageUrl(),
+        'total' => $events->total(), //(Not available when using simplePaginate)
+        // 'url' => $mobilenotifications->url($page)
+
+    );
+
+    $pagination = array('pagination' => $pagination);
+    array_push($events_list, $pagination);
+
+    foreach ($events as $event) {
+       
+         array_push($events_list, $event);
+     }
+
+    // $pagination = array('pagination' => $pagination);
+    // array_push($events, $pagination);
+    $events_list = array('events' => $events_list);
+    return $events_list;
 }
 
 /**

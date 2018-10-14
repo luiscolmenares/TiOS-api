@@ -170,6 +170,7 @@ Route::middleware('auth:api')->get('events', 'EventDBController@getEventsDB');
 Route::middleware('auth:api')->get('event/{eventid}', 'EventDBController@getEventDB');
 Route::middleware('auth:api')->get('events/actions', 'EventDBController@getEventsDBActions');
 Route::middleware('auth:api')->get('events/organization/{organization_id}', 'EventDBController@getEventsDBByOrgId');
+Route::middleware('auth:api')->get('events/project/{project_id}', 'EventDBController@getEventsDBByProjectId');
 //Route::middleware('auth:api')->post('event/update/{event_id}', 'EventController@updateEvent');
 Route::middleware('auth:api')->delete('event/delete/{event_id}', 'EventDBController@deleteEventDB');
 
