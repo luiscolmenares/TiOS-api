@@ -42,6 +42,16 @@ class DatasourceTypeSeeder extends Seeder
             'icon_image' => 'smartswitchGV'
         ]);
         DB::table('datasource_type')->insert([
+            'name' => 'Control: Smart Switch (Lock)',
+            'codename' => 'ds-smart-switch-lock',
+            'icon_image' => 'smartswitchLock'
+        ]);
+        DB::table('datasource_type')->insert([
+            'name' => 'Control: Smart Switch (Power)',
+            'codename' => 'ds-smart-switch-pw',
+            'icon_image' => 'smartswitchPW'
+        ]);
+        DB::table('datasource_type')->insert([
             'name' => 'Monitor: Temperature Sensor (Celsius)',
             'codename' => 'ds-temperature-celsius',
             'icon_image' => 'temperatureC'
