@@ -31,5 +31,9 @@ class TriggerActionTypes extends Seeder
             'name' => 'turn-on',
             'description' => 'Turn On Smart Device (control event)',
         ]);
+        DB::table('trigger_action_types')->insert([
+            'name' => 'new-value',
+            'description' => 'New Value (control event)',
+        ]);
     }
 }

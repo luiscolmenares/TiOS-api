@@ -12,10 +12,24 @@ use App\Http\Controllers\Controller;
 class TriggerController extends Controller
 {
 /**
-* Get all Triggers
-* @param 
-* return triggers
-*/
+* @SWG\Get(
+*      path="/triggers",
+*      operationId="getTriggers",
+*      tags={"Triggers"},
+*      summary="Get all triggers",
+*      description="Returns triggers",
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 public function getTriggers(){
 	//return Trigger::all();
     $triggers = \DB::table('triggers')
@@ -30,10 +44,31 @@ public function getTriggers(){
 }
 
 /**
-* Get Trigger by Id
-* @param 
-* return trigger
-*/
+* @SWG\Get(
+*      path="/trigger/{id}",
+*      operationId="getTriggerById",
+*      tags={"Triggers"},
+*      summary="Get trigger information by ID",
+*      description="Returns trigger data",
+*      @SWG\Parameter(
+*          name="id",
+*          description="Trigger id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 public function getTriggerById($triggerId){
 	//return Trigger::find($triggerId);
     $trigger = \DB::table('triggers')
@@ -59,10 +94,31 @@ public function getTriggerTypeById($triggertypeId){
 }
 
  /**
-     * Get all trigger related to the project Count.
-     * @param $projectParam
-     * return int
-     */
+* @SWG\Get(
+*      path="/project/{project_id}/trigger/count",
+*      operationId="getProjectTriggersCount",
+*      tags={"Triggers"},
+*      summary="Get trigger count by project",
+*      description="Returns trigger count data by project",
+*      @SWG\Parameter(
+*          name="project_id",
+*          description="Project id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
     public function getProjectTriggersCount($projectId) {
         $triggerscount = \DB::table('triggers')
                     ->where('deleted_at', '=', null)
@@ -73,10 +129,45 @@ public function getTriggerTypeById($triggertypeId){
 
 
 /**
-* Creates Trigger
-* @param Request request
-* return dashboard
-*/
+*
+* @SWG\Post(
+*      path="/trigger/create",
+*      tags={"Triggers"},
+*      operationId="createTrigger",
+*      summary="Create new trigger entry",
+*      @SWG\Parameter(
+*          name="body",
+*          in="body",
+*          description="JSON Payload",
+*          required=true,
+*          type="json",
+*          format="application/json",
+*          @SWG\Schema(
+*              type="object",
+*              @SWG\Property(property="name", type="string", example="Turn ON AC when room temp reach 30C"),
+*              @SWG\Property(property="operator", type="string", example=">"),
+*              @SWG\Property(property="value", type="string", example="30"),
+*              @SWG\Property(property="trigger_action_type_id", type="integer", example="5"),
+*              @SWG\Property(property="project_id", type="integer", example="1"),
+*              @SWG\Property(property="datasource_id", type="integer", example="1"),
+*              @SWG\Property(property="datapoint_id", type="integer", example="1"),
+*              @SWG\Property(property="active", type="integer", example="1"),
+*              @SWG\Property(property="custommessage", type="string", example="custom message"),
+*              @SWG\Property(property="act_datasource_id", type="integer", example="23"),
+*              @SWG\Property(property="act_new_value", type="string", example="0"),
+*          )
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*       @SWG\Response(response=400, description="Bad request"),
+*       security={
+*           {"passport": {}}
+*       }
+*  )
+*
+*/ 
 public function createTrigger(Request $request)
 {
 	$trigger = new Trigger($request->all());
@@ -192,10 +283,24 @@ public function updateTrigger(Request $request, $triggerId){
 }
 
 /**
-* Get Trigger action types
-* @param Request $request, triggerId
-* return triger action types
-*/   
+* @SWG\Get(
+*      path="/trigger/types",
+*      operationId="getTriggerTypes",
+*      tags={"Triggers"},
+*      summary="Get triggers action types",
+*      description="Returns triggers action types",
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 public function getTriggerTypes(){
         $types = \DB::table('trigger_action_types')->select('id', 'name', 'description')->get();
         $trigger_action_types = array('trigger_action_types' => $types);

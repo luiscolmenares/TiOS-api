@@ -21,7 +21,7 @@ class Trigger extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'operator', 'value' , 'trigger_action_type_id', 'project_id', 'datasource_id', 'datapoint_id', 'active', 'notes', 'recipients', 'custommessage',
+        'name', 'operator', 'value' , 'trigger_action_type_id', 'project_id', 'datasource_id', 'datapoint_id', 'active', 'notes', 'recipients', 'custommessage', 'act_datasource_id', 'act_datapoint_id', 'act_new_value',
     ];
 }
 
