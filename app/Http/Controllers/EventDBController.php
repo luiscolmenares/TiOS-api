@@ -336,6 +336,13 @@ public function getEventsDBByProjectId($project_id) {
     array_push($events_list, $pagination);
 
     foreach ($events as $event) {
+
+        $action = json_decode($event->action, true);
+        $datasource = app('App\Http\Controllers\MobileNotificationsController')->GetDatasourceByTopic($action['topic']);
+        $space =  app('App\Http\Controllers\SpaceController')->getSpace($datasource[0]->space_id);
+        $datasource[0]->space_name = $space['name'];
+
+        $event->datasource = $datasource;
        
          array_push($events_list, $event);
      }
