@@ -56,7 +56,7 @@ public function getTriggers(){
         $datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->datasource_id);
         $project = app('App\Http\Controllers\ProjectController')->getProject($trigger->project_id);
         $act_datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->act_datasource_id);
-         $space = app('App\Http\Controllers\SpaceController')->getSpaceByDatasourceId($trigger->space_id);
+         // $space = app('App\Http\Controllers\SpaceController')->getSpace($trigger->space_id);
         
         $complete_trigger = array(
             'id' => $trigger->id,
