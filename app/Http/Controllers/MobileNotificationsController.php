@@ -51,7 +51,7 @@ public function index(){
 public function getMobileNotifications(){
     //$users =  User::withTrashed()->get();
     // $mobilenotifications =  MobileNotification::all();
-    $mobilenotifications =  MobileNotification::paginate(10);
+    $mobilenotifications =  MobileNotification::orderBy('id', 'desc')->paginate(10);
     $mobilenotifications_list = array();
     $pagination = array(
         'count' => $mobilenotifications->count(),
@@ -142,7 +142,7 @@ public function deleteMobileNotification($mobilenotificationid) {
 *
 */ 
 public function getMobileNotificationsByProjectId($project_id){
-    $mobilenotifications =  MobileNotification::where('project_id', $project_id)->paginate(10);
+    $mobilenotifications =  MobileNotification::where('project_id', $project_id)->orderBy('id', 'desc')->paginate(10);
     $mobilenotifications_list = array();
     $pagination = array(
         'count' => $mobilenotifications->count(),
@@ -163,6 +163,8 @@ public function getMobileNotificationsByProjectId($project_id){
     array_push($mobilenotifications_list, $pagination);
     foreach ($mobilenotifications as $mobilenotification) {
         $datasource = $this->GetDatasourceByTopic($mobilenotification->topic);
+        $space =  app('App\Http\Controllers\SpaceController')->getSpace($datasource[0]->space_id);
+        $datasource[0]->space_name = $space['name'];
         $datasourcetype = $this->GetDatasourceTypeByTypeName($datasource[0]['type']);
 
         $mn = array(

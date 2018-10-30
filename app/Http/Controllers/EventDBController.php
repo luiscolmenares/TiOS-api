@@ -243,13 +243,8 @@ public function getEventDB($eventId) {
 *
 */ 
 public function getEventsDBByOrgId($organization_id) {
-    // $events = \DB::table('events')
-    // ->where('events.organization_id', '=', $organization_id)
-    // ->select('events.*')
-    // ->get();
-    // $events = array('events' => $events);
-    // return $events;
-    $events =  EventDB::where('organization_id', $organization_id)->paginate(10);
+
+    $events =  EventDB::where('organization_id', $organization_id)->orderBy('valueFrom', 'acs')->paginate(10);
     $events_list = array();
     $pagination = array(
         'count' => $events->count(),
@@ -271,7 +266,14 @@ public function getEventsDBByOrgId($organization_id) {
     array_push($events_list, $pagination);
 
     foreach ($events as $event) {
-       
+        $action = json_decode($event->action, true);
+        $datasource = app('App\Http\Controllers\MobileNotificationsController')->GetDatasourceByTopic($action['topic']);
+        $space =  app('App\Http\Controllers\SpaceController')->getSpace($datasource[0]->space_id);
+        $datasource[0]->space_name = $space['name'];
+        // $datasource = array('datasource' => $datasource);
+        // array_push($event, $datasource);
+        $event->datasource = $datasource;
+        // return $event;
          array_push($events_list, $event);
      }
 
@@ -308,7 +310,7 @@ public function getEventsDBByOrgId($organization_id) {
 *
 */ 
 public function getEventsDBByProjectId($project_id) {
-    $events =  EventDB::where('project_id', $project_id)->paginate(10);
+    $events =  EventDB::where('project_id', $project_id)->orderBy('valueFrom', 'acs')->paginate(10);
     $events_list = array();
     // $events = \DB::table('events')
     // ->where('events.project_id', '=', $project_id)

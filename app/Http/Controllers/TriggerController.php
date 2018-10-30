@@ -31,15 +31,65 @@ class TriggerController extends Controller
 *
 */ 
 public function getTriggers(){
-	//return Trigger::all();
-    $triggers = \DB::table('triggers')
-            ->where('triggers.deleted_at', '=', null)
-            ->join('trigger_action_types', 'triggers.trigger_action_type_id', '=', 'trigger_action_types.id')
-            ->join('projects', 'triggers.project_id', '=', 'projects.id')
-            ->join('organizations', 'projects.organization_id', '=', 'organizations.id')
-            ->select('triggers.*', 'trigger_action_types.description', 'projects.name as project_name', 'organizations.name as organization_name', 'organizations.id as organization_id')
-            ->get();
-    $triggers = array('triggers' => $triggers);
+	$triggers = Trigger::orderBy('id', 'desc')->paginate(10);
+    $triggers_list = array();
+    $url = url('/');
+    $pagination = array(
+        'count' => $triggers->count(),
+        'currentPage' => $triggers->currentPage(),
+        'firstItem' => $triggers->firstItem(),
+        'hasMorePages' => $triggers->hasMorePages(),
+        'lastItem' => $triggers->lastItem(),
+        'lastPage' => $triggers->lastPage(), //(Not available when using simplePaginate)
+        'nextPageUrl' => $triggers->nextPageUrl(),
+        'onFirstPage' => $triggers->onFirstPage(),
+        'perPage' => $triggers->perPage(),
+        'previousPageUrl' => $triggers->previousPageUrl(),
+        'total' => $triggers->total(), //(Not available when using simplePaginate)
+        // 'url' => $triggers->url($page)
+
+    );
+    $pagination = array('pagination' => $pagination);
+    array_push($triggers_list, $pagination);
+    foreach ($triggers as $trigger) {
+
+        $datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->datasource_id);
+        $project = app('App\Http\Controllers\ProjectController')->getProject($trigger->project_id);
+        $act_datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->act_datasource_id);
+         $space = app('App\Http\Controllers\SpaceController')->getSpaceByDatasourceId($trigger->space_id);
+        
+        $complete_trigger = array(
+            'id' => $trigger->id,
+            'name' => $trigger->name,
+            'operator' => $trigger->operator,
+            'value' => $trigger->value,
+            'trigger_action_type_id' => $trigger->trigger_action_type_id,
+            'project_id' => $trigger->project_id,
+            'datasource_id' => $trigger->datasource_id,
+            'datapoint_id' => $trigger->datapoint_id,
+            'active' => $trigger->active,
+            'custommessage' => $trigger->custommessage,
+            'recipients' => $trigger->recipients,
+            'notes' => $trigger->notes,
+            'act_datasource_id' => $trigger->act_datasource_id,
+            'act_datapoint_id' => $trigger->act_datapoint_id,
+            'act_new_value' => $trigger->act_new_value,
+            'datasource' => $datasource,
+            'act_datasource' => $act_datasource,
+            'project' => $project,
+            
+            );
+
+        array_push($triggers_list, $complete_trigger);
+    }
+    // $triggers = \DB::table('triggers')
+    //         ->where('triggers.deleted_at', '=', null)
+    //         ->join('trigger_action_types', 'triggers.trigger_action_type_id', '=', 'trigger_action_types.id')
+    //         ->join('projects', 'triggers.project_id', '=', 'projects.id')
+    //         ->join('organizations', 'projects.organization_id', '=', 'organizations.id')
+    //         ->select('triggers.*', 'trigger_action_types.description', 'projects.name as project_name', 'organizations.name as organization_name', 'organizations.id as organization_id')
+    //         ->get();
+    $triggers = array('triggers' => $triggers_list);
     return $triggers;
 }
 
