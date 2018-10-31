@@ -69,6 +69,9 @@ public function getTriggers(){
             'datapoint_id' => $trigger->datapoint_id,
             'active' => $trigger->active,
             'custommessage' => $trigger->custommessage,
+            'created_at' => $trigger->created_at,
+            'updated_at' => $trigger->updated_at,
+            'created_at_timestamp' => strtotime($trigger->created_at),
             'recipients' => $trigger->recipients,
             'notes' => $trigger->notes,
             'act_datasource_id' => $trigger->act_datasource_id,
@@ -228,17 +231,95 @@ public function createTrigger(Request $request)
 }
 
 /**
-* Get Triggers by ProjectId
-* @param projectId
-* return triggers
-*/
+* @SWG\Get(
+*      path="/project/{project_id}/triggers",
+*      operationId="getTriggersByProjectId",
+*      tags={"Triggers"},
+*      summary="Get triggers by project",
+*      description="Returns triggers data by project",
+*      @SWG\Parameter(
+*          name="project_id",
+*          description="Project id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
 public function getTriggersByProjectId($projectId){
-	$triggers = \DB::table('triggers')
-                    ->where('project_id', '=', $projectId)
-                    ->join('trigger_action_types', 'triggers.trigger_action_type_id', '=', 'trigger_action_types.id')
-                    ->select('triggers.*', 'trigger_action_types.description')
-                    ->get()->toArray();
-    $triggers = array('triggers' => $triggers);
+	// $triggers = \DB::table('triggers')
+ //                    ->where('project_id', '=', $projectId)
+ //                    ->join('trigger_action_types', 'triggers.trigger_action_type_id', '=', 'trigger_action_types.id')
+ //                    ->select('triggers.*', 'trigger_action_types.description')
+ //                    ->get()->toArray();
+ //    $triggers = array('triggers' => $triggers);
+ //    return $triggers;
+    $triggers = Trigger::where('project_id', $projectId)->orderBy('id', 'desc')->paginate(10);
+    $triggers_list = array();
+    $url = url('/');
+    $pagination = array(
+        'count' => $triggers->count(),
+        'currentPage' => $triggers->currentPage(),
+        'firstItem' => $triggers->firstItem(),
+        'hasMorePages' => $triggers->hasMorePages(),
+        'lastItem' => $triggers->lastItem(),
+        'lastPage' => $triggers->lastPage(), //(Not available when using simplePaginate)
+        'nextPageUrl' => $triggers->nextPageUrl(),
+        'onFirstPage' => $triggers->onFirstPage(),
+        'perPage' => $triggers->perPage(),
+        'previousPageUrl' => $triggers->previousPageUrl(),
+        'total' => $triggers->total(), //(Not available when using simplePaginate)
+        // 'url' => $triggers->url($page)
+
+    );
+    $pagination = array('pagination' => $pagination);
+    array_push($triggers_list, $pagination);
+    foreach ($triggers as $trigger) {
+
+        $datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->datasource_id);
+        $project = app('App\Http\Controllers\ProjectController')->getProject($trigger->project_id);
+        $act_datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->act_datasource_id);
+
+         // $space = app('App\Http\Controllers\SpaceController')->getSpace($trigger->space_id);
+        
+        $complete_trigger = array(
+            'id' => $trigger->id,
+            'name' => $trigger->name,
+            'operator' => $trigger->operator,
+            'value' => $trigger->value,
+            'trigger_action_type_id' => $trigger->trigger_action_type_id,
+            'project_id' => $trigger->project_id,
+            'datasource_id' => $trigger->datasource_id,
+            'datapoint_id' => $trigger->datapoint_id,
+            'active' => $trigger->active,
+            'created_at' => $trigger->created_at,
+            'updated_at' => $trigger->updated_at,
+            'created_at_timestamp' => strtotime($trigger->created_at),
+            'custommessage' => $trigger->custommessage,
+            'recipients' => $trigger->recipients,
+            'notes' => $trigger->notes,
+            'act_datasource_id' => $trigger->act_datasource_id,
+            'act_datapoint_id' => $trigger->act_datapoint_id,
+            'act_new_value' => $trigger->act_new_value,
+            'datasource' => $datasource,
+            'act_datasource' => $act_datasource,
+            'project' => $project,
+            
+            );
+
+        array_push($triggers_list, $complete_trigger);
+}
+    $triggers = array('triggers' => $triggers_list);
     return $triggers;
 }
 

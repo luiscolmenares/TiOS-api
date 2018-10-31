@@ -140,6 +140,7 @@ Route::middleware('auth:api')->delete('trigger/delete/{trigger_id}', 'TriggerCon
 Route::middleware('auth:api')->get('trigger/datasource/{datasource_id}', 'TriggerController@getTriggerByDatasourceId');
 Route::middleware('auth:api')->get('trigger/datapoint/{datapoint_id}', 'TriggerController@getTriggerByDatapointId');
 Route::middleware('auth:api')->get('project/{project_id}/trigger/count', 'TriggerController@getProjectTriggersCount');
+Route::middleware('auth:api')->get('project/{project_id}/triggers', 'TriggerController@getTriggersByProjectId');
 Route::middleware('auth:api')->get('operators', 'TriggerController@getTriggerOperators');
 //Triggers unauthorized
 Route::get('triggers', 'TriggerController@getTriggers');
