@@ -90,6 +90,7 @@ public function getUsers(){
                     'organization_name' => $user_organization->name,
                     'active_sms' => $u->active_sms,
                     'active_email' => $u->active_email,
+                    'active_email' => $u->active_push,
                     //'permissions' => $user_permissions,
         //        // ),
             
@@ -174,7 +175,12 @@ public function getUser($userId){
     ->where('project_user.user_id', '=', $userId)
     ->select('project_user.project_id')
     ->get();
+    $user_projects_list = array();
+    foreach ($user_projects as $user_project) {
+        $project = Project::find($user_project->project_id);
+        array_push($user_projects_list, $project);
 
+    }
     $complete_user = array(
         'user' => array(
             'id' => $user->id,
@@ -184,6 +190,7 @@ public function getUser($userId){
             'active' => $user->active,
             'active_sms' => $user->active_sms,
             'active_email' => $user->active_email,
+            'active_push' => $user->active_push,
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at,
             'deleted_at' => $user->deleted_at,
@@ -193,6 +200,7 @@ public function getUser($userId){
             'role_description' => $user_role->description,
             'organization_id' => $user->organization_id,
             'projects' => $user_projects[0],
+            'project_list' => $user_projects_list,
             'organization_name' => $user_organization->name,
             'permissions' => $user_permissions
 
@@ -275,6 +283,8 @@ public function updateUser(Request $request, $userId){
     if(isset($request->active_sms) && $request->active_sms == 1){$user->active_sms = 1;}
     if(isset($request->active_email) && $request->active_email == 0){$user->active_email = 0;}
     if(isset($request->active_email) && $request->active_email == 1){$user->active_email = 1;}
+    if(isset($request->active_push) && $request->active_push == 0){$user->active_push = 0;}
+    if(isset($request->active_push) && $request->active_push == 1){$user->active_push = 1;}
     if($request->role_id){$user->role_id = $request->role_id;}
     if($request->organization_id){$user->organization_id = $request->organization_id;}
 
@@ -285,6 +295,34 @@ public function updateUser(Request $request, $userId){
     }
     return $user;
 }
+
+
+public function changePassword(Request $request, $userId ){
+    $user = User::find($userId);
+
+    if (Hash::check($request->oldpassword, $user->password)) {
+    //return "The passwords match...";
+        if(isset($request->newpassword)){
+            $user->password = hash::make($request->newpassword);
+            if (!$user->save()) {
+
+                abort(500, 'could not update user.');
+
+            }
+        } else {
+            return 'false';
+        }
+
+        
+    return 'true';
+
+
+} else {
+
+    return 'false';
+}
+}
+
 /**
 * Add user to a project
 * @param userId Request 
