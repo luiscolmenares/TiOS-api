@@ -200,6 +200,24 @@ Route::get('/pusherapi/{message}', function($message) {
   $pusher->trigger('my-channel', 'my-event', $data);
 });	
 
+Route::get('/pusherapi/mobile/{message}', function($message) {
+    // event(new App\Events\HelloPusherEvent('Hi there Pusher!'));
+    // return "Event has been sent!";
+    $options = array(
+       'cluster' => 'ap2',
+        'useTLS' => true
+  );
+  $pusher = new Pusher\Pusher(
+    'ac8a768a0703b3366214',
+    'd7a518c31f36914d6ac9',
+    '639063',
+    $options
+  );
+
+  $data['message'] = $message;
+  $pusher->trigger('my-channel', 'my-event', $data);
+}); 
+
 //Web App Menu
 Route::middleware('auth:api')->get('menu/{role_id}', 'MenuController@getMenuItems');
 
