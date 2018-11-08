@@ -72,6 +72,11 @@ class DatasourceTypeSeeder extends Seeder
             'icon_image' => 'proximity'
         ]);
         DB::table('datasource_type')->insert([
+            'name' => 'Monitor: Door Sensor',
+            'codename' => 'ds-door',
+            'icon_image' => 'door'
+        ]);
+        DB::table('datasource_type')->insert([
             'name' => 'Monitor: Flood Sensor',
             'codename' => 'ds-flood',
             'icon_image' => 'flood'
