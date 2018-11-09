@@ -166,6 +166,9 @@ Route::post('node-red/sensor-data', 'SensorController@createSensorData');
 Route::get('node-red/sensor-data/address/{address}/ip/{ip}/port/{port}/type/{type}/unitid/{unitid}', 'SensorController@getSensorData');
 Route::get('node-red/last-sensor-data/address/{address}/ip/{ip}/port/{port}/type/{type}/unitid/{unitid}', 'SensorController@getLastSensorData');
 
+//Datasource Sensor data
+Route::post('datasourcesensordata/create', 'DatasourceSensorDataController@createDatasourceSensorData');
+
 //Events 
 Route::middleware('auth:api')->post('event/create', 'EventDBController@createEventDB');
 Route::middleware('auth:api')->get('events', 'EventDBController@getEventsDB');
