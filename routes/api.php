@@ -144,6 +144,7 @@ Route::middleware('auth:api')->get('project/{project_id}/triggers', 'TriggerCont
 Route::middleware('auth:api')->get('operators', 'TriggerController@getTriggerOperators');
 //Triggers unauthorized
 Route::get('triggers', 'TriggerController@getTriggers');
+Route::get('nopagination/triggers', 'TriggerController@getTriggersNoPagination');
 
 //Triggers Notifications
 Route::middleware('auth:api')->get('notifications', 'TriggerController@getTriggersNotifications');

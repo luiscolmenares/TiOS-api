@@ -85,16 +85,77 @@ public function getTriggers(){
 
         array_push($triggers_list, $complete_trigger);
     }
-    // $triggers = \DB::table('triggers')
-    //         ->where('triggers.deleted_at', '=', null)
-    //         ->join('trigger_action_types', 'triggers.trigger_action_type_id', '=', 'trigger_action_types.id')
-    //         ->join('projects', 'triggers.project_id', '=', 'projects.id')
-    //         ->join('organizations', 'projects.organization_id', '=', 'organizations.id')
-    //         ->select('triggers.*', 'trigger_action_types.description', 'projects.name as project_name', 'organizations.name as organization_name', 'organizations.id as organization_id')
-    //         ->get();
     $triggers = array('triggers' => $triggers_list);
     return $triggers;
 }
+
+/**
+* @SWG\Get(
+*      path="/nopagination/triggers",
+*      operationId="getTriggersNoPagination",
+*      tags={"Triggers"},
+*      summary="Get all triggers",
+*      description="Returns triggers",
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
+public function getTriggersNoPagination(){
+    $triggers = Trigger::all();
+    $triggers_list = array();
+    $url = url('/');
+    
+    foreach ($triggers as $trigger) {
+
+        $datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->datasource_id);
+        $project = app('App\Http\Controllers\ProjectController')->getProject($trigger->project_id);
+        $organization = app('App\Http\Controllers\ProjectController')->getOrganizationByProjectId($trigger->project_id);
+        $act_datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->act_datasource_id);
+        $description = $this->getTriggerTypeById($trigger->trigger_action_type_id);
+         // $space = app('App\Http\Controllers\SpaceController')->getSpace($trigger->space_id);
+        
+        $complete_trigger = array(
+            'id' => $trigger->id,
+            'name' => $trigger->name,
+            'operator' => $trigger->operator,
+            'value' => $trigger->value,
+            'trigger_action_type_id' => $trigger->trigger_action_type_id,
+            'project_id' => $trigger->project_id,
+            'datasource_id' => $trigger->datasource_id,
+            'datapoint_id' => $trigger->datapoint_id,
+            'active' => $trigger->active,
+            'custommessage' => $trigger->custommessage,
+            'created_at' => $trigger->created_at,
+            'updated_at' => $trigger->updated_at,
+            'created_at_timestamp' => strtotime($trigger->created_at),
+            'recipients' => $trigger->recipients,
+            'notes' => $trigger->notes,
+            'act_datasource_id' => $trigger->act_datasource_id,
+            'act_datapoint_id' => $trigger->act_datapoint_id,
+            'act_new_value' => $trigger->act_new_value,
+            'datasource' => $datasource,
+            'act_datasource' => $act_datasource,
+            'project' => $project,
+            'organization_name' => $organization['organization']->name,
+            'project_name' => $project['project']->name,
+            'description' => $description,
+            
+            );
+
+        array_push($triggers_list, $complete_trigger);
+    }
+    $triggers = array('triggers' => $triggers_list);
+    return $triggers;
+}
+
 
 /**
 * @SWG\Get(
