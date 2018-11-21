@@ -323,6 +323,21 @@ public function changePassword(Request $request, $userId ){
 }
 }
 
+public function deviceToken(Request $request){
+    $data = \DB::table('users_device_tokens')->insert(
+    ['user_id' => $request->user_id, 
+    'device_token' => $request->device_token,
+    'created_at' =>  \Carbon\Carbon::now(), # \Datetime()
+    'updated_at' => \Carbon\Carbon::now()]  # \Datetime()
+);
+    if (!$data) {
+            abort(500, 'Could not save device token.');
+        }
+        else {
+            return array(true, "Device token saved.");
+        }
+}
+
 /**
 * Add user to a project
 * @param userId Request 

@@ -38,6 +38,9 @@ Route::middleware('auth:api')->get('user/{user_id}/organization/{organization_id
 Route::middleware('auth:api')->get('remove/user/{user_id}/project/{project_id}', 'UserController@removeUserProject');
 Route::middleware('auth:api')->get('user/password/reset/{user_email}', 'UserController@passwordReset');
 Route::middleware('auth:api')->post('user/password/change/{user_id}', 'UserController@changePassword');
+Route::middleware('auth:api')->post('user/devicetoken', 'UserController@deviceToken');
+
+
 
 //Organizations
 Route::middleware('auth:api')->delete('organization/delete/{organization_id}', 'OrganizationController@deleteOrganization');
