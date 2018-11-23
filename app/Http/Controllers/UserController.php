@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    // public function __construct(){
-    //     $this->middleware('api.auth');
-    // }
-    
+// public function __construct(){
+//     $this->middleware('api.auth');
+// }
+
 /**
 * Get all users
 * @param 
@@ -38,67 +38,67 @@ public function getLoggedUser($request){
 }
 
 /**
-    * @SWG\Get(
-    *      path="/users",
-    *      operationId="getUsers",
-    *      tags={"Users"},
-    *      summary="Get list of users",
-    *      description="Returns list of users",
-    *      @SWG\Response(
-    *          response=200,
-    *          description="successful operation"
-    *       ),
-    *       @SWG\Response(response=400, description="Bad request"),
-    *       security={
-    *           {"passport": {}}
-    *       }
-    *     )
-    *
-    * Returns list of dashboards
-    */
+* @SWG\Get(
+*      path="/users",
+*      operationId="getUsers",
+*      tags={"Users"},
+*      summary="Get list of users",
+*      description="Returns list of users",
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*       @SWG\Response(response=400, description="Bad request"),
+*       security={
+*           {"passport": {}}
+*       }
+*     )
+*
+* Returns list of dashboards
+*/
 public function getUsers(){
-    //$users =  User::withTrashed()->get();
+//$users =  User::withTrashed()->get();
     $users =  User::all();
-    //$users = array("users" => $users);
-     $users_list = array();
+//$users = array("users" => $users);
+    $users_list = array();
     foreach ($users as $u) {
-         $user = User::find($u->id);
-         $user_roleid = $u->role_id;
-         $user_organization_id = $u->organization_id;
-         $user_role = Role::find($user_roleid);
-         $user_organization = Organization::find($user_organization_id);
-         //$user_permissions = $this->getPermissionRoleNameList($user_roleid);
+        $user = User::find($u->id);
+        $user_roleid = $u->role_id;
+        $user_organization_id = $u->organization_id;
+        $user_role = Role::find($user_roleid);
+        $user_organization = Organization::find($user_organization_id);
+//$user_permissions = $this->getPermissionRoleNameList($user_roleid);
 
-        // //return $user;
-         $complete_user = array(
-        //     //'user' => array(
-        //         //$user,
-        //         'id' => $user->id,
-                    'id' => $u->id,
-                    'phone' => $u->phone,
-                    'name' => $u->name,
-                    'email' => $u->email,
-                    'active' => $u->active,
-                    'created_at' => $u->created_at,
-                    'updated_at' => $u->updated_at,
-                    'deleted_at' => $u->deleted_at,
-                    'notes' => $u->notes,
-                    'role_id' => $u->role_id,
-                    'role_name' => $user_role->name,
-                    'role_description' => $user_role->description,
-                    'organization_id' => $u->organization_id,
-                    'organization_name' => $user_organization->name,
-                    'active_sms' => $u->active_sms,
-                    'active_email' => $u->active_email,
-                    'active_email' => $u->active_push,
-                    //'permissions' => $user_permissions,
-        //        // ),
-            
-         );
-         array_push($users_list, $complete_user);
+// //return $user;
+        $complete_user = array(
+//     //'user' => array(
+//         //$user,
+//         'id' => $user->id,
+            'id' => $u->id,
+            'phone' => $u->phone,
+            'name' => $u->name,
+            'email' => $u->email,
+            'active' => $u->active,
+            'created_at' => $u->created_at,
+            'updated_at' => $u->updated_at,
+            'deleted_at' => $u->deleted_at,
+            'notes' => $u->notes,
+            'role_id' => $u->role_id,
+            'role_name' => $user_role->name,
+            'role_description' => $user_role->description,
+            'organization_id' => $u->organization_id,
+            'organization_name' => $user_organization->name,
+            'active_sms' => $u->active_sms,
+            'active_email' => $u->active_email,
+            'active_email' => $u->active_push,
+//'permissions' => $user_permissions,
+//        // ),
+
+        );
+        array_push($users_list, $complete_user);
     }
 
-     $content = array('users' => $users_list);
+    $content = array('users' => $users_list);
 
     return $content;
 
@@ -115,16 +115,16 @@ public function validateUser()
 
     if(!$user) {
         $responseArray = [
-        'message' => 'Not authorized. Please login again',
-        'status' => false
+            'message' => 'Not authorized. Please login again',
+            'status' => false
         ];
 
         return $this->response->array($responseArray)->setStatusCode(403);
     }
     else {
         $responseArray = [
-        'message' => 'User is authorized',
-        'status' => true
+            'message' => 'User is authorized',
+            'status' => true
         ];
 
         return $this->response->array($responseArray)->setStatusCode(200);
@@ -204,12 +204,12 @@ public function getUser($userId){
             'organization_name' => $user_organization->name,
             'permissions' => $user_permissions
 
-            ),
-        
+        ),
+
     );
-    //array('triggers' => $triggers);
-    
-    
+//array('triggers' => $triggers);
+
+
     return $complete_user;
 }
 
@@ -301,7 +301,7 @@ public function changePassword(Request $request, $userId ){
     $user = User::find($userId);
 
     if (Hash::check($request->oldpassword, $user->password)) {
-    //return "The passwords match...";
+//return "The passwords match...";
         if(isset($request->newpassword)){
             $user->password = hash::make($request->newpassword);
             if (!$user->save()) {
@@ -313,30 +313,17 @@ public function changePassword(Request $request, $userId ){
             return 'false';
         }
 
-        
-    return 'true';
+
+        return 'true';
 
 
-} else {
+    } else {
 
-    return 'false';
+        return 'false';
+    }
 }
-}
 
-public function deviceToken(Request $request){
-    $data = \DB::table('users_device_tokens')->insert(
-    ['user_id' => $request->user_id, 
-    'device_token' => $request->device_token,
-    'created_at' =>  \Carbon\Carbon::now(), # \Datetime()
-    'updated_at' => \Carbon\Carbon::now()]  # \Datetime()
-);
-    if (!$data) {
-            abort(500, 'Could not save device token.');
-        }
-        else {
-            return array(true, "Device token saved.");
-        }
-}
+
 
 /**
 * Add user to a project
@@ -371,7 +358,7 @@ public function getPermissionRoleNameList($roleId){
     $permissions = \DB::table('permission_role')
     ->where('permission_role.role_id', '=', $roleId)
     ->join('permissions', 'permission_role.permission_id', '=', 'permissions.id')
-    //->select('permission_role.*', 'permissions.description', 'permissions.name as permission_name', 'permissions.display_name as permissions_display_name')
+//->select('permission_role.*', 'permissions.description', 'permissions.name as permission_name', 'permissions.display_name as permissions_display_name')
     ->select('permissions.name')
     ->get();
     $permissions_list = array();
@@ -386,11 +373,11 @@ public function getPermissionRoleNameList($roleId){
 * return mixed
 */
 public function passwordReset($email){
-    // To be completed
+// To be completed
     $array = array(
         'email' => $email,
         'reset' => true
-        
+
     );
     return $array;
 }
@@ -434,17 +421,82 @@ public function attachUserOrganization($userId, $organizationId){
 * @param Request request
 * return true
 */
- public function removeUserProject($userId, $projectId){
+public function removeUserProject($userId, $projectId){
     $data = \DB::table('project_user')
-                ->where([
-                        ['user_id' , '=', $userId],
-                        ['project_id', '=', $projectId]
-                        ])
-                ->delete();
+    ->where([
+        ['user_id' , '=', $userId],
+        ['project_id', '=', $projectId]
+    ])
+    ->delete();
     $response = array(
         'message' => 'User removed from project');
     return $response;
- }
+}
+
+public function deviceToken(Request $request){
+    $device_token_check = \DB::table('users_device_tokens')
+    ->where('device_token', '=', $request->device_token)
+    ->first();
+
+    if (is_null($device_token_check)) {
+// It does not exist - add to users_device_tokens
+        $data = \DB::table('users_device_tokens')->insert(
+            ['user_id' => $request->user_id, 
+            'device_token' => $request->device_token,
+'created_at' =>  \Carbon\Carbon::now(), # \Datetime()
+'updated_at' => \Carbon\Carbon::now()]  # \Datetime()
+);
+        if (!$data) {
+            abort(500, 'Could not save device token.');
+        }
+        else {
+            return array(true, "Device token saved.");
+        }
+
+    } else {
+// It exists - do nothing
+
+    }
+
+}
+
+public function pushNotification($tokenList, $title)
+{
+    $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
+// $token=$token;
+
+    $notification = [
+        'title' => $title,
+        'sound' => true,
+    ];
+
+    $extraNotificationData = ["message" => $notification,"moredata" =>'dd'];
+
+
+    $fcmNotification = [
+        'registration_ids' => $tokenList, 
+        'notification' => $notification,
+        'data' => $extraNotificationData
+    ];
+
+    $headers = [
+        'Authorization: key=AIzaSyDFyPS57hnsoB01E9npXNlQn9mUzbZ9K8s',
+        'Content-Type: application/json'
+    ];
+
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,$fcmUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
+    $result = curl_exec($ch);
+    curl_close($ch);
+
+    return true;
+}
 
 
 }
