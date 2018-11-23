@@ -185,6 +185,8 @@ Route::middleware('auth:api')->delete('event/delete/{event_id}', 'EventDBControl
 //Mobile 
 Route::middleware('auth:api')->get('mobile/about', 'MenuController@getMobileAbout');
 
+//Firebase push notifictaion test
+Route::middleware('auth:api')->post('push/test', 'UserController@pushTest');
 
 
 //Pusher Implementation

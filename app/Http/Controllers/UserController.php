@@ -461,6 +461,11 @@ public function deviceToken(Request $request){
 
 }
 
+public function pushTest(Request $request){
+    $pushtest = $this->pushNotification($request->$token_list, $request->title);
+    return $pushtest;
+}
+
 public function pushNotification($tokenList, $title)
 {
     $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
