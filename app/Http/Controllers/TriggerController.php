@@ -55,7 +55,12 @@ public function getTriggers(){
 
         $datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->datasource_id);
         $project = app('App\Http\Controllers\ProjectController')->getProject($trigger->project_id);
-        $act_datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->act_datasource_id);
+        if ($trigger->act_datasource_id != null){
+            $act_datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->act_datasource_id);
+        } else {
+            $act_datasource = array();
+        }
+        
          // $space = app('App\Http\Controllers\SpaceController')->getSpace($trigger->space_id);
         
         $complete_trigger = array(
@@ -118,7 +123,11 @@ public function getTriggersNoPagination(){
         $datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->datasource_id);
         $project = app('App\Http\Controllers\ProjectController')->getProject($trigger->project_id);
         $organization = app('App\Http\Controllers\ProjectController')->getOrganizationByProjectId($trigger->project_id);
-        $act_datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->act_datasource_id);
+        if ($trigger->act_datasource_id != null){
+            $act_datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->act_datasource_id);
+        } else {
+            $act_datasource = array();
+        }
         $description = $this->getTriggerTypeById($trigger->trigger_action_type_id);
          // $space = app('App\Http\Controllers\SpaceController')->getSpace($trigger->space_id);
         
