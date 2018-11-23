@@ -462,8 +462,17 @@ public function deviceToken(Request $request){
 }
 
 public function pushTest(Request $request){
-    $pushtest = $this->pushNotification($request->token_list, $request->title);
-    return $pushtest;
+
+    $explode = explode(',', $request->token_list);
+
+    $pushtest = $this->pushNotification($explode, $request->title);
+
+    if (!$pushtest) {
+            abort(500, 'Could not save device token.');
+        }
+        else {
+            return array(true, "Push notification sent.");
+        }
 }
 
 public function pushNotification($tokenList, $title)
