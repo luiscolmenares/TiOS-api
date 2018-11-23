@@ -455,6 +455,7 @@ public function deviceToken(Request $request){
 
     } else {
 // It exists - do nothing
+        return array(true, "Device token not created.");
 
     }
 
