@@ -462,7 +462,7 @@ public function deviceToken(Request $request){
 }
 
 public function pushTest(Request $request){
-    $pushtest = $this->pushNotification($request->$token_list, $request->title);
+    $pushtest = $this->pushNotification($request->token_list, $request->title);
     return $pushtest;
 }
 
