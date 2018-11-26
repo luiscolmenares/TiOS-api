@@ -335,6 +335,7 @@ public function getTriggersByProjectId($projectId){
  //    $triggers = array('triggers' => $triggers);
  //    return $triggers;
     $triggers = Trigger::where('project_id', $projectId)->orderBy('id', 'desc')->paginate(10);
+    // return $triggers;
     $triggers_list = array();
     $url = url('/');
     $pagination = array(
@@ -358,7 +359,13 @@ public function getTriggersByProjectId($projectId){
 
         $datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->datasource_id);
         $project = app('App\Http\Controllers\ProjectController')->getProject($trigger->project_id);
-        $act_datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->act_datasource_id);
+        if($trigger->act_datasource_id){
+            $act_datasource = app('App\Http\Controllers\DatasourceController')->getDatasource($trigger->act_datasource_id);
+        } else {
+            $act_datasource = null;
+        }
+        
+
 
          // $space = app('App\Http\Controllers\SpaceController')->getSpace($trigger->space_id);
         
