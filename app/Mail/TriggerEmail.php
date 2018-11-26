@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Datasource;
 
 class TriggerEmail extends Mailable
 {
@@ -40,13 +41,16 @@ class TriggerEmail extends Mailable
     if($this->trigger->custommessage != null){
                         $message = $this->trigger->custommessage;
                       } else {
-                        $message = "Auto message - Trigger Activated. Trigger ID: ".$this->trigger->id.", Trigger operator: ".$this->trigger->operator.", Trigger value: ".$this->trigger->value.".";
+                        $datasource = Datasource::find($this->trigger->datasource_id);                        
+                        // $message = "Auto message - Trigger Activated. Trigger ID: ".$this->trigger->id.", Trigger operator: ".$this->trigger->operator.", Trigger value: ".$this->trigger->value.".";
+                         "Trigger activated for ".$datasource->name." value. Trigger operator: ".$this->trigger->operator.", Trigger value: ".$this->trigger->value.".";
                       }
         return $this->view('emails.trigger')
                 ->with([
                     'triggerId' => $this->trigger->id,
                     'triggerName' => $this->trigger->name,
                     'triggerMessage' => $message,
+                    'triggerDate' => $this->trigger->created_at,
 
                 ]);
     }

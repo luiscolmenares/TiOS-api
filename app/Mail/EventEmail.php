@@ -46,7 +46,7 @@ public function build()
     ->with([
         'eventId' => $this->eventdb->id,
         'eventTitle' => $this->eventdb->title,
-        'eventFromDate' => date("m-d-Y h:i:sa", $this->eventdb->valueFrom),
+        'eventFromDate' => date("m-d-Y h:i", $this->eventdb->valueFrom),
         'eventMessage' => $message,
     ]);
 }

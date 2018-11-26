@@ -130,45 +130,7 @@ public function createDatasourceSensorData(Request $request) {
     return $datasourcesensordata;
 }
 
-/**
-* @SWG\Get(
-*      path="/datasources/type",
-*      operationId="getDatasourcesType",
-*      tags={"Datasources"},
-*      summary="Get list of datasources type",
-*      description="Returns list of datasources type",
-*      @SWG\Response(
-*          response=200,
-*          description="successful operation"
-*       ),
-*       @SWG\Response(response=400, description="Bad request"),
-*       security={
-*           {"passport": {}}
-*       }
-*     )
-*
-* Returns list of Type of datasources
-*/
-// public function getDatasourcesType() {
-//     $url = url('/');
-//     $types = \DB::table('datasource_type')->select('id', 'name', 'codename', 'icon_image')->get();
-//     $types_list = array();
-//     foreach ($types as $type) {
-//         $complete_type = array(
-//             'id' => $type->id,
-//             'name' => $type->name,
-//             'codename' => $type->codename,
-//             'icon_image' => $type->icon_image,
-//             'icon_image_on_url' => $url.'/datasources/icons/'.$type->icon_image.'_ON.png', 
-//             'icon_image_off_url' => $url.'/datasources/icons/'.$type->icon_image.'_OFF.png'         
-//             );
 
-
-//             array_push($types_list, $complete_type);
-//     }
-//     $types_list = array('datasourcestype' => $types_list);
-//     return $types_list;
-// }
 
 // public function getDatasourcesTypebyTypeName($typename) {
 //     $url = url('/');
@@ -216,63 +178,7 @@ public function createDatasourceSensorData(Request $request) {
 //     return $project;
 // }
 
-/**
-* @SWG\Get(
-*      path="/datasource/types/{datasource_type_id}",
-*      operationId="getDatasourceTypeNameById",
-*      tags={"Datasources"},
-*      summary="Get Datasource Type by ID",
-*      description="Returns Datasource type name",
-*      @SWG\Parameter(
-*          name="datasource_type_id",
-*          description="Datasource type id",
-*          required=true,
-*          type="integer",
-*          in="path"
-*      ),
-*      @SWG\Response(
-*          response=200,
-*          description="successful operation"
-*       ),
-*       @SWG\Response(response=400, description="Bad request"),
-*       security={
-*           {"passport": {}}
-*       }
-*     )
-*
-* Returns list of Type of datasources
-*/
-// public function getDatasourceTypeNameById($datasourcetypeId) {
-//     $datasourcetypename = \DB::table('datasource_type')->where('id', '=', $datasourcetypeId)->value('name');
-//     return $datasourcetypename;
-// }
 
-/**
-* @SWG\Get(
-*      path="/space/{space_id}/datasources",
-*      operationId="GetDatasourcesBySpaceId",
-*      tags={"Datasources"},
-*      summary="Get datasources information related to space",
-*      description="Returns datasources data related to space",
-*      @SWG\Parameter(
-*          name="space_id",
-*          description="space id",
-*          required=true,
-*          type="integer",
-*          in="path"
-*      ),
-*      @SWG\Response(
-*          response=200,
-*          description="successful operation"
-*       ),
-*      @SWG\Response(response=400, description="Bad request"),
-*      @SWG\Response(response=404, description="Resource Not Found"),
-*      security={
-*           {"passport": {}}
-*       },
-* )
-*
-*/ 
 // public function GetDatasourcesBySpaceId($space_id){
 //     $url = url('/');
 //     $datasources = Datasource::where('space_id', '=', $space_id)->get();
@@ -368,32 +274,6 @@ public function createDatasourceSensorData(Request $request) {
 //     return $datasource;
 // }
 
-/**
-* @SWG\Get(
-*      path="/project/{project_id}/datasources",
-*      operationId="getProjectDatasources",
-*      tags={"Datasources"},
-*      summary="Get Datasources related to a particular project",
-*      description="Returns List of datasources from a project",
-*      @SWG\Parameter(
-*          name="project_id",
-*          description="Project ID",
-*          required=true,
-*          type="integer",
-*          in="path"
-*      ),
-*      @SWG\Response(
-*          response=200,
-*          description="successful operation"
-*       ),
-*       @SWG\Response(response=400, description="Bad request"),
-*       security={
-*           {"passport": {}}
-*       }
-*     )
-*
-* Returns list of datasources
-*/
 // public function getProjectDatasources($project_id) {
 //     $url = url('/');
 //     $datasources = Datasource::where('project_id', $project_id)->get();
@@ -433,32 +313,7 @@ public function createDatasourceSensorData(Request $request) {
 
 // }
 
-/**
-* @SWG\Get(
-*      path="/project/{project_id}/datasources/actives",
-*      operationId="getActiveProjectDatasources",
-*      tags={"Datasources"},
-*      summary="Get Active Datasources related to a particular project",
-*      description="Returns List of active datasources from a project",
-*      @SWG\Parameter(
-*          name="project_id",
-*          description="Project ID",
-*          required=true,
-*          type="integer",
-*          in="path"
-*      ),
-*      @SWG\Response(
-*          response=200,
-*          description="successful operation"
-*       ),
-*       @SWG\Response(response=400, description="Bad request"),
-*       security={
-*           {"passport": {}}
-*       }
-*     )
-*
-* Returns list of active datasources
-*/
+
 // public function getActiveProjectDatasources($project_id) {
 //     $url = url('/');
 //     $datasources = Datasource::where('project_id', $project_id)
@@ -500,32 +355,7 @@ public function createDatasourceSensorData(Request $request) {
 // }
 
 
-/**
-* @SWG\Get(
-*      path="/project/{project_id}/datasources/count",
-*      operationId="getProjectDatasourcesCount",
-*      tags={"Datasources"},
-*      summary="Get count of  Datasources related to a particular project",
-*      description="Returns count of active datasources from a project",
-*      @SWG\Parameter(
-*          name="project_id",
-*          description="Project ID",
-*          required=true,
-*          type="integer",
-*          in="path"
-*      ),
-*      @SWG\Response(
-*          response=200,
-*          description="successful operation"
-*       ),
-*       @SWG\Response(response=400, description="Bad request"),
-*       security={
-*           {"passport": {}}
-*       }
-*     )
-*
-* Returns count of datasources
-*/
+
 // public function getProjectDatasourcesCount($project_id) {
 //     $project = Project::where('id', $project_id)->with('DataSources')->first();
 //     return $project->datasources->count();
@@ -533,32 +363,7 @@ public function createDatasourceSensorData(Request $request) {
 // //return $this->response->array($project->datasources);
 // }
 
-/**
-* @SWG\Get(
-*      path="/datasource/{datasource_id}/datapoints",
-*      operationId="getDatasourceDatapoints",
-*      tags={"Datapoints"},
-*      summary="Get list of  Datapoints of a parrticular Datasource",
-*      description="Returns list of  Datapoints of a parrticular Datasource",
-*      @SWG\Parameter(
-*          name="datasource_id",
-*          description="Datasource_ ID",
-*          required=true,
-*          type="integer",
-*          in="path"
-*      ),
-*      @SWG\Response(
-*          response=200,
-*          description="successful operation"
-*       ),
-*       @SWG\Response(response=400, description="Bad request"),
-*       security={
-*           {"passport": {}}
-*       }
-*     )
-*
-* Returns datapoints from a  datasources
-*/
+
 // public function getDatasourceDatapoints($datasource_id) {
 //     $datapoints = Datapoint::where('datasource_id', $datasource_id)->get();
 //     $datapoints = array("datapoints" => $datapoints);

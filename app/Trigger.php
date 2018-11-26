@@ -13,7 +13,7 @@ class Trigger extends Model
      * @var string
      */
     protected $table = 'triggers';
-    use SoftDeletes;
+    // use SoftDeletes;
     //added by me following the tutorial
     /**
      * The attributes that are mass assignable.
