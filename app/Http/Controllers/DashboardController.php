@@ -272,14 +272,17 @@ public function getPanelsByDashboardId($dashboardId) {
 //     $panel->sensorData = $this->getSensorData($datepoint->address, $datesource->ip, $datesource->port, $datepoint->type, $datepoint->unitid);
 // } 
         if (in_array($panel->type, $chartTypePanelsChartTemperature)){
+            // alert('yup');
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $options_array = json_decode($datesource->options, true);
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
                 $datesource->type='ds-temperature-celsius';
 //Its a SmartThing via MQTT (no datapoint)
 // $panel->sensorData = $this->getLastSensorDataFromDatapoint($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
-                $panel->sensorData = $this->getSensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                // $panel->sensorData = $this->getSensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                $panel->sensorData = $this->getSensorDataFromDatasource($options_array['topic']);
             } else {
 //Modbus with datasource -> datapoint
                 $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -352,12 +355,13 @@ public function getPanelsByDashboardId($dashboardId) {
         }
         else if (in_array($panel->type, $chartTypePanelsWidgetTemperature)) {
             $datesource = \App\Datasource::find($panel->datasource_id);
+             $options_array = json_decode($datesource->options, true);
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
                 $datesource->type='ds-temperature-celsius';
 //Its a SmartThing via MQTT (no datapoint)
-                $panel->sensorData = $this->getLastSensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                $panel->sensorData = $this->getLastSensorDataFromDatasource($options_array['topic']);
             } else {
 //Modbus with datasource -> datapoint
                 $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -405,12 +409,14 @@ public function getPanelsByDashboardId($dashboardId) {
 // $datesource = \App\Datasource::find($panel->datasource_id);
 // $panel->sensorData = $this->getLast10SensorData($datepoint->address, $datesource->ip, $datesource->port, 'Temperature', $datepoint->unitid);
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $options_array = json_decode($datesource->options, true);
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
                 $datesource->type='ds-temperature-celsius';
 //Its a SmartThing via MQTT (no datapoint)
-                $panel->sensorData = $this->getLast10SensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                // $panel->sensorData = $this->getLast10SensorDataFromDatasource($datesource->name, $datesource->address, $datesource->ip, $datesource->port, $datesource->type, $datesource->unitid);
+                $panel->sensorData = $this->getLast10SensorDataFromDatasource($options_array['topic']);
             } else {
 //Modbus with datasource -> datapoint
                 $datepoint = \App\Datapoint::find($panel->datapoint_id);
@@ -615,19 +621,35 @@ public function getSensorData($address, $ip, $port, $type, $unitid) {
 
 
 
-public function getSensorDataFromDatasource($datasource, $address, $ip, $port, $type, $unitid) {
-    $sensordata = \DB::table('sensordata')
-    ->select('created_at', 'data')
-    ->where([
-        ['type', '=', $type],
-        ['unitid', '=', $unitid],
-        ['address', '=', $address],
-        ['ip', '=', $ip],
-        ['port', '=', $port],
-        ['datasource', '=', $datasource],
-    ])
+// public function getSensorDataFromDatasource($datasource, $address, $ip, $port, $type, $unitid) {
+//     $sensordata = \DB::table('sensordata')
+//     ->select('created_at', 'data')
+//     ->where([
+//         ['type', '=', $type],
+//         ['unitid', '=', $unitid],
+//         ['address', '=', $address],
+//         ['ip', '=', $ip],
+//         ['port', '=', $port],
+//         ['datasource', '=', $datasource],
+//     ])
+//     ->orderBy('created_at', 'desc')
+//     ->take(20)
+//     ->get()
+//     ->reverse();
+//     return $sensordata;
+// }
+
+public function getSensorDataFromDatasource($topic) {
+    $now =  \Carbon\Carbon::now()->format('Y-m-d H:i');
+    $now_timestamp =  strtotime($now);
+    $one_min_ago = $now_timestamp - 60;
+
+    $sensordata = $lastsensordata = \DB::table('datasource_sensor_datas')
+    ->select('created_at', 'value as data')
+    ->where('topic', '=', $topic)
+    ->where('timestamp', '>', $one_min_ago)
     ->orderBy('created_at', 'desc')
-    ->take(20)
+    // ->take(20)
     ->get()
     ->reverse();
     return $sensordata;
@@ -702,65 +724,103 @@ public function getLastSensorData($address, $ip, $port, $type, $unitid) {
 
 
 
-public function getLastSensorDataFromDatasource($datasource, $address, $ip, $port, $type, $unitid) {
-    $lastsensordata = \DB::table('sensordata')
-    ->select('created_at', 'data')
-    ->where([
-        ['type', '=', $type],
-        ['unitid', '=', $unitid],
-        ['address', '=', $address],
-        ['ip', '=', $ip],
-        ['port', '=', $port],
-        ['datasource', '=', $datasource],
-    ])
+// public function getLastSensorDataFromDatasource($datasource, $address, $ip, $port, $type, $unitid) {
+//     $lastsensordata = \DB::table('sensordata')
+//     ->select('created_at', 'data')
+//     ->where([
+//         ['type', '=', $type],
+//         ['unitid', '=', $unitid],
+//         ['address', '=', $address],
+//         ['ip', '=', $ip],
+//         ['port', '=', $port],
+//         ['datasource', '=', $datasource],
+//     ])
+//     ->orderBy('created_at', 'desc')
+//     ->first();
+//     return $lastsensordata;
+// }
+
+public function getLastSensorDataFromDatasource($topic) {
+    $lastsensordata = \DB::table('datasource_sensor_datas')
+    ->select('created_at', 'value as data')
+    ->where('topic', '=', $topic)
     ->orderBy('created_at', 'desc')
     ->first();
     return $lastsensordata;
 }
 
-public function getLastSensorDataFromDatasourceMQTT($datasource, $address, $ip, $port, $type, $unitid) {
-    $lastsensordata = \DB::table('sensordata')
-    ->select('created_at', 'data')
-    ->where([
-        ['type', '=', $type],
-        ['unitid', '=', $unitid],
-        ['address', '=', $address],
-        ['ip', '=', $ip],
-        ['port', '=', $port],
-        ['datasource', '=', $datasource],
-    ])
+// public function getLastSensorDataFromDatasourceMQTT($datasource, $address, $ip, $port, $type, $unitid) {
+//     $lastsensordata = \DB::table('sensordata')
+//     ->select('created_at', 'data')
+//     ->where([
+//         ['type', '=', $type],
+//         ['unitid', '=', $unitid],
+//         ['address', '=', $address],
+//         ['ip', '=', $ip],
+//         ['port', '=', $port],
+//         ['datasource', '=', $datasource],
+//     ])
+//     ->orderBy('created_at', 'desc')
+//     ->first();
+//     return $lastsensordata;
+// }
+
+public function getLastSensorDataFromDatasourceMQTT($topic) {
+    $lastsensordata =  \DB::table('datasource_sensor_datas')
+    ->select('created_at', 'value as data')
+    ->where('topic', '=', $topic)
     ->orderBy('created_at', 'desc')
     ->first();
     return $lastsensordata;
 }
 
-public function getLast10SensorData($address, $ip, $port, $type, $unitid) {
-    $lastsensordata = \DB::table('sensordata')
-    ->select('created_at', 'data')
-    ->where([
-        ['type', '=', $type],
-        ['unitid', '=', $unitid],
-        ['address', '=', $address],
-        ['ip', '=', $ip],
-        ['port', '=', $port],
-    ])
+// public function getLast10SensorData($address, $ip, $port, $type, $unitid) {
+//     $lastsensordata = \DB::table('sensordata')
+//     ->select('created_at', 'data')
+//     ->where([
+//         ['type', '=', $type],
+//         ['unitid', '=', $unitid],
+//         ['address', '=', $address],
+//         ['ip', '=', $ip],
+//         ['port', '=', $port],
+//     ])
+//     ->orderBy('created_at', 'desc')
+//     ->take(10)
+//     ->get();
+//     return $lastsensordata;
+// }
+
+public function getLast10SensorData($topic) {
+    $lastsensordata = \DB::table('datasource_sensor_datas')
+    ->select('created_at', 'value as data')
+    ->where('topic', '=', $topic)
     ->orderBy('created_at', 'desc')
     ->take(10)
     ->get();
     return $lastsensordata;
 }
 
-public function getLast10SensorDataFromDatasource($datasource, $address, $ip, $port, $type, $unitid) {
-    $lastsensordata = \DB::table('sensordata')
-    ->select('created_at', 'data')
-    ->where([
-        ['type', '=', $type],
-        ['unitid', '=', $unitid],
-        ['address', '=', $address],
-        ['ip', '=', $ip],
-        ['port', '=', $port],
-        ['datasource', '=', $datasource],
-    ])
+// public function getLast10SensorDataFromDatasource($datasource, $address, $ip, $port, $type, $unitid) {
+//     $lastsensordata = \DB::table('sensordata')
+//     ->select('created_at', 'data')
+//     ->where([
+//         ['type', '=', $type],
+//         ['unitid', '=', $unitid],
+//         ['address', '=', $address],
+//         ['ip', '=', $ip],
+//         ['port', '=', $port],
+//         ['datasource', '=', $datasource],
+//     ])
+//     ->orderBy('created_at', 'desc')
+//     ->take(10)
+//     ->get();
+//     return $lastsensordata;
+// }
+
+public function getLast10SensorDataFromDatasource($topic) {
+    $lastsensordata = \DB::table('datasource_sensor_datas')
+    ->select('created_at', 'value as data')
+    ->where('topic', '=', $topic)
     ->orderBy('created_at', 'desc')
     ->take(10)
     ->get();
