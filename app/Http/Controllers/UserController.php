@@ -460,14 +460,16 @@ public function deviceToken(Request $request){
             ->where('device_token', $request->device_token)
             ->update(['user_id' => $request->user_id]);
 
+            if (!$save) {
+            abort(500, 'Could not update device token.');
+            }
+            else {
+                return array(true, "Device token updated.");
+            }
+
         }
 
-        if (!$data) {
-            abort(500, 'Could not update device token.');
-        }
-        else {
-            return array(true, "Device token updated.");
-        }
+        
 
 
     }
