@@ -486,7 +486,7 @@ foreach ($lastmindatasourcesensordatas as $lastmindatasourcesensordata) {
                         $tokenList = $this->getTokenListfromRecipients($trigger->recipients);
                         error_log('----');
                         error_log('tokenList');
-                        error_log($tokenList);
+                        error_log(json_decode($tokenList));
                         //Save in triggers_notifications table
                         app('App\Http\Controllers\SensorController')->saveTrigger($trigger, $message);
 
