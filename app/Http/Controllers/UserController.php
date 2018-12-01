@@ -454,23 +454,9 @@ public function deviceToken(Request $request){
         }
 
     } else {
-// It exists - update user id (in case switchin user)
-        // if($request->user_id){
-            DB::table('users_device_tokens')
-            ->where('device_token', $request->device_token)
-            ->update(['user_id' => $request->user_id]);
-
-            // if (!$save) {
-            // abort(500, 'Could not update device token.');
-            // }
-            // else {
-                return array(true, "Device token updated.");
-            // }
-
-        // }
-
+// It exists - do nothing
         
-
+        return array(true, "Device token not created.");
 
     }
 
