@@ -454,8 +454,11 @@ public function deviceToken(Request $request){
         }
 
     } else {
-// It exists - do nothing
-        
+// It exists - delete and reinsert
+        DB::table('users_device_tokens')
+            ->where('device_token', $request->device_token)
+            ->update(['user_id' => $request->user_id]);
+
         return array(true, "Device token not created.");
 
     }
