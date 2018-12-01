@@ -395,7 +395,9 @@ foreach ($lastmindatasourcesensordatas as $lastmindatasourcesensordata) {
             // # code...
             // break;
             case '=':
-
+            error_log('----');
+                error_log('case equal before validation');
+                error_log('----');
             if($lastmindatasourcesensordata->value == $trigger->value){
                 error_log('----');
                 error_log('case equal');
