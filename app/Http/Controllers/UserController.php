@@ -455,7 +455,7 @@ public function deviceToken(Request $request){
 
     } else {
 // It exists - delete and reinsert
-        DB::table('users_device_tokens')
+        \DB::table('users_device_tokens')
             ->where('device_token', $request->device_token)
             ->update(['user_id' => $request->user_id]);
 
