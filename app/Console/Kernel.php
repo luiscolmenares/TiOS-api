@@ -397,6 +397,9 @@ foreach ($lastmindatasourcesensordatas as $lastmindatasourcesensordata) {
             case '=':
 
             if($lastmindatasourcesensordata->value == $trigger->value){
+                error_log('----');
+                error_log('case equal');
+                error_log('----');
 
                 //1. Send Email
                 if($trigger->trigger_action_type_id == 1){
@@ -467,7 +470,9 @@ foreach ($lastmindatasourcesensordatas as $lastmindatasourcesensordata) {
                 //3. Send Push Notification
                 if($trigger->trigger_action_type_id == 3){
                     // $systemnotificationcount = $systemnotificationcount +1;
-
+                    error_log('----');
+                    error_log('Send Push Notification');
+                    error_log('----');
                     // if ($systemnotificationcount == 3){
                         if($trigger->custommessage != null){
                             $message = $trigger->custommessage;
@@ -475,7 +480,9 @@ foreach ($lastmindatasourcesensordatas as $lastmindatasourcesensordata) {
                             $message = $trigger->name.": Sensor value (".$lastmindatasourcesensordata->value.") is more than trigger value (".$trigger->value.")";
                         }
                         $tokenList = $this->getTokenListfromRecipients($trigger->recipients);
-
+                        error_log('----');
+                        error_log('tokenList');
+                        error_log($tokenList);
                         //Save in triggers_notifications table
                         app('App\Http\Controllers\SensorController')->saveTrigger($trigger, $message);
 
