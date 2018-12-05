@@ -293,7 +293,12 @@ public function getTriggerTypeById($triggertypeId){
 */ 
 public function createTrigger(Request $request)
 {
+    
 	$trigger = new Trigger($request->all());
+    if($trigger->act_datasource_id == null){
+        $trigger->act_datasource_id = $request->datasource_id;
+    }
+
 	if (!$trigger->save()) {
 		abort(500, 'Could not save trigger.');
 	}
@@ -605,7 +610,7 @@ public function getTriggersNotificationsByOrgId($organizationId){
 }
 
 /**
-* Get trigger Notificagtion by datapoint Id
+* Get trigger Notification by datapoint Id
 * @param 
 * return notifications
 */
@@ -710,7 +715,113 @@ public function getTriggersNotificationsByDatapointId($datapointId, $fromdate, $
 }
 
 /**
-* Get trigger Notificagtion by datapoint Id
+* Get trigger Notification by datasource Id
+* @param 
+* return notifications
+*/
+public function getTriggersNotificationsByDatasourceId($datasourceId, $fromdate, $todate){
+    $notifications = \DB::table('triggers_notifications')
+            ->where('triggers_notifications.datasource_id', '=', $datasourceId)
+            ->join('trigger_action_types', 'triggers_notifications.trigger_action_type_id', '=', 'trigger_action_types.id')
+            ->join('projects', 'triggers_notifications.project_id', '=', 'projects.id')
+            // ->join('organizations', 'triggers_notifications.organization_id', '=', 'organizations.id')
+            ->join('datasources', 'triggers_notifications.datasource_id', '=', 'datasources.id')
+            ->join('datapoints', 'triggers_notifications.datapoint_id', '=', 'datapoints.id')
+            // ->select('triggers_notifications.id', 'triggers_notifications.trigger_action_type_id', 'trigger_action_types.name as trigger_action_types_name', 'triggers_notifications.organization_id', 'organizations.name as organization_name', 'triggers_notifications.project_id', 'projects.name as project_name', 'triggers_notifications.datasource_id', 'triggers_notifications.datapoint_id', 'triggers_notifications.message', 'triggers_notifications.recipients', 'triggers_notifications.viewed', 'triggers_notifications.created_at', 'triggers_notifications.updated_at', 'datasources.name as datasource_name', 'datapoints.name as datapoint_name')
+            ->select('triggers_notifications.id', 'triggers_notifications.trigger_action_type_id', 'trigger_action_types.name as trigger_action_types_name', 'triggers_notifications.project_id', 'projects.name as project_name', 'triggers_notifications.datasource_id', 'triggers_notifications.datapoint_id', 'triggers_notifications.message', 'triggers_notifications.recipients', 'triggers_notifications.viewed', 'triggers_notifications.created_at', 'triggers_notifications.updated_at', 'datasources.name as datasource_name', 'datapoints.name as datapoint_name')
+            ->get();
+
+    //total counts
+            $total_count = 0;
+            $email_count = 0;
+            $sms_count = 0;
+            $push_count = 0;
+            $off_count = 0;
+            $on_count = 0;
+    //convert to timesta created_at values
+            foreach ($notifications as $notification) {
+                $total_count = $total_count + 1;
+                if ($notification->trigger_action_types_name == 'send-email'){
+                    $email_count = $email_count + 1;
+                 }
+                 if ($notification->trigger_action_types_name == 'send-sms-message'){
+                   $sms_count = $sms_count + 1;
+                    }
+                if ($notification->trigger_action_types_name == 'system-notification'){
+                   $push_count = $push_count + 1;
+                    }
+                 if ($notification->trigger_action_types_name == 'turn-off'){
+                   $off_count = $off_count + 1;
+                    }
+                if ($notification->trigger_action_types_name == 'turn-on'){
+                   $on_count = $on_count + 1;
+                    }
+                 $notification->date_created = strtotime($notification->created_at);
+            }
+    //If daterange is provided
+            if(($fromdate > 0) && ($todate >0)){
+                $notificationslist = [];
+                $filtered_count = 0;
+                $filtered_email_count = 0;
+                $filtered_sms_count = 0;
+                $filtered_push_count = 0;
+                $filtered_on_count = 0;
+                $filtered_off_count = 0;
+                    foreach ($notifications as $notification) {
+                        if(($notification->date_created > $fromdate) && ($notification->date_created < $todate)){
+                        array_push($notificationslist, $notification);
+                        $filtered_count = $filtered_count + 1;
+                         if ($notification->trigger_action_types_name == 'send-email'){
+                            $filtered_email_count = $filtered_email_count + 1;
+                         }
+                         if ($notification->trigger_action_types_name == 'send-sms-message'){
+                           $filtered_sms_count = $filtered_sms_count + 1;
+                            }
+                        if ($notification->trigger_action_types_name == 'system-notification'){
+                           $filtered_push_count = $filtered_push_count + 1;
+                            }
+                         if ($notification->trigger_action_types_name == 'turn-off'){
+                           $filtered_off_count = $filtered_off_count + 1;
+                            }
+                        if ($notification->trigger_action_types_name == 'turn-on'){
+                           $filtered_on_count = $filtered_on_count + 1;
+                            }
+                        //Create returned array
+                        }
+                        
+                    }
+
+                    $notificationslist = array(
+                            'count' => $filtered_count,
+                            'email_count' => $filtered_email_count,
+                            'sms_count' => $filtered_sms_count,
+                            'push_count' => $filtered_push_count,
+                            'on_count' => $filtered_on_count,
+                            'off_count' => $filtered_off_count,
+                            'notifications' => $notificationslist,
+                        ); 
+                    return $notificationslist;
+                    
+            } else {
+                $notifications = array(
+                    'count' => $total_count,
+                    'email_count' => $email_count,
+                    'sms_count' => $sms_count,
+                    'push_count' => $push_count,
+                    'on_count' => $on_count,
+                    'off_count' => $off_count,
+                    'notifications' => $notifications,
+                );
+
+                return $notifications;
+               
+            }
+
+        return $notifications;
+}
+
+/**
+* Get trigger Notification by datapoint Id
 * @param 
 * return notifications
 */
@@ -719,6 +830,141 @@ public function getTopTriggersNotificationsByDatapointId($datapointId, $fromdate
     $topnotifications = \DB::table('triggers_notifications')
             //->select(\DB::raw('triggers_notifications.id AS notifications_count, triggers_notifications.message, triggers_notifications.created_at'))
             ->where('triggers_notifications.datapoint_id', '=', $datapointId)
+            //if(($fromdate > 0) && ($todate > 0)){
+            //    $fdate = date("YYYY-10-22 H:i:s", $fromdate);
+            //    $tdate = date("YYYY-10-22 H:i:s", $todate);
+            //    ->where('triggers_notifications.created_at', '<', $todate)
+            //    ->where('triggers_notifications.created_at', '>', $fromdate)
+            //}
+            //->groupBy('triggers_notifications.message')
+            ->get();
+
+    //convert to timestap created_at values
+            foreach ($topnotifications as $notification) {
+                // $total_count = $total_count + 1;
+                // if ($notification->trigger_action_types_name == 'send-email'){
+                //     $email_count = $email_count + 1;
+                //  }
+                //  if ($notification->trigger_action_types_name == 'send-sms-message'){
+                //    $sms_count = $sms_count + 1;
+                //     }
+                // if ($notification->trigger_action_types_name == 'system-notification'){
+                //    $push_count = $push_count + 1;
+                //     }
+                //  if ($notification->trigger_action_types_name == 'turn-off'){
+                //    $off_count = $off_count + 1;
+                //     }
+                // if ($notification->trigger_action_types_name == 'turn-on'){
+                //    $on_count = $on_count + 1;
+                //     }
+                 $notification->date_created = strtotime($notification->created_at);
+            }
+    //If daterange is provided
+            if(($fromdate > 0) && ($todate >0)){
+                 $notificationslist = [];
+                 $nlist = [];
+                // $filtered_count = 0;
+                // $filtered_email_count = 0;
+                // $filtered_sms_count = 0;
+                // $filtered_push_count = 0;
+                // $filtered_on_count = 0;
+                // $filtered_off_count = 0;
+                    foreach ($topnotifications as $notification) {
+                        if(($notification->date_created > $fromdate) && ($notification->date_created < $todate)){
+                        // $n = array(
+                        //     "message" => $notification->message,
+                        // );
+                        array_push($notificationslist, $notification->message."~".$notification->trigger_action_type_id);
+                        //$filtered_count = $filtered_count + 1;
+                        //  if ($notification->trigger_action_types_name == 'send-email'){
+                        //     $filtered_email_count = $filtered_email_count + 1;
+                        //  }
+                        //  if ($notification->trigger_action_types_name == 'send-sms-message'){
+                        //    $filtered_sms_count = $filtered_sms_count + 1;
+                        //     }
+                        // if ($notification->trigger_action_types_name == 'system-notification'){
+                        //    $filtered_push_count = $filtered_push_count + 1;
+                        //     }
+                        //  if ($notification->trigger_action_types_name == 'turn-off'){
+                        //    $filtered_off_count = $filtered_off_count + 1;
+                        //     }
+                        // if ($notification->trigger_action_types_name == 'turn-on'){
+                        //    $filtered_on_count = $filtered_on_count + 1;
+                        //     }
+                        //Create returned array
+                        }
+                        
+                    }
+
+                    // $notificationslist = array(
+                    //         "message" => 
+                    //         // 'count' => $filtered_count,
+                    //         // 'email_count' => $filtered_email_count,
+                    //         // 'sms_count' => $filtered_sms_count,
+                    //         // 'push_count' => $filtered_push_count,
+                    //         // 'on_count' => $filtered_on_count,
+                    //         // 'off_count' => $filtered_off_count,
+                    //         // 'notifications' => $notificationslist,
+                    //     ); 
+                    $notificationslist = array_count_values($notificationslist);
+                   foreach ($notificationslist as $key => $value) {
+                    $n = array(
+                        "trigger_action_type_id" => substr($key, strpos($key, "~") + 1),
+                        "message" => substr($key, 0, strpos($key, "~")),
+                        "count" => $value
+                    );
+                    array_push($nlist, $n);
+
+                }
+                return $nlist;
+                    
+            } else {
+                 $notificationslist = [];
+                 $nlist = [];
+                // $notifications = array(
+                //     'count' => $total_count,
+                //     'email_count' => $email_count,
+                //     'sms_count' => $sms_count,
+                //     'push_count' => $push_count,
+                //     'on_count' => $on_count,
+                //     'off_count' => $off_count,
+                //     'notifications' => $notifications,
+                // );
+                //$topnotifications = array_count_values($topnotifications);
+                foreach ($topnotifications as $notification) {
+                        // $n = array(
+                        //     "message" => $notification->message,
+                        // );
+                        array_push($notificationslist, $notification->message."~".$notification->trigger_action_type_id);
+                    }
+
+                $notificationslist = array_count_values($notificationslist);
+                foreach ($notificationslist as $key => $value) {
+                    $n = array(
+                        "trigger_action_type_id" => substr($key, strpos($key, "~") + 1),
+                        "message" => substr($key, 0, strpos($key, "~")),
+                        "count" => $value
+                    );
+                    array_push($nlist, $n);
+
+                }
+                return $nlist;
+               
+            }
+
+        return false;
+}
+
+/**
+* Get trigger Notification by datapoint Id
+* @param 
+* return notifications
+*/
+public function getTopTriggersNotificationsByDatasourcetId($datasourceId, $fromdate, $todate){
+    
+    $topnotifications = \DB::table('triggers_notifications')
+            //->select(\DB::raw('triggers_notifications.id AS notifications_count, triggers_notifications.message, triggers_notifications.created_at'))
+            ->where('triggers_notifications.datasource_id', '=', $datasourceId)
             //if(($fromdate > 0) && ($todate > 0)){
             //    $fdate = date("YYYY-10-22 H:i:s", $fromdate);
             //    $tdate = date("YYYY-10-22 H:i:s", $todate);
