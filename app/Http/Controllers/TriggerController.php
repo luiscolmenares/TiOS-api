@@ -960,7 +960,7 @@ public function getTopTriggersNotificationsByDatapointId($datapointId, $fromdate
 * @param 
 * return notifications
 */
-public function getTopTriggersNotificationsByDatasourcetId($datasourceId, $fromdate, $todate){
+public function getTopTriggersNotificationsByDatasourceId($datasourceId, $fromdate, $todate){
     
     $topnotifications = \DB::table('triggers_notifications')
             //->select(\DB::raw('triggers_notifications.id AS notifications_count, triggers_notifications.message, triggers_notifications.created_at'))
