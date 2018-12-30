@@ -247,7 +247,7 @@ public function createMobileNotification(Request $request)
     }
 
 function updateDatasourceToggle($topic, $value){
-    $nodered = 'https://node-red.tiosplatform.com:1080';
+    $nodered = 'http://node-red.tiosplatform.com:1080';
     if($value === 'ON'){ $toggle = 1; }
     if($value === 'OFF'){ $toggle = 0; }
     if($value === 'on'){ $toggle = 1; }
