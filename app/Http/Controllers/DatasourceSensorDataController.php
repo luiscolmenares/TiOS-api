@@ -122,7 +122,8 @@ public function createDatasourceSensorData(Request $request) {
     $datasourcesensordata->datasource_id = $datasource[0]->id;
     $datasourcesensordata->project_id = $project['project']->id;
     $datasourcesensordata->organization_id = $organization['organization']->id;
-
+    $now =  \Carbon\Carbon::now()->format('Y-m-d H:i');
+    $datasourcesensordata->timestamp =  strtotime($now);
 
     if (!$datasourcesensordata->save()) {
         abort(500, 'Could not save datasource sensor data.');

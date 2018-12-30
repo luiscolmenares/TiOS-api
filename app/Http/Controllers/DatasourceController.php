@@ -12,6 +12,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Validator;
 use Illuminate\Routing\UrlGenerator;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class DatasourceController extends Controller {
 
@@ -663,6 +665,21 @@ public function deleteDatasource($datasourceId) {
         }
     }
     return Datasource::destroy($datasourceId);
+}
+
+/**
+* Thingstatus
+* @param Request request
+* return thing stattus
+*/
+public function Thingstatus(Request $request) {
+    $noderedurl = "https://node-red.tiosplatform.com:1080";
+    // $noderedurl = $request->base_nr;
+    // $options = json_decode($act_datasource->options, true);
+    $url_on = $noderedurl.'/thingstatus?topic='.$request->topic.'/control&value='.$request->value;
+    $client = new Client(); //GuzzleHttp\Cliente
+    $response = $client->get($url_on);
+    return $response;
 }
 
 

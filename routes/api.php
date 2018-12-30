@@ -117,6 +117,8 @@ Route::middleware('auth:api')->get('datasource/protocols/{datasource_protocol_ty
 Route::middleware('auth:api')->get('datasource/protocols', 'DatasourceController@getDatasourceProtocolTypes');
 Route::middleware('auth:api')->get('datasource/{datasource_id}/project', 'DatasourceController@getProjectByDatasourceId');
 Route::middleware('auth:api')->get('space/{space_id}/datasources', 'DatasourceController@GetDatasourcesBySpaceId');
+Route::middleware('auth:api')->post('thingstatus', 'DatasourceController@ThingStatus');
+
 
 //Datapoints
 Route::middleware('auth:api')->get('datapoints', 'DatapointController@getDatapoints');
