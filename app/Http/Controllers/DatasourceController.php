@@ -319,6 +319,75 @@ public function GetDatasourcesBySpaceId($space_id){
 }
 
 /**
+* @SWG\Get(
+*      path="/space/{space_id}/datasources",
+*      operationId="GetActiveDatasourcesBySpaceId",
+*      tags={"Datasources"},
+*      summary="Get datasources information related to space",
+*      description="Returns datasources data related to space",
+*      @SWG\Parameter(
+*          name="space_id",
+*          description="space id",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*      @SWG\Response(response=400, description="Bad request"),
+*      @SWG\Response(response=404, description="Resource Not Found"),
+*      security={
+*           {"passport": {}}
+*       },
+* )
+*
+*/ 
+public function GetActiveDatasourcesBySpaceId($space_id){
+    $url = url('/');
+    $datasources = Datasource::where('space_id', '=', $space_id)
+                                ->where('active', '=', 1)
+                                ->get();
+    // $datasource = Datasource::find($datasources->datasource_id);
+    // $datasources = \DB::table('datasources')->where('space_id', '=', $space_id)->get();
+    $datasources_list = array();
+        foreach ($datasources as $datasource) {
+                // $datasourcetype = \DB::table('datasource_type')->where('name', '=', $datasource->type)->get();
+            $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
+            $options_array = json_decode($datasource->options, true);
+            $d = array(
+                    'id' => $datasource->id,
+                    'name' => $datasource->name,
+                    'type' => $datasource->type,
+                    'unitid' => $datasource->image,
+                    'ip' => $datasource->ip,
+                    'port' => $datasource->port,
+                    'options' => $datasource->options,
+                    'options_array' => $options_array,
+                    'data' => $datasource->data,
+                    'notes' => $datasource->notes,
+                    'active' => $datasource->active,
+                    'project_id' => $datasource->project_id,
+                    'created_at' => $datasource->created_at,
+                    'updated_at' => $datasource->updated_at,
+                    'deleted_at' => $datasource->deleted_at,
+                    'space_id' => $datasource->space_id,
+                    'toggle' => $datasource->toggle,
+                    'verification_enable' => $datasource->verification_enable,
+                    'verification_digits' => $datasource->verification_digits,
+                    'datasourcetype' =>$datasourcetype
+
+                    
+         );
+         array_push($datasources_list, $d);
+     }
+
+
+    return $datasources_list;
+}
+
+/**
 * Get Datasoutce Protocol type by Id
 * @param datasourceprotocoltypeId
 * return datasourceprotocoltype
@@ -627,7 +696,7 @@ public function getDatasourceValuesByDateRange($datasourceId, $from_date, $to_da
                     ->where('topic', "=", $topic)
                     ->whereBetween('timestamp', [$from_date, $to_date])
                     ->orderBy('created_at', 'desc')
-                    ->take(200)
+                    ->take(100)
                     ->get()
                     ->reverse();
 

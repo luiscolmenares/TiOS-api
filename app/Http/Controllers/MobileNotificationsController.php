@@ -233,6 +233,7 @@ public function createMobileNotification(Request $request)
 {
     $mn = new MobileNotification($request->all());
     $mn->project_id = $this->GetProjectIdByTopic($request->topic);
+    $mn->timestamp =  time();
 
     if (!$mn->save()) {
         abort(500, 'Could not save Mobile Notification.');
@@ -246,7 +247,7 @@ public function createMobileNotification(Request $request)
     }
 
 function updateDatasourceToggle($topic, $value){
-    $nodered = 'http://node-red.tiosplatform.com:1080';
+    $nodered = 'https://node-red.tiosplatform.com:1080';
     if($value === 'ON'){ $toggle = 1; }
     if($value === 'OFF'){ $toggle = 0; }
     if($value === 'on'){ $toggle = 1; }

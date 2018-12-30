@@ -139,7 +139,58 @@ public function updateSpace(Request $request, $space_id) {
 	public function getSpace($spaceId){
 	$url = url('/');
 	$space = Space::find($spaceId);
-	$datasources = app('App\Http\Controllers\DatasourceController')->GetDatasourcesBySpaceId($spaceId);
+	$datasources = app('App\Http\Controllers\DatasourceController')->GetActiveDatasourcesBySpaceId($spaceId);
+/*
+*  +----+-----------------------------------------+----------------------------------+
+*  | id | name                                    | codename                         |
+*  +----+-----------------------------------------+----------------------------------+
+*  |  1 | Vemetris Gateway                        | ds-vemetris-gateway              |
+*  |  2 | Control: Smart Bulb                     | ds-smart-bulb                    |
+*  |  3 | Control: Smart Switch (Light)           | ds-smart-switch-light            |
+*  |  4 | Control: Smart Switch (AC)              | ds-smart-switch-ac               |
+*  |  5 | Control: Smart Switch (Water Valve)     | ds-smart-switch-wv               |
+*  |  6 | Control: Smart Switch (Gas Valve)       | ds-smart-switch-gv               |
+*  |  7 | Control: Smart Switch (Lock)            | ds-smart-switch-lock             |
+*  |  8 | Control: Smart Switch (Power)           | ds-smart-switch-pw               |
+*  |  9 | Monitor: Temperature Sensor (Celsius)   | ds-temperature-celsius           |
+*  | 10 | Monitor: Temperature Sensor (Farenheit) | ds-temperature-celsius-farenheit |
+*  | 11 | Monitor: Humidity Sensor                | ds-humidity                      |
+*  | 12 | Monitor: Proximity Sensor               | ds-proximity                     |
+*  | 13 | Monitor: Door Sensor                    | ds-door                          |
+*  | 14 | Monitor: Flood Sensor                   | ds-flood                         |
+*  | 15 | Monitor: Voltage (V)                    | ds-voltage                       |
+*  | 16 | Monitor: Electric Current (A)           | ds-current                       |
+*  | 17 | Monitor: Electric Power (W)             | ds-power                         |
+*  | 18 | Monitor: Electric Energy (E)            | ds-energy                        |
+*  +----+-----------------------------------------+----------------------------------+
+*/
+$datasources_list = array();
+    foreach ($datasources as $datasource) {
+        if (($datasource['type'] === "Control: Smart Bulb") ||
+            ($datasource['type'] === "Control: Smart Switch (Light)") ||
+            ($datasource['type'] === "Control: Smart Switch (AC)") ||
+            ($datasource['type'] === "Control: Smart Switch (Water Valve)") ||
+            ($datasource['type'] === "Control: Smart Switch (Gas Valve)") ||
+            ($datasource['type'] === "Control: Smart Switch (Lock)") ||
+            ($datasource['type'] === "Control: Smart Switch (Power)") ||
+            ($datasource['type'] === "Monitor: Temperature Sensor (Celsius)") ||
+            ($datasource['type'] === "Monitor: Temperature Sensor (Farenheit)") ||
+            ($datasource['type'] === "Monitor: Humidity Sensor") ||
+            ($datasource['type'] === "Monitor: Proximity Sensor") ||
+            ($datasource['type'] === "Monitor: Door Sensor") ||
+            ($datasource['type'] === "Monitor: Flood Sensor") ||
+            ($datasource['type'] === "Monitor: Voltage (V)") ||
+            ($datasource['type'] === "Monitor: Electric Current (A)") ||
+            ($datasource['type'] === "Monitor: Electric Power (W)") ||
+            ($datasource['type'] === "Monitor: Electric Energy (E)")
+    ){
+            $datasource['data'] = app('App\Http\Controllers\DashboardController')->getLastSensorDataFromDatasource($datasource['options_array']['topic']);
+            // $datasource['data'] = "data de Control: Smart Switch (Light)";
+            array_push($datasources_list, $datasource);
+            // return $datasource['data'];
+        }
+
+    }
 
 	$complete_space = array(
 	'id' => $space->id,
@@ -150,7 +201,7 @@ public function updateSpace(Request $request, $space_id) {
 	'icon_image_url' => $url.'/spaces/icons/'.$space->icon_image,
 	'organization_id' => $space->organization_id,
 	'project_id' => $space->project_id,
-	'datasources' => $datasources,
+	'datasources' => $datasources_list,
 	
 	);
 
