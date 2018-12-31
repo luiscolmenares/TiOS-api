@@ -139,6 +139,7 @@ public function updateSpace(Request $request, $space_id) {
 	public function getSpace($spaceId){
 	$url = url('/');
 	$space = Space::find($spaceId);
+    $project = Project::find($space->project_id);
 	$datasources = app('App\Http\Controllers\DatasourceController')->GetActiveDatasourcesBySpaceId($spaceId);
 /*
 *  +----+-----------------------------------------+----------------------------------+
@@ -201,6 +202,7 @@ $datasources_list = array();
 	'icon_image_url' => $url.'/spaces/icons/'.$space->icon_image,
 	'organization_id' => $space->organization_id,
 	'project_id' => $space->project_id,
+    'project_name' => $project->name,
 	'datasources' => $datasources_list,
 	
 	);
