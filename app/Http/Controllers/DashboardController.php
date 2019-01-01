@@ -266,6 +266,7 @@ public function getPanelsByDashboardId($dashboardId) {
     $chartTypePanelsWidgetTemperatureMQTT = ['24', '25'];
 // $chartTypePanelsWidgetVoltage = ['13', '8'];
     foreach ($panels as $panel) {
+        $panel->datasource = array();
 // if (in_array($panel->type, $chartTypePanels)) {
 //     $datepoint = \App\Datapoint::find($panel->datapoint_id);
 //     $datesource = \App\Datasource::find($panel->datasource_id);
@@ -274,6 +275,7 @@ public function getPanelsByDashboardId($dashboardId) {
         if (in_array($panel->type, $chartTypePanelsChartTemperature)){
             // alert('yup');
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             $options_array = json_decode($datesource->options, true);
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
@@ -291,6 +293,7 @@ public function getPanelsByDashboardId($dashboardId) {
             }
         } else if (in_array($panel->type, $chartTypePanelsChartHumidity)){
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
@@ -301,12 +304,14 @@ public function getPanelsByDashboardId($dashboardId) {
             } else {
 //Modbus with datasource -> datapoint
                 $datepoint = \App\Datapoint::find($panel->datapoint_id);
+                $panel->datasource = $datesource;
 // $panel->sensorData = $this->getLastSensorData($datepoint->address, $datesource->ip, $datesource->port, 'Temperature', $datepoint->unitid);
                 $panel->sensorData = $this->getSensorData($datepoint->address, $datesource->ip, $datesource->port, $datepoint->type, $datepoint->unitid);
             }
         }
         else if (in_array($panel->type, $chartTypePanelsChartVoltage)){
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
@@ -317,12 +322,14 @@ public function getPanelsByDashboardId($dashboardId) {
             } else {
 //Modbus with datasource -> datapoint
                 $datepoint = \App\Datapoint::find($panel->datapoint_id);
+                $panel->datasource = $datesource;
 // $panel->sensorData = $this->getLastSensorData($datepoint->address, $datesource->ip, $datesource->port, 'Temperature', $datepoint->unitid);
                 $panel->sensorData = $this->getSensorData($datepoint->address, $datesource->ip, $datesource->port, $datepoint->type, $datepoint->unitid);
             }
         }
         else if (in_array($panel->type, $chartTypePanelsChartPower)){
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
@@ -333,12 +340,14 @@ public function getPanelsByDashboardId($dashboardId) {
             } else {
 //Modbus with datasource -> datapoint
                 $datepoint = \App\Datapoint::find($panel->datapoint_id);
+                $panel->datasource = $datesource;
 // $panel->sensorData = $this->getLastSensorData($datepoint->address, $datesource->ip, $datesource->port, 'Temperature', $datepoint->unitid);
                 $panel->sensorData = $this->getSensorData($datepoint->address, $datesource->ip, $datesource->port, $datepoint->type, $datepoint->unitid);
             }
         }
         else if (in_array($panel->type, $chartTypePanelsChartCurrent)){
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
@@ -349,12 +358,14 @@ public function getPanelsByDashboardId($dashboardId) {
             } else {
 //Modbus with datasource -> datapoint
                 $datepoint = \App\Datapoint::find($panel->datapoint_id);
+                $panel->datasource = $datesource;
 // $panel->sensorData = $this->getLastSensorData($datepoint->address, $datesource->ip, $datesource->port, 'Temperature', $datepoint->unitid);
                 $panel->sensorData = $this->getSensorData($datepoint->address, $datesource->ip, $datesource->port, $datepoint->type, $datepoint->unitid);
             }
         }
         else if (in_array($panel->type, $chartTypePanelsWidgetTemperature)) {
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
              $options_array = json_decode($datesource->options, true);
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
@@ -365,11 +376,13 @@ public function getPanelsByDashboardId($dashboardId) {
             } else {
 //Modbus with datasource -> datapoint
                 $datepoint = \App\Datapoint::find($panel->datapoint_id);
+                // $panel->datasource = $datesource;
                 $panel->sensorData = $this->getLastSensorData($datepoint->address, $datesource->ip, $datesource->port, 'Temperature', $datepoint->unitid);
             }
 
         } else if (in_array($panel->type, $chartTypePanelsWidgetTemperatureMQTT)) {
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
@@ -386,12 +399,14 @@ public function getPanelsByDashboardId($dashboardId) {
             } else {
 //Modbus with datasource -> datapoint
                 $datepoint = \App\Datapoint::find($panel->datapoint_id);
+                // $panel->datasource = $datesource;
                 $panel->sensorData = $this->getLastSensorData($datepoint->address, $datesource->ip, $datesource->port, 'Temperature', $datepoint->unitid);
             }
 
         } 
         else if (in_array($panel->type, $chartTypePanelsWidgetHumidity)) {
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
@@ -401,6 +416,7 @@ public function getPanelsByDashboardId($dashboardId) {
             } else {
 //Modbus with datasource -> datapoint
                 $datepoint = \App\Datapoint::find($panel->datapoint_id);
+                // $panel->datasource = $datesource;
                 $panel->sensorData = $this->getLastSensorData($datepoint->address, $datesource->ip, $datesource->port, 'Temperature', $datepoint->unitid);
             }
 
@@ -409,6 +425,7 @@ public function getPanelsByDashboardId($dashboardId) {
 // $datesource = \App\Datasource::find($panel->datasource_id);
 // $panel->sensorData = $this->getLast10SensorData($datepoint->address, $datesource->ip, $datesource->port, 'Temperature', $datepoint->unitid);
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             $options_array = json_decode($datesource->options, true);
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
@@ -428,6 +445,7 @@ public function getPanelsByDashboardId($dashboardId) {
 // $datesource = \App\Datasource::find($panel->datasource_id);
 // $panel->sensorData = $this->getLast10SensorData($datepoint->address, $datesource->ip, $datesource->port, 'Humidity', $datepoint->unitid);
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
@@ -446,6 +464,7 @@ public function getPanelsByDashboardId($dashboardId) {
 // $datesource = \App\Datasource::find($panel->datasource_id);
 // $panel->sensorData = $this->getLast10SensorData($datepoint->address, $datesource->ip, $datesource->port, 'Humidity', $datepoint->unitid);
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
@@ -464,6 +483,7 @@ public function getPanelsByDashboardId($dashboardId) {
 // $datesource = \App\Datasource::find($panel->datasource_id);
 // $panel->sensorData = $this->getLast10SensorData($datepoint->address, $datesource->ip, $datesource->port, 'Humidity', $datepoint->unitid);
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
@@ -482,6 +502,7 @@ public function getPanelsByDashboardId($dashboardId) {
 // $datesource = \App\Datasource::find($panel->datasource_id);
 // $panel->sensorData = $this->getLast10SensorData($datepoint->address, $datesource->ip, $datesource->port, 'Humidity', $datepoint->unitid);
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
@@ -510,6 +531,7 @@ public function getPanelsByDashboardId($dashboardId) {
 // $datesource = \App\Datasource::find($panel->datasource_id);
 // $panel->sensorData = $this->getLastSensorData($datepoint->address, $datesource->ip, $datesource->port, 'Power', $datepoint->unitid);
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
@@ -525,6 +547,7 @@ public function getPanelsByDashboardId($dashboardId) {
         }  else if ($panel->type == '10') {
             $datepoint = \App\Datapoint::find($panel->datapoint_id);
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             $panel->sensorData = $this->getLastSensorData($datepoint->address, $datesource->ip, $datesource->port, 'Power Switch', $datepoint->unitid);
         }
         else if ($panel->type == '13') {
@@ -532,6 +555,7 @@ public function getPanelsByDashboardId($dashboardId) {
 // $datesource = \App\Datasource::find($panel->datasource_id);
 // $panel->sensorData = $this->getLastSensorData($datepoint->address, $datesource->ip, $datesource->port, 'Power', $datepoint->unitid);
             $datesource = \App\Datasource::find($panel->datasource_id);
+            $panel->datasource = $datesource;
             if($datesource->ip == '0.0.0.0'){
 //datasource ID as address to identify sensor data
                 $datesource->address=0;
