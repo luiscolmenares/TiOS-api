@@ -171,16 +171,26 @@ public function getUser($userId){
     $user_role = Role::find($user_roleid);
     $user_organization = Organization::find($user_organization_id);
     $user_permissions = $this->getPermissionRoleNameList($user_roleid);
+    // $user_projects = array();
     $user_projects = \DB::table('project_user')
     ->where('project_user.user_id', '=', $userId)
     ->select('project_user.project_id')
     ->get();
-    $user_projects_list = array();
+
+    if (count($user_projects) > 0){
+        $user_projects_list = array();
     foreach ($user_projects as $user_project) {
         $project = Project::find($user_project->project_id);
         array_push($user_projects_list, $project);
 
     }
+    $user_projects = $user_projects[0];
+    } else {
+        $user_projects_list = array();
+        $user_projects = array();
+
+    }
+    
     $complete_user = array(
         'user' => array(
             'id' => $user->id,
@@ -199,7 +209,7 @@ public function getUser($userId){
             'role_name' => $user_role->name,
             'role_description' => $user_role->description,
             'organization_id' => $user->organization_id,
-            'projects' => $user_projects[0],
+            'projects' => $user_projects,
             'project_list' => $user_projects_list,
             'organization_name' => $user_organization->name,
             'permissions' => $user_permissions
