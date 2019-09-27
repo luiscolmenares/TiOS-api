@@ -163,7 +163,14 @@ public function updateProject(Request $request, $projectId){
     if($request->active == 0){$project->active = 0;}
     if($request->active == 1){$project->active = 1;}
     if($request->organization_id){$project->organization_id = $request->organization_id;}
-
+    if($request->address_1){$project->address_1 = $request->address_1;}
+    if($request->address_2){$project->address_2 = $request->address_2;}
+    if($request->city){$project->city = $request->city;}
+    if($request->state){$project->state = $request->state;}
+    if($request->zip){$project->zip = $request->zip;}
+    if($request->photo){$project->photo = $request->photo;}
+    if($request->website){$project->website = $request->website;}
+    
     if (!$project->save()) {
         abort(500, 'Could not update project.');
     }

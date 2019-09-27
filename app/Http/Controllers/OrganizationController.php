@@ -277,6 +277,13 @@ public function getTotalOrganizationsCount(){
                 'updated_at' => $project->updated_at,
                 'deleted_at' => $project->deleted_at,
                 'organization_id' => $project->organization_id,
+                'address_1' => $project->address_1,
+                'address_2' => $project->address_2,
+                'city' => $project->city,
+                'state' => $project->state,
+                'zip' => $project->zip,
+                'photo' => $project->photo,
+                'website' => $project->website,
                 'dashboards' => $dashboards,
 
                 );

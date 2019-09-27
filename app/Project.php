@@ -21,7 +21,7 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'notes', 'active', 'organization_id',
+        'name', 'notes', 'active', 'organization_id', 'address_1', 'address_2', 'city', 'state', 'zip', 'photo', 'website',
     ];
     protected $dates = ['deleted_at'];
     public function Users()
