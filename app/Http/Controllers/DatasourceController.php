@@ -103,6 +103,9 @@ public function getDatasource($DatasourceId) {
     'toggle' => $datasource->toggle,
     'verification_enable' => $datasource->verification_enable,
     'verification_digits' => $datasource->verification_digits,
+    'left_coordinate' => $datasource->left_coordinate,
+    'top_coordinate' => $datasource->top_coordinate,
+    'image' => $datasource->image,
     );
 
     // return $complete_space;
@@ -309,6 +312,9 @@ public function GetDatasourcesBySpaceId($space_id){
                     'toggle' => $datasource->toggle,
                     'verification_enable' => $datasource->verification_enable,
                     'verification_digits' => $datasource->verification_digits,
+                    'left_coordinate' => $datasource->left_coordinate,
+                    'top_coordinate' => $datasource->top_coordinate,
+                    'image' => $datasource->image,
                     'datasourcetype' =>$datasourcetype
 
                     
@@ -378,6 +384,9 @@ public function GetActiveDatasourcesBySpaceId($space_id){
                     'toggle' => $datasource->toggle,
                     'verification_enable' => $datasource->verification_enable,
                     'verification_digits' => $datasource->verification_digits,
+                    'left_coordinate' => $datasource->left_coordinate,
+                    'top_coordinate' => $datasource->top_coordinate,
+                    'image' => $datasource->image,
                     'datasourcetype' =>$datasourcetype
 
                     
@@ -418,6 +427,9 @@ public function updateDatasource(Request $request, $datasourceId) {
     if ($request->toggle) {$datasource->toggle = $request->toggle;}
     if ($request->verification_enable) {$datasource->verification_enable = $request->verification_enable;}
     if ($request->verification_digits) {$datasource->verification_digits = $request->verification_digits;}
+    if ($request->left_coordinate) {$datasource->left_coordinate = $request->left_coordinate;}
+    if ($request->top_coordinate) {$datasource->top_coordinate = $request->top_coordinate;}
+    if ($request->image) {$datasource->image = $request->image;}
     if ($request->active == 0) {
         $datasource->active = 0;
     }
@@ -496,6 +508,9 @@ public function getProjectDatasources($project_id) {
                     'toggle' => $datasource->toggle,
                     'verification_enable' => $datasource->verification_enable,
                     'verification_digits' => $datasource->verification_digits,
+                    'left_coordinate' => $datasource->left_coordinate,
+                    'top_coordinate' => $datasource->top_coordinate,
+                    'image' => $datasource->image,
                     'datasourcetype' =>$datasourcetype
 
                     
@@ -563,6 +578,9 @@ public function getActiveProjectDatasources($project_id) {
                     'toggle' => $datasource->toggle,
                     'verification_enable' => $datasource->verification_enable,
                     'verification_digits' => $datasource->verification_digits,
+                    'left_coordinate' => $datasource->left_coordinate,
+                    'top_coordinate' => $datasource->top_coordinate,
+                    'image' => $datasource->image,
                     'datasourcetype' =>$datasourcetype
 
                     

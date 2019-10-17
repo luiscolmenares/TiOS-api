@@ -170,6 +170,8 @@ public function updateProject(Request $request, $projectId){
     if($request->zip){$project->zip = $request->zip;}
     if($request->photo){$project->photo = $request->photo;}
     if($request->website){$project->website = $request->website;}
+    if($request->image){$project->image = $request->image;}
+
     
     if (!$project->save()) {
         abort(500, 'Could not update project.');
