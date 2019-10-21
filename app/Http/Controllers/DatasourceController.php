@@ -700,6 +700,42 @@ public function Thingstatus(Request $request) {
     return $response;
 }
 
+/**
+     * Upload new File
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadImage(Request $request, $datasource_id)
+    {
+       
+        $validator = Validator::make($request->file(), [
+            'file' => 'required|image|max:1000',
+        ]);
+
+        if ($validator->fails()) {
+
+            $errors = [];
+            foreach ($validator->messages()->all() as $error) {
+                array_push($errors, $error);
+            }
+
+            return response()->json(['errors' => $errors, 'status' => 400], 400);
+        }
+
+         $datasources = Datasource::find($datasource_id);
+            //$sportevent = Sportevent::find($re);
+            $datasources->image = $request->file('file')->getClientOriginalName();
+           // $sportevent->logo = 'imagen33.png';
+            if (!$projects->save()) {
+            abort(500, 'Could not update datasources image.');
+            }
+            $request->file('file')->move(__DIR__ . '/../../../public/datasources/images/', $request->file('file')->getClientOriginalName());
+
+        return response()->json(['errors' => [], 'datasources' => Datasource::find($request->datasource_id), 'status' => 200], 200);
+    }   
+
 
 /**
 * Datapoint values by daterange

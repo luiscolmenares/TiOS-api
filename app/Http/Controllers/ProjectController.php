@@ -337,4 +337,40 @@ public function attachDatasourceProject($datasourceId, $projectId){
     $project->Datasources()->attach($datasourceId);
     return $project;
 }
+
+/**
+     * Upload new File
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadImage(Request $request, $projectId)
+    {
+       
+        $validator = Validator::make($request->file(), [
+            'file' => 'required|image|max:1000',
+        ]);
+
+        if ($validator->fails()) {
+
+            $errors = [];
+            foreach ($validator->messages()->all() as $error) {
+                array_push($errors, $error);
+            }
+
+            return response()->json(['errors' => $errors, 'status' => 400], 400);
+        }
+
+         $projects = Project::find($projectId);
+            //$sportevent = Sportevent::find($re);
+            $projects->image = $request->file('file')->getClientOriginalName();
+           // $sportevent->logo = 'imagen33.png';
+            if (!$projects->save()) {
+            abort(500, 'Could not update projects image.');
+            }
+            $request->file('file')->move(__DIR__ . '/../../../public/projects/images/', $request->file('file')->getClientOriginalName());
+
+        return response()->json(['errors' => [], 'projects' => Project::find($request->projectId), 'status' => 200], 200);
+    }   
 }

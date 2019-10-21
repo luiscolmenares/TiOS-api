@@ -70,6 +70,7 @@ Route::middleware('auth:api')->get('project/{project_id}/users', 'ProjectControl
 Route::middleware('auth:api')->get('project/{project_id}/users/count', 'ProjectController@getProjectUsersCount');
 Route::middleware('auth:api')->get('project/{project_id}/dashboards/count', 'ProjectController@getProjectDashboardsCount');
 Route::middleware('auth:api')->get('project/{project_id}/dashboards', 'ProjectController@getDashboardByProjectId');
+Route::post('project/upload/{project_id}', 'ProjectController@uploadImage');
 
 
 
@@ -118,7 +119,7 @@ Route::middleware('auth:api')->get('datasource/protocols', 'DatasourceController
 Route::middleware('auth:api')->get('datasource/{datasource_id}/project', 'DatasourceController@getProjectByDatasourceId');
 Route::middleware('auth:api')->get('space/{space_id}/datasources', 'DatasourceController@GetDatasourcesBySpaceId');
 Route::middleware('auth:api')->post('thingstatus', 'DatasourceController@ThingStatus');
-
+Route::post('datasource/upload/{datasource_id}', 'DatasourceController@uploadImage');
 
 //Datapoints
 Route::middleware('auth:api')->get('datapoints', 'DatapointController@getDatapoints');
