@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Project;
 use App\Organization;
 use App\Dashboard;
+use App\Space;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+
+use Validator;
+use Illuminate\Routing\UrlGenerator;
 
 class ProjectController extends Controller
 {
