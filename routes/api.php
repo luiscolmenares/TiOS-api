@@ -108,8 +108,8 @@ Route::middleware('auth:api')->get('datasource/{datasource_id}/project/{project_
 Route::middleware('auth:api')->post('datasource/edit/{datasource_id}', 'DatasourceController@updateDatasource');
 Route::middleware('auth:api')->delete('datasource/delete/{datasource_id}', 'DatasourceController@deleteDatasource');
 Route::middleware('auth:api')->get('project/{projectParam}/datasources', 'DatasourceController@getProjectDatasources');
+Route::middleware('auth:api')->get('project/{projectParam}/hp/datasources', 'DatasourceController@getProjectHpDatasources');
 Route::middleware('auth:api')->get('project/{projectParam}/datasources/actives', 'DatasourceController@getActiveProjectDatasources');
-
 Route::middleware('auth:api')->get('project/{projectParam}/datasources/count', 'DatasourceController@getProjectDatasourcesCount');
 Route::middleware('auth:api')->get('datasource/{datasourceParam}/datapoints', 'DatasourceController@getDatasourceDatapoints');
 Route::middleware('auth:api')->get('datasources/type', 'DatasourceController@getDatasourcesType');

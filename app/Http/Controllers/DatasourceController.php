@@ -327,29 +327,7 @@ public function GetDatasourcesBySpaceId($space_id){
 }
 
 /**
-* @SWG\Get(
-*      path="/space/{space_id}/datasources",
-*      operationId="GetActiveDatasourcesBySpaceId",
-*      tags={"Datasources"},
-*      summary="Get datasources information related to space",
-*      description="Returns datasources data related to space",
-*      @SWG\Parameter(
-*          name="space_id",
-*          description="space id",
-*          required=true,
-*          type="integer",
-*          in="path"
-*      ),
-*      @SWG\Response(
-*          response=200,
-*          description="successful operation"
-*       ),
-*      @SWG\Response(response=400, description="Bad request"),
-*      @SWG\Response(response=404, description="Resource Not Found"),
-*      security={
-*           {"passport": {}}
-*       },
-* )
+* GetActiveDatasourcesBySpaceId
 *
 */ 
 public function GetActiveDatasourcesBySpaceId($space_id){
@@ -512,6 +490,61 @@ public function getProjectDatasources($project_id) {
                     'top_coordinate' => $datasource->top_coordinate,
                     'image' => $datasource->image,
                     'datasourcetype' =>$datasourcetype
+
+                    
+         );
+         array_push($datasources_list, $d);
+     }
+     $datasources_list = array("datasources" => $datasources_list);
+
+    return $datasources_list;
+
+}
+
+/**
+* @SWG\Get(
+*      path="/project/{project_id}/hp/datasources",
+*      operationId="getProjectHpDatasources",
+*      tags={"Datasources"},
+*      summary="Get Datasources and hotspot coordinates related to a particular project",
+*      description="Returns List of datasources from a project",
+*      @SWG\Parameter(
+*          name="project_id",
+*          description="Project ID",
+*          required=true,
+*          type="integer",
+*          in="path"
+*      ),
+*      @SWG\Response(
+*          response=200,
+*          description="successful operation"
+*       ),
+*       @SWG\Response(response=400, description="Bad request"),
+*       security={
+*           {"passport": {}}
+*       }
+*     )
+*
+* Returns list of datasources
+*/
+public function getProjectHpDatasources($project_id) {
+    $url = url('/');
+    $datasources = Datasource::where('project_id', $project_id)->get();
+    $datasources_list = array();
+        foreach ($datasources as $datasource) {
+            $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
+            $options_array = json_decode($datasource->options, true);
+            $position = array(
+                                'left' => $datasource->left_coordinate,
+                                'top' => $datasource->top_coordinate
+
+            );
+        $d = array(
+                    'type' => 'text',
+                    'title' => $datasource->name,
+                    'description' => $datasource->type,
+                    'position' => $position,
+                    'picturePath' => $datasource->image,
 
                     
          );
