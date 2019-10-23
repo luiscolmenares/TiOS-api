@@ -544,7 +544,7 @@ public function getProjectHpDatasources($project_id) {
                     'title' => $datasource->name,
                     'description' => $datasource->type,
                     'position' => $position,
-                    'picturePath' => $datasource->image,
+                    'picturePath' => $url.'/datasources/images/'.$datasource->image,
 
                     
          );
