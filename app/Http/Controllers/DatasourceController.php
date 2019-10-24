@@ -757,16 +757,14 @@ public function Thingstatus(Request $request) {
             return response()->json(['errors' => $errors, 'status' => 400], 400);
         }
 
-         $datasources = Datasource::find($datasource_id);
-            //$sportevent = Sportevent::find($re);
-            $datasources->image = $request->file('file')->getClientOriginalName();
-           // $sportevent->logo = 'imagen33.png';
+         $datasource = Datasource::find($datasource_id);
+            $datasource->image = $request->file('file')->getClientOriginalName();
             if (!$projects->save()) {
             abort(500, 'Could not update datasources image.');
             }
             $request->file('file')->move(__DIR__ . '/../../../public/datasources/images/', $request->file('file')->getClientOriginalName());
 
-        return response()->json(['errors' => [], 'datasources' => Datasource::find($request->datasource_id), 'status' => 200], 200);
+        return response()->json(['errors' => [], 'datasource' => Datasource::find($request->datasource_id), 'status' => 200], 200);
     }   
 
 
