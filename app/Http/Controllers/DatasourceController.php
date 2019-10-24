@@ -759,12 +759,12 @@ public function Thingstatus(Request $request) {
 
          $datasource = Datasource::find($datasource_id);
             $datasource->image = $request->file('file')->getClientOriginalName();
-            if (!$projects->save()) {
+            if (!$datasource->save()) {
             abort(500, 'Could not update datasources image.');
             }
             $request->file('file')->move(__DIR__ . '/../../../public/datasources/images/', $request->file('file')->getClientOriginalName());
 
-        return response()->json(['errors' => [], 'datasource' => Datasource::find($request->datasource_id), 'status' => 200], 200);
+        return response()->json(['errors' => [], 'datasources' => Datasource::find($request->datasource_id), 'status' => 200], 200);
     }   
 
 
