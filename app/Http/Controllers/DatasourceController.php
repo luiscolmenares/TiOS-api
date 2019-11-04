@@ -532,6 +532,23 @@ public function getProjectHpDatasources($project_id) {
     $datasources = Datasource::where('project_id', $project_id)->get();
     $datasources_list = array();
         foreach ($datasources as $datasource) {
+            if ($datasource->space_id > 0){
+                $space = Space::find($datasource->space_id);
+                $datasource_space_id = $space->id;
+                $datasource_space_name =  $space->name;
+                $datasource_space_url = "/project/".$space->project_id."/space/".$datasource->space_id;
+                $datasource_space_link = array(
+                                'url' => "/#/project/".$space->project_id."/space/".$datasource->space_id,
+                                'label' => 'Go to space'
+                );
+
+            } else {
+                $datasource_space_id = 0;
+                $datasource_space_name =  null;
+                $datasource_space_url = null;
+                $datasource_space_link = null;
+
+            }
             $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
             $options_array = json_decode($datasource->options, true);
             $position = array(
@@ -539,16 +556,27 @@ public function getProjectHpDatasources($project_id) {
                                 'top' => $datasource->top_coordinate
 
             );
-        $d = array(
+
+            if (($datasource->left_coordinate != null) && ($datasource->top_coordinate != null) && ($datasource->image != null)){
+
+                $d = array(
                     'type' => 'text',
                     'title' => $datasource->name,
+                    'options_array' => $options_array,
                     'description' => $datasource->type,
                     'position' => $position,
                     'picturePath' => $url.'/datasources/images/'.$datasource->image,
+                    'space_id' => $datasource_space_id,
+                    'space_name' => $datasource_space_name,
+                    'space_url' => $datasource_space_url,
+                    'customClassName' => "custom-ii",
+                    'link' => $datasource_space_link,
+                    'sticky' => true,
+                );
+                array_push($datasources_list, $d);
 
-                    
-         );
-         array_push($datasources_list, $d);
+            }
+        
      }
      $datasources_list = array("datasources" => $datasources_list);
 

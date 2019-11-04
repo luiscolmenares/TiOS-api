@@ -80,7 +80,9 @@ public function getProjects(){
 public function getProject($projectId){
     $url = url('/');
     $project = Project::find($projectId);
-    $project->image = $url.'/projects/images/'.$project->image;
+    if($project->image != null){
+        $project->image = $url.'/projects/images/'.$project->image;
+    }    
     $project = array("project" => $project);
     return $project;
 }
