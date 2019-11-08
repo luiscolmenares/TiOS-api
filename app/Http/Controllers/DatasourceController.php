@@ -563,7 +563,7 @@ public function getProjectHpDatasources($project_id) {
                     'type' => 'text',
                     'title' => $datasource->name,
                     'options_array' => $options_array,
-                    'description' => '<img class="picture" src="'.$url.'/datasources/images/'.$datasource->image.'" alt="'.$datasource->name.'"><p class="description">'.$datasource->type.'</p><p><button id="custombtn" onclick=\"showDataSourceDetail(\'{"'.$datasource->id.'"}\')\">View Datasource</button></p>',
+                    'description' => '<img class="picture" src="'.$url.'/datasources/images/'.$datasource->image.'" alt="'.$datasource->name.'"><p class="description">'.$datasource->type.'</p><p><button id="custombtn" onclick=\"showDataSourceDetail(\''.$datasource->id.'\')\">View Datasource</button></p>',
                     'position' => $position,
                     // 'picturePath' => $url.'/datasources/images/'.$datasource->image,
                     'space_id' => $datasource_space_id,
