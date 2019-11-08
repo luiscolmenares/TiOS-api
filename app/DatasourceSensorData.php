@@ -20,6 +20,6 @@ class DatasourceSensorData extends Model
      * @var array
      */
     protected $fillable = [
-        'organization_id', 'project_id', 'datasource_id', 'topic', 'value', 'timestamp'
+        'organization_id', 'project_id', 'datasource_id', 'topic', 'value', 'timestamp', 'space_id'
     ];
 }

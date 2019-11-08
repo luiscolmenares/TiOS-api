@@ -120,6 +120,7 @@ public function createDatasourceSensorData(Request $request) {
     $organization = app('App\Http\Controllers\ProjectController')->getOrganizationByProjectId($project['project']->id);
 
     $datasourcesensordata->datasource_id = $datasource[0]->id;
+    $datasourcesensordata->space_id = $datasource[0]->space_id;
     $datasourcesensordata->project_id = $project['project']->id;
     $datasourcesensordata->organization_id = $organization['organization']->id;
     $now =  \Carbon\Carbon::now()->format('Y-m-d H:i');
