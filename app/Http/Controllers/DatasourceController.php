@@ -213,6 +213,20 @@ public function getProjectByDatasourceId($datasourceId) {
 }
 
 /**
+* Get Space  by Datasource ID
+* @param datasourcetypeId
+* return datasourcetype
+*/
+public function getSpaceByDatasourceId($datasourceId) {
+// $datasource = \DB::table('datasources')->where('id', '=', $datasourceId)->get();
+    $datasource = Datasource::find($datasourceId);
+    $spaceId = $datasource->space_id;
+    $space = Space::find($spaceId);
+    $space = array("space" => $space);
+    return $space;
+}
+
+/**
 * Get Organization  by Datasource ID
 * @param datasourcetypeId
 * return datasourcetype
@@ -797,7 +811,7 @@ public function Thingstatus(Request $request) {
 
 
 /**
-* Datapoint values by daterange
+* Datasources values by daterange
 * @param Request request, datapointId
 * return datapoint
 */
@@ -952,6 +966,344 @@ public function getDatasourceValuesByDateRange($datasourceId, $from_date, $to_da
             'totallowest' => $totalminvalue,
             'toptriggersnotifications' => $toptriggersnotifications,
             'triggersnotifications' => $triggersnotifications,
+            'sensordata' => $sensordata
+        );
+
+        return $sensordata;
+
+    }
+
+
+}
+
+/**
+* Datasources values by daterange
+* @param Request request, datapointId
+* return datapoint
+*/
+public function getDatasourceValuesByDateRangeAnalytics($datasourceId, $from_date, $to_date) {
+    $datasource = Datasource::find($datasourceId);
+    // $datasource = $this->GetDatasourceByDatapointId($datapoint_id);
+    $project = $this->GetProjectByDatasourceId($datasourceId)['project'];
+    $organization = $this->GetOrganizationByDatasourceId($datasourceId)['organization'];
+    $space = $this->GetSpaceByDatasourceId($datasourceId)['space'];
+
+    // return $project;
+    // $triggersnotifications = app('App\Http\Controllers\TriggerController')->getTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
+    // $toptriggersnotifications = app('App\Http\Controllers\TriggerController')->getTopTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
+    $options_array = json_decode($datasource->options, true);
+    $topic =  $options_array['topic'];
+    // $sensordata = \DB::table('sensordata')
+    // $sensordata = \DB::table('datasource_sensor_datas')
+    // ->select('created_at', 'created_at as date_created', 'value as data', 'topic')
+    // ->where('topic', "=", $topic)
+    // ->whereBetween('timestamp', [$from_date, $to_date])
+    // ->orderBy('created_at', 'desc')
+    // ->get()
+    // ->reverse();
+
+    $sensordata = \DB::table('datasource_sensor_datas')
+                    ->select('created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+                    ->where('topic', "=", $topic)
+                    ->whereBetween('timestamp', [$from_date, $to_date])
+                    ->orderBy('created_at', 'desc')
+                    ->take(100)
+                    ->get()
+                    ->reverse();
+
+    $sensordatatotals = \DB::table('datasource_sensor_datas')
+                        ->select('topic', \DB::raw('COUNT(id) as total_count'), \DB::raw('MAX(value) as total_max'), \DB::raw('min(value) as total_min'), \DB::raw('AVG(value) as total_average'))
+                        ->groupBy('topic')
+                        ->where('topic', "=", $topic)
+                        ->get();
+                         // return $sensordatatotals;
+    $sensordafilteredttotals = \DB::table('datasource_sensor_datas')
+                        ->select('topic', \DB::raw('COUNT(id) as filtered_count'), \DB::raw('MAX(value) as filtered_max'), \DB::raw('min(value) as filtered_min'), \DB::raw('AVG(value) as filtered_average'))
+                        ->groupBy('topic')
+                        ->where('topic', "=", $topic)
+                        ->whereBetween('timestamp', [$from_date, $to_date])
+                        ->get();
+                        // return $sensordafilteredttotals;
+
+    if($sensordafilteredttotals){
+        $filtered_avg = $sensordafilteredttotals[0]->filtered_average;
+        $filtered_maxvalue = $sensordafilteredttotals[0]->filtered_max;
+        $filtered_minvalue = $sensordafilteredttotals[0]->filtered_min;
+        $filtered_count = $sensordafilteredttotals[0]->filtered_count;
+
+    } else {
+        $filtered_avg = 0;
+        $filtered_maxvalue = 0;
+        $filtered_minvalue = 0; 
+        $filtered_count = 0;
+    }
+
+    if($sensordatatotals){
+        $total_avg = $sensordatatotals[0]->total_average;
+        $total_maxvalue = $sensordatatotals[0]->total_max;
+        $total_minvalue = $sensordatatotals[0]->total_min;
+        $total_count = $sensordatatotals[0]->total_count;
+         
+    } else {
+        $total_avg = 0; 
+        $total_maxvalue = 0;
+        $total_minvalue = 0;
+        $total_count = 0;
+    }
+                   
+    $sum = 0;
+    $count = 0;
+    $totalsum = 0;
+    $totalcount = 0;  
+    $totalmaxvalue = 0;
+    $totalminvalue=0;
+    // return $sensordata;
+    // foreach ($sensordata as $datapointvalue) {
+    //     // $sum = $sum + $datapointvalue->data;
+    //     // $totalsum = $totalsum + $datapointvalue->data;
+    //     // $count = $count + 1;
+    //     // $totalcount = $totalcount + 1;
+    //     // if ($totalmaxvalue < $datapointvalue->data){
+    //     //     $totalmaxvalue = $datapointvalue->data;
+    //     // }
+    //     // if ($totalminvalue > $datapointvalue->data){
+    //     //     $totalminvalue = $datapointvalue->data;
+    //     // }
+    //     // $datapointvalue->_blank = "";
+    //     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
+
+    // }
+    if(($from_date > 0) && ($to_date > 0)){
+        $datasourceValuelist = [];
+        // $datasourceValuelist = (array) $sensordata;
+        // $datasourceValuelist = json_decode(json_encode($sensordata), true);
+        // $filtered_sum = 0;
+        // $filtered_count = 0;
+        // $filtered_maxvalue = 0;
+        // $filtered_minvalue=0;
+        foreach ($sensordata as $datapointvalue) {
+        //     $datapointvalue->_blank = "";
+        //     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
+        //     // if(($datapointvalue->date_created > $from_date) && ($datapointvalue->date_created < $to_date)){
+                array_push($datasourceValuelist, $datapointvalue);
+        //         // $filtered_sum = $filtered_sum + $datapointvalue->data;
+        //         // $filtered_count = $filtered_count + 1;
+        //         // if ($filtered_maxvalue < $datapointvalue->data){
+        //         //     $filtered_maxvalue = $datapointvalue->data;
+        //         // }
+        //         // if ($filtered_minvalue > $datapointvalue->data){
+        //         //     $filtered_minvalue = $datapointvalue->data;
+        //         // }
+        //     // }
+        }
+
+        $datasourceValuelist = array(
+            'datasource_name' => $datasource->name,
+            'space_name' => $space->name,
+            'project_name' => $project->name,
+            'organization_name' => $organization->name,
+            // 'sum' => $filtered_sum,
+            'count' => $filtered_count,
+            'totalcount' => $total_count,
+            'average' => $filtered_avg,
+            'totalaverage' => $total_avg,
+            'highest' => $filtered_maxvalue,
+            'lowest' => $filtered_minvalue,
+            'totalhighest' => $total_maxvalue,
+            'totallowest' => $total_minvalue,
+            // 'toptriggersnotifications' => $toptriggersnotifications,
+            // 'triggersnotifications' => $triggersnotifications,
+            'sensordata' => $datasourceValuelist,
+        );
+
+        return $datasourceValuelist;
+    } else {
+
+        $sensordata = array(
+            'datasource_name' => $datasource->name,
+            'space_name' => $space->name,
+            'project_name' => $project->name,
+            'organization_name' => $organization->name,
+            'sum' => $sum,
+            'count' => $count,
+            'totalcount' => $totalcount,
+            'average' => ($sum/$count),
+            'totalaverage' => ($totalsum/$totalcount),
+            'highest' => $totalmaxvalue,
+            'lowest' => $totalminvalue,
+            'totalhighest' => $totalmaxvalue,
+            'totallowest' => $totalminvalue,
+            // 'toptriggersnotifications' => $toptriggersnotifications,
+            // 'triggersnotifications' => $triggersnotifications,
+            'sensordata' => $sensordata
+        );
+
+        return $sensordata;
+
+    }
+
+
+}
+
+/**
+* Datasources values by daterange
+* @param Request request, datapointId
+* return datapoint
+*/
+public function getDatasourceValuesBySpaceByDateRangeAnalytics($datasourceId, $from_date, $to_date) {
+    $datasource = Datasource::find($datasourceId);
+    // $datasource = $this->GetDatasourceByDatapointId($datapoint_id);
+    $project = $this->GetProjectByDatasourceId($datasourceId)['project'];
+    $organization = $this->GetOrganizationByDatasourceId($datasourceId)['organization'];
+    $space = $this->GetSpaceByDatasourceId($datasourceId)['space'];
+
+    // return $project;
+    // $triggersnotifications = app('App\Http\Controllers\TriggerController')->getTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
+    // $toptriggersnotifications = app('App\Http\Controllers\TriggerController')->getTopTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
+    $options_array = json_decode($datasource->options, true);
+    $topic =  $options_array['topic'];
+    // $sensordata = \DB::table('sensordata')
+    // $sensordata = \DB::table('datasource_sensor_datas')
+    // ->select('created_at', 'created_at as date_created', 'value as data', 'topic')
+    // ->where('topic', "=", $topic)
+    // ->whereBetween('timestamp', [$from_date, $to_date])
+    // ->orderBy('created_at', 'desc')
+    // ->get()
+    // ->reverse();
+
+    $sensordata = \DB::table('datasource_sensor_datas')
+                    ->select('created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+                    ->where('topic', "=", $topic)
+                    ->whereBetween('timestamp', [$from_date, $to_date])
+                    ->orderBy('created_at', 'desc')
+                    ->take(100)
+                    ->get()
+                    ->reverse();
+
+    $sensordatatotals = \DB::table('datasource_sensor_datas')
+                        ->select('topic', \DB::raw('COUNT(id) as total_count'), \DB::raw('MAX(value) as total_max'), \DB::raw('min(value) as total_min'), \DB::raw('AVG(value) as total_average'))
+                        ->groupBy('topic')
+                        ->where('topic', "=", $topic)
+                        ->get();
+                         // return $sensordatatotals;
+    $sensordafilteredttotals = \DB::table('datasource_sensor_datas')
+                        ->select('topic', \DB::raw('COUNT(id) as filtered_count'), \DB::raw('MAX(value) as filtered_max'), \DB::raw('min(value) as filtered_min'), \DB::raw('AVG(value) as filtered_average'))
+                        ->groupBy('topic')
+                        ->where('topic', "=", $topic)
+                        ->whereBetween('timestamp', [$from_date, $to_date])
+                        ->get();
+                        // return $sensordafilteredttotals;
+
+    if($sensordafilteredttotals){
+        $filtered_avg = $sensordafilteredttotals[0]->filtered_average;
+        $filtered_maxvalue = $sensordafilteredttotals[0]->filtered_max;
+        $filtered_minvalue = $sensordafilteredttotals[0]->filtered_min;
+        $filtered_count = $sensordafilteredttotals[0]->filtered_count;
+
+    } else {
+        $filtered_avg = 0;
+        $filtered_maxvalue = 0;
+        $filtered_minvalue = 0; 
+        $filtered_count = 0;
+    }
+
+    if($sensordatatotals){
+        $total_avg = $sensordatatotals[0]->total_average;
+        $total_maxvalue = $sensordatatotals[0]->total_max;
+        $total_minvalue = $sensordatatotals[0]->total_min;
+        $total_count = $sensordatatotals[0]->total_count;
+         
+    } else {
+        $total_avg = 0; 
+        $total_maxvalue = 0;
+        $total_minvalue = 0;
+        $total_count = 0;
+    }
+                   
+    $sum = 0;
+    $count = 0;
+    $totalsum = 0;
+    $totalcount = 0;  
+    $totalmaxvalue = 0;
+    $totalminvalue=0;
+    // return $sensordata;
+    // foreach ($sensordata as $datapointvalue) {
+    //     // $sum = $sum + $datapointvalue->data;
+    //     // $totalsum = $totalsum + $datapointvalue->data;
+    //     // $count = $count + 1;
+    //     // $totalcount = $totalcount + 1;
+    //     // if ($totalmaxvalue < $datapointvalue->data){
+    //     //     $totalmaxvalue = $datapointvalue->data;
+    //     // }
+    //     // if ($totalminvalue > $datapointvalue->data){
+    //     //     $totalminvalue = $datapointvalue->data;
+    //     // }
+    //     // $datapointvalue->_blank = "";
+    //     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
+
+    // }
+    if(($from_date > 0) && ($to_date > 0)){
+        $datasourceValuelist = [];
+        // $datasourceValuelist = (array) $sensordata;
+        // $datasourceValuelist = json_decode(json_encode($sensordata), true);
+        // $filtered_sum = 0;
+        // $filtered_count = 0;
+        // $filtered_maxvalue = 0;
+        // $filtered_minvalue=0;
+        foreach ($sensordata as $datapointvalue) {
+        //     $datapointvalue->_blank = "";
+        //     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
+        //     // if(($datapointvalue->date_created > $from_date) && ($datapointvalue->date_created < $to_date)){
+                array_push($datasourceValuelist, $datapointvalue);
+        //         // $filtered_sum = $filtered_sum + $datapointvalue->data;
+        //         // $filtered_count = $filtered_count + 1;
+        //         // if ($filtered_maxvalue < $datapointvalue->data){
+        //         //     $filtered_maxvalue = $datapointvalue->data;
+        //         // }
+        //         // if ($filtered_minvalue > $datapointvalue->data){
+        //         //     $filtered_minvalue = $datapointvalue->data;
+        //         // }
+        //     // }
+        }
+
+        $datasourceValuelist = array(
+            'datasource_name' => $datasource->name,
+            'space_name' => $space->name,
+            'project_name' => $project->name,
+            'organization_name' => $organization->name,
+            // 'sum' => $filtered_sum,
+            'count' => $filtered_count,
+            'totalcount' => $total_count,
+            'average' => $filtered_avg,
+            'totalaverage' => $total_avg,
+            'highest' => $filtered_maxvalue,
+            'lowest' => $filtered_minvalue,
+            'totalhighest' => $total_maxvalue,
+            'totallowest' => $total_minvalue,
+            // 'toptriggersnotifications' => $toptriggersnotifications,
+            // 'triggersnotifications' => $triggersnotifications,
+            'sensordata' => $datasourceValuelist,
+        );
+
+        return $datasourceValuelist;
+    } else {
+
+        $sensordata = array(
+            'datasource_name' => $datasource->name,
+            'space_name' => $space->name,
+            'project_name' => $project->name,
+            'organization_name' => $organization->name,
+            'sum' => $sum,
+            'count' => $count,
+            'totalcount' => $totalcount,
+            'average' => ($sum/$count),
+            'totalaverage' => ($totalsum/$totalcount),
+            'highest' => $totalmaxvalue,
+            'lowest' => $totalminvalue,
+            'totalhighest' => $totalmaxvalue,
+            'totallowest' => $totalminvalue,
+            // 'toptriggersnotifications' => $toptriggersnotifications,
+            // 'triggersnotifications' => $triggersnotifications,
             'sensordata' => $sensordata
         );
 

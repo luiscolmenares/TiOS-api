@@ -132,6 +132,7 @@ Route::middleware('auth:api')->get('datapoint/datasource/{datasource_id}/actives
 Route::middleware('auth:api')->get('datapoints/types', 'DatapointController@getDatapointTypes');
 Route::middleware('auth:api')->get('datapoint/{datapoint_id}/fromdate/{from_date}/todate/{to_date}', 'DatapointController@getDatapointValuesByDateRange');
 Route::middleware('auth:api')->get('datasource/{datasource_id}/fromdate/{from_date}/todate/{to_date}', 'DatasourceController@getDatasourceValuesByDateRange');
+Route::middleware('auth:api')->get('datasource/{datasource_id}/analytics/fromdate/{from_date}/todate/{to_date}', 'DatasourceController@getDatasourceValuesByDateRangeAnalytics');
 Route::middleware('auth:api')->get('space/{space_id}/datapoints', 'DatapointController@GetDatapointsBySpaceId');
 
 
