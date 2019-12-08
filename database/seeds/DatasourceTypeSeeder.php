@@ -96,10 +96,25 @@ class DatasourceTypeSeeder extends Seeder
             'codename' => 'ds-power',
             'icon_image' => 'power'
         ]);
-         DB::table('datasource_type')->insert([
+        DB::table('datasource_type')->insert([
             'name' => 'Monitor: Electric Energy (E)',
             'codename' => 'ds-energy',
             'icon_image' => 'energy'
+        ]);
+        DB::table('datasource_type')->insert([
+            'name' => 'Monitor: Electric Energy (kWh)',
+            'codename' => 'ds-kwhenergy',
+            'icon_image' => 'kwhenergy'
+        ]);
+        DB::table('datasource_type')->insert([
+            'name' => 'Monitor: Apparent power (KVA)',
+            'codename' => 'ds-apower',
+            'icon_image' => 'ds-apower'
+        ]);
+        DB::table('datasource_type')->insert([
+            'name' => 'Monitor: Real power (KW)',
+            'codename' => 'ds-rpower',
+            'icon_image' => 'ds-rpower'
         ]);
     }
 }

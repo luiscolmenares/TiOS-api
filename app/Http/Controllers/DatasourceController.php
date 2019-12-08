@@ -585,7 +585,7 @@ public function getProjectHpDatasources($project_id) {
                     'space_url' => $datasource_space_url,
                     'customClassName' => "custom-ii",
                     'link' => $datasource_space_link,
-                    'sticky' => true,
+                    'sticky' => false,
                 );
                 array_push($datasources_list, $d);
 

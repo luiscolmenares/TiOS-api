@@ -161,9 +161,12 @@ public function updateSpace(Request $request, $space_id) {
 *  | 14 | Monitor: Flood Sensor                   | ds-flood                         |
 *  | 15 | Monitor: Voltage (V)                    | ds-voltage                       |
 *  | 16 | Monitor: Electric Current (A)           | ds-current                       |
-*  | 17 | Monitor: Electric Power (W)             | ds-power                         |
-*  | 18 | Monitor: Electric Energy (E)            | ds-energy                        |
-*  +----+-----------------------------------------+----------------------------------+
+*  | 17 | Monitor: Electric Power (W)             | ds-power                         | 
+*  | 18 | Monitor: Electric Energy (E)            | ds-energy                        | 
+*  | 19 | Monitor: Electric Energy (kWh)          | ds-kwhenergy                     | 
+*  | 20 | Monitor: Apparent power (KVA)           | ds-apower                        | 
+*  | 21 | Monitor: Real power (KW)                | ds-rpower                        | 
++----+-----------------------------------------+------------+------------+-----------+
 */
 $datasources_list = array();
     foreach ($datasources as $datasource) {
@@ -183,7 +186,10 @@ $datasources_list = array();
             ($datasource['type'] === "Monitor: Voltage (V)") ||
             ($datasource['type'] === "Monitor: Electric Current (A)") ||
             ($datasource['type'] === "Monitor: Electric Power (W)") ||
-            ($datasource['type'] === "Monitor: Electric Energy (E)")
+            ($datasource['type'] === "Monitor: Electric Energy (E)") ||
+            ($datasource['type'] === "Monitor: Electric Energy (kWh)") ||
+            ($datasource['type'] === "Monitor: Apparent power (KVA)") ||
+            ($datasource['type'] === "Monitor: Real power (KW)")
     ){
             $datasource['data'] = app('App\Http\Controllers\DashboardController')->getLastSensorDataFromDatasource($datasource['options_array']['topic']);
             // $datasource['data'] = "data de Control: Smart Switch (Light)";
