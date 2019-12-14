@@ -121,6 +121,14 @@ Route::middleware('auth:api')->get('space/{space_id}/datasources', 'DatasourceCo
 Route::middleware('auth:api')->post('thingstatus', 'DatasourceController@ThingStatus');
 Route::post('datasource/upload/{datasource_id}', 'DatasourceController@uploadImage');
 
+//Datasources analitycs
+Route::middleware('auth:api')->post('datasource/{datasource_id}/analytics/average', 'DatasourceController@getDatasourceAverageByDateRange');
+Route::middleware('auth:api')->post('datasource/{datasource_id}/analytics/max', 'DatasourceController@getDatasourceMaxByDateRange');
+Route::middleware('auth:api')->post('datasource/{datasource_id}/analytics/min', 'DatasourceController@getDatasourceMinByDateRange');
+Route::middleware('auth:api')->post('datasource/{datasource_id}/analytics/count', 'DatasourceController@getDatasourceValueCountByDateRange');
+Route::middleware('auth:api')->post('datasource/{datasource_id}/analytics/values', 'DatasourceController@getDatasourceValuesNewByDateRange');
+
+
 //Datapoints
 Route::middleware('auth:api')->get('datapoints', 'DatapointController@getDatapoints');
 Route::middleware('auth:api')->get('datapoint/{datapoint_id}', 'DatapointController@getDatapoint');
