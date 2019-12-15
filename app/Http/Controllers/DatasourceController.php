@@ -1389,7 +1389,7 @@ public function getDatasourceMaxByDateRange(Request $request, $datasourceId) {
 }
 
 public function getDatasourceMinByDateRange(Request $request, $datasourceId) {
-    $min = 0;
+    $datasourceValuelist = 0;
     $datasource = Datasource::find($datasourceId);
     if($request->from_date){
         $from_date = $request->from_date;
@@ -1426,7 +1426,7 @@ public function getDatasourceMinByDateRange(Request $request, $datasourceId) {
     }
 
 public function getDatasourceValueCountByDateRange(Request $request, $datasourceId) {
-    $min = 0;
+    $datasourceValuelist = 0;
     $datasource = Datasource::find($datasourceId);
     if($request->from_date){
         $from_date = $request->from_date;
@@ -1463,7 +1463,7 @@ public function getDatasourceValueCountByDateRange(Request $request, $datasource
     }
 
 public function getDatasourceValuesNewByDateRange(Request $request, $datasourceId) {
-    $min = 0;
+    $sensordata = 0;
     $datasource = Datasource::find($datasourceId);
     if($request->from_date){
         $from_date = $request->from_date;
