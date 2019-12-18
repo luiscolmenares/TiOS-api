@@ -1315,7 +1315,7 @@ public function getDatasourceValuesBySpaceByDateRangeAnalytics($datasourceId, $f
 }
 
 
-public function getDatasourceAverageByDateRange(Request $request, $datasourceId) {
+public function getDatasourceAverageValueByDateRange(Request $request, $datasourceId) {
     $average = 0;
     $datasource = Datasource::find($datasourceId);
     if($request->from_date){
@@ -1352,7 +1352,315 @@ public function getDatasourceAverageByDateRange(Request $request, $datasourceId)
     
 }
 
-public function getDatasourceMaxByDateRange(Request $request, $datasourceId) {
+public function getProjectDatasourceTypeAverageValueByDateRange(Request $request, $projectId) {
+    $spaces_id = 0;
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+                                    ->where('project_id', $projectId)
+                                    ->select('id')
+                                    ->get();
+    $datasource_id_list = array();
+    foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+    }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($request->spaces){
+        $spaces_id = $request->spaces;
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+                        ->select(\DB::raw('AVG(value) as total_average'))
+                        ->wherein('space_id', $request->spaces)
+                        ->wherein('datasource_id',  $datasource_id_list)
+                        ->whereBetween('timestamp', [$from_date, $to_date])
+                        ->get();
+        
+    } else {
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+                        ->select(\DB::raw('AVG(value) as total_average'))
+                        ->wherein('datasource_id',  $datasource_id_list)
+                        ->whereBetween('timestamp', [$from_date, $to_date])
+                        ->get();
+    }
+
+     if($sensordatatotals){
+        $datasourceValuelist = array(
+            'datasources_id' => $datasource_id_list,
+            'spaces_id' => $spaces_id,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'average' => $sensordatatotals[0]->total_average,
+        );
+
+    }
+    
+    
+    return $datasourceValuelist;
+    
+}
+
+public function getProjectDatasourceTypeMinValueByDateRange(Request $request, $projectId) {
+    $spaces_id = 0;
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+                                    ->where('project_id', $projectId)
+                                    ->select('id')
+                                    ->get();
+    $datasource_id_list = array();
+    foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+    }
+    } else {
+        return "datasource type not provided";
+    }
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+
+    if ($request->spaces){
+        $spaces_id = $request->spaces;
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+                        ->select(\DB::raw('MIN(value) as total_min'))
+                        ->wherein('space_id', $request->spaces)
+                        ->wherein('datasource_id',  $datasource_id_list)
+                        ->whereBetween('timestamp', [$from_date, $to_date])
+                        ->get();
+        
+    } else {
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+                        ->select(\DB::raw('MIN(value) as total_min'))
+                        ->wherein('datasource_id',  $datasource_id_list)
+                        ->whereBetween('timestamp', [$from_date, $to_date])
+                        ->get();
+    }
+
+     if($sensordatatotals){
+        $datasourceValuelist = array(
+            'datasources_id' => $datasource_id_list,
+            'spaces' => $spaces_id,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'min_value' => $sensordatatotals[0]->total_min,
+        );
+
+    }
+    
+    
+    return $datasourceValuelist;
+    
+}
+
+public function getProjectDatasourceTypeMaxValueByDateRange(Request $request, $projectId) {
+    $spaces_id = 0;
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+                                    ->where('project_id', $projectId)
+                                    ->select('id')
+                                    ->get();
+    $datasource_id_list = array();
+    foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+    }
+    } else {
+        return "datasource type not provided";
+    }
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+
+     if ($request->spaces){
+        $spaces_id = $request->spaces;
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+                        ->select(\DB::raw('MAX(value) as total_max'))
+                        ->wherein('space_id', $request->spaces)
+                        ->wherein('datasource_id',  $datasource_id_list)
+                        ->whereBetween('timestamp', [$from_date, $to_date])
+                        ->get();
+        
+    } else {
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+                        ->select(\DB::raw('MAX(value) as total_max'))
+                        ->wherein('datasource_id',  $datasource_id_list)
+                        ->whereBetween('timestamp', [$from_date, $to_date])
+                        ->get();
+    }
+
+     if($sensordatatotals){
+        $datasourceValuelist = array(
+            'datasources_id' => $datasource_id_list,
+            'soaces_id' => $spaces_id,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'max_value' => $sensordatatotals[0]->total_max,
+        );
+
+    }
+    
+    
+    return $datasourceValuelist;
+    
+}
+
+public function getProjectDatasourceTypeValueCountByDateRange(Request $request, $projectId) {
+     $spaces_id = 0;
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+                                    ->where('project_id', $projectId)
+                                    ->select('id')
+                                    ->get();
+    $datasource_id_list = array();
+    foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+    }
+    } else {
+        return "datasource type not provided";
+    }
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+
+    if ($request->spaces){
+        $spaces_id = $request->spaces;
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+                        ->select(\DB::raw('COUNT(value) as total_count'))
+                        ->wherein('space_id', $request->spaces)
+                        ->wherein('datasource_id',  $datasource_id_list)
+                        ->whereBetween('timestamp', [$from_date, $to_date])
+                        ->get();
+        
+    } else {
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+                        ->select(\DB::raw('COUNT(value) as total_count'))
+                        ->wherein('datasource_id',  $datasource_id_list)
+                        ->whereBetween('timestamp', [$from_date, $to_date])
+                        ->get();
+    }
+
+     if($sensordatatotals){
+        $datasourceValuelist = array(
+            'datasources_id' => $datasource_id_list,
+            'spaces_id' => $spaces_id,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'count' => $sensordatatotals[0]->total_count,
+        );
+
+    }
+    
+    
+    return $datasourceValuelist;
+    
+}
+
+public function getProjectDatasourceTypeValuesByDateRange(Request $request, $projectId) {
+    $spaces_id=0;
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+                                    ->where('project_id', $projectId)
+                                    ->select('id')
+                                    ->get();
+    $datasource_id_list = array();
+    foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+    }
+    } else {
+        return "datasource type not provided";
+    }
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+
+    $sensordata = \DB::table('datasource_sensor_datas')
+                    ->select('datasource_id', 'created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+                    ->wherein('datasource_id',  $datasource_id_list)
+                    ->whereBetween('timestamp', [$from_date, $to_date])
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+    if ($request->spaces){
+        $spaces_id = $request->spaces;
+        $sensordata = \DB::table('datasource_sensor_datas')
+                    ->select('datasource_id', 'created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+                    ->wherein('space_id', $request->spaces)
+                    ->wherein('datasource_id',  $datasource_id_list)
+                    ->whereBetween('timestamp', [$from_date, $to_date])
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+        
+    } else {
+        $sensordata = \DB::table('datasource_sensor_datas')
+                    ->select('datasource_id', 'created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+                    ->wherein('datasource_id',  $datasource_id_list)
+                    ->whereBetween('timestamp', [$from_date, $to_date])
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+    }
+    
+    
+    return $sensordata;
+    
+}
+
+public function getDatasourceMaxValueByDateRange(Request $request, $datasourceId) {
     $max = 0;
     $datasource = Datasource::find($datasourceId);
     if($request->from_date){
@@ -1388,7 +1696,7 @@ public function getDatasourceMaxByDateRange(Request $request, $datasourceId) {
     return $datasourceValuelist;
 }
 
-public function getDatasourceMinByDateRange(Request $request, $datasourceId) {
+public function getDatasourceMinValueByDateRange(Request $request, $datasourceId) {
     $datasourceValuelist = 0;
     $datasource = Datasource::find($datasourceId);
     if($request->from_date){
