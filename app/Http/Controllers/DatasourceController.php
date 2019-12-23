@@ -79,36 +79,36 @@ public function getDatasource($DatasourceId) {
         $datasource_space_name =  null;
 
     }
-    
+
     $options_array = json_decode($datasource->options, true);
     $complete_datasource = array(
-    'id' => $datasource->id,
-    'name' => $datasource->name,
-    'type' => $datasource->type,
-    'unitid' => $datasource->image,
-    'ip' => $datasource->ip,
-    'port' => $datasource->port,
-    'options' => $datasource->options,
-    'options_array' => $options_array,
-    'data' => $datasource->data,
-    'notes' => $datasource->notes,
-    'active' => $datasource->active,
-    'project_id' => $datasource->project_id,
-    'created_at' => $datasource->created_at,
-    'updated_at' => $datasource->updated_at,
-    'deleted_at' => $datasource->deleted_at,
-    'space_id' => $datasource_space_id,
-    'space_name' => $datasource_space_name,
-    'type_codename' => $datasource->type_codename,
-    'toggle' => $datasource->toggle,
-    'verification_enable' => $datasource->verification_enable,
-    'verification_digits' => $datasource->verification_digits,
-    'left_coordinate' => $datasource->left_coordinate,
-    'top_coordinate' => $datasource->top_coordinate,
-    'image' => $datasource->image,
+        'id' => $datasource->id,
+        'name' => $datasource->name,
+        'type' => $datasource->type,
+        'unitid' => $datasource->image,
+        'ip' => $datasource->ip,
+        'port' => $datasource->port,
+        'options' => $datasource->options,
+        'options_array' => $options_array,
+        'data' => $datasource->data,
+        'notes' => $datasource->notes,
+        'active' => $datasource->active,
+        'project_id' => $datasource->project_id,
+        'created_at' => $datasource->created_at,
+        'updated_at' => $datasource->updated_at,
+        'deleted_at' => $datasource->deleted_at,
+        'space_id' => $datasource_space_id,
+        'space_name' => $datasource_space_name,
+        'type_codename' => $datasource->type_codename,
+        'toggle' => $datasource->toggle,
+        'verification_enable' => $datasource->verification_enable,
+        'verification_digits' => $datasource->verification_digits,
+        'left_coordinate' => $datasource->left_coordinate,
+        'top_coordinate' => $datasource->top_coordinate,
+        'image' => $datasource->image,
     );
 
-    // return $complete_space;
+// return $complete_space;
     $datasource = array("datasource" => $complete_datasource);
     return $datasource;
 }
@@ -157,10 +157,10 @@ public function getDatasourcesType() {
             'icon_image' => $type->icon_image,
             'icon_image_on_url' => $url.'/datasources/icons/'.$type->icon_image.'_ON.png', 
             'icon_image_off_url' => $url.'/datasources/icons/'.$type->icon_image.'_OFF.png'         
-            );
+        );
 
 
-            array_push($types_list, $complete_type);
+        array_push($types_list, $complete_type);
     }
     $types_list = array('datasourcestype' => $types_list);
     return $types_list;
@@ -169,18 +169,18 @@ public function getDatasourcesType() {
 public function getDatasourcesTypebyTypeName($typename) {
     $url = url('/');
     $type = \DB::table('datasource_type')
-            ->where('name', '=', $typename)
-            ->select('id', 'name', 'codename', 'icon_image')
-            ->get();
+    ->where('name', '=', $typename)
+    ->select('id', 'name', 'codename', 'icon_image')
+    ->get();
 
-        $complete_type = array(
-            'id' => $type[0]->id,
-            'name' => $type[0]->name,
-            'codename' => $type[0]->codename,
-            'icon_image' => $type[0]->icon_image,
-            'icon_image_on_url' => $url.'/datasources/icons/'.$type[0]->icon_image.'_ON.png', 
-            'icon_image_off_url' => $url.'/datasources/icons/'.$type[0]->icon_image.'_OFF.png'         
-            );
+    $complete_type = array(
+        'id' => $type[0]->id,
+        'name' => $type[0]->name,
+        'codename' => $type[0]->codename,
+        'icon_image' => $type[0]->icon_image,
+        'icon_image_on_url' => $url.'/datasources/icons/'.$type[0]->icon_image.'_ON.png', 
+        'icon_image_off_url' => $url.'/datasources/icons/'.$type[0]->icon_image.'_OFF.png'         
+    );
     return $complete_type;
 }
 
@@ -235,7 +235,7 @@ public function getOrganizationByDatasourceId($datasourceId) {
     $datasource = Datasource::find($datasourceId);
     $projectId = $datasource->project_id;
     $organization = app('App\Http\Controllers\ProjectController')->getOrganizationByProjectId($projectId);
-    // $organization = array("organization" => $organization);
+// $organization = array("organization" => $organization);
     return $organization;
 }
 
@@ -299,42 +299,42 @@ public function getDatasourceTypeNameById($datasourcetypeId) {
 public function GetDatasourcesBySpaceId($space_id){
     $url = url('/');
     $datasources = Datasource::where('space_id', '=', $space_id)->get();
-    // $datasource = Datasource::find($datasources->datasource_id);
-    // $datasources = \DB::table('datasources')->where('space_id', '=', $space_id)->get();
+// $datasource = Datasource::find($datasources->datasource_id);
+// $datasources = \DB::table('datasources')->where('space_id', '=', $space_id)->get();
     $datasources_list = array();
-        foreach ($datasources as $datasource) {
-                // $datasourcetype = \DB::table('datasource_type')->where('name', '=', $datasource->type)->get();
-            $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
-            $options_array = json_decode($datasource->options, true);
-            $d = array(
-                    'id' => $datasource->id,
-                    'name' => $datasource->name,
-                    'type' => $datasource->type,
-                    'unitid' => $datasource->image,
-                    'ip' => $datasource->ip,
-                    'port' => $datasource->port,
-                    'options' => $datasource->options,
-                    'options_array' => $options_array,
-                    'data' => $datasource->data,
-                    'notes' => $datasource->notes,
-                    'active' => $datasource->active,
-                    'project_id' => $datasource->project_id,
-                    'created_at' => $datasource->created_at,
-                    'updated_at' => $datasource->updated_at,
-                    'deleted_at' => $datasource->deleted_at,
-                    'space_id' => $datasource->space_id,
-                    'toggle' => $datasource->toggle,
-                    'verification_enable' => $datasource->verification_enable,
-                    'verification_digits' => $datasource->verification_digits,
-                    'left_coordinate' => $datasource->left_coordinate,
-                    'top_coordinate' => $datasource->top_coordinate,
-                    'image' => $datasource->image,
-                    'datasourcetype' =>$datasourcetype
+    foreach ($datasources as $datasource) {
+// $datasourcetype = \DB::table('datasource_type')->where('name', '=', $datasource->type)->get();
+        $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
+        $options_array = json_decode($datasource->options, true);
+        $d = array(
+            'id' => $datasource->id,
+            'name' => $datasource->name,
+            'type' => $datasource->type,
+            'unitid' => $datasource->image,
+            'ip' => $datasource->ip,
+            'port' => $datasource->port,
+            'options' => $datasource->options,
+            'options_array' => $options_array,
+            'data' => $datasource->data,
+            'notes' => $datasource->notes,
+            'active' => $datasource->active,
+            'project_id' => $datasource->project_id,
+            'created_at' => $datasource->created_at,
+            'updated_at' => $datasource->updated_at,
+            'deleted_at' => $datasource->deleted_at,
+            'space_id' => $datasource->space_id,
+            'toggle' => $datasource->toggle,
+            'verification_enable' => $datasource->verification_enable,
+            'verification_digits' => $datasource->verification_digits,
+            'left_coordinate' => $datasource->left_coordinate,
+            'top_coordinate' => $datasource->top_coordinate,
+            'image' => $datasource->image,
+            'datasourcetype' =>$datasourcetype
 
-                    
-         );
-         array_push($datasources_list, $d);
-     }
+
+        );
+        array_push($datasources_list, $d);
+    }
 
 
     return $datasources_list;
@@ -347,44 +347,44 @@ public function GetDatasourcesBySpaceId($space_id){
 public function GetActiveDatasourcesBySpaceId($space_id){
     $url = url('/');
     $datasources = Datasource::where('space_id', '=', $space_id)
-                                ->where('active', '=', 1)
-                                ->get();
-    // $datasource = Datasource::find($datasources->datasource_id);
-    // $datasources = \DB::table('datasources')->where('space_id', '=', $space_id)->get();
+    ->where('active', '=', 1)
+    ->get();
+// $datasource = Datasource::find($datasources->datasource_id);
+// $datasources = \DB::table('datasources')->where('space_id', '=', $space_id)->get();
     $datasources_list = array();
-        foreach ($datasources as $datasource) {
-                // $datasourcetype = \DB::table('datasource_type')->where('name', '=', $datasource->type)->get();
-            $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
-            $options_array = json_decode($datasource->options, true);
-            $d = array(
-                    'id' => $datasource->id,
-                    'name' => $datasource->name,
-                    'type' => $datasource->type,
-                    'unitid' => $datasource->image,
-                    'ip' => $datasource->ip,
-                    'port' => $datasource->port,
-                    'options' => $datasource->options,
-                    'options_array' => $options_array,
-                    'data' => $datasource->data,
-                    'notes' => $datasource->notes,
-                    'active' => $datasource->active,
-                    'project_id' => $datasource->project_id,
-                    'created_at' => $datasource->created_at,
-                    'updated_at' => $datasource->updated_at,
-                    'deleted_at' => $datasource->deleted_at,
-                    'space_id' => $datasource->space_id,
-                    'toggle' => $datasource->toggle,
-                    'verification_enable' => $datasource->verification_enable,
-                    'verification_digits' => $datasource->verification_digits,
-                    'left_coordinate' => $datasource->left_coordinate,
-                    'top_coordinate' => $datasource->top_coordinate,
-                    'image' => $datasource->image,
-                    'datasourcetype' =>$datasourcetype
+    foreach ($datasources as $datasource) {
+// $datasourcetype = \DB::table('datasource_type')->where('name', '=', $datasource->type)->get();
+        $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
+        $options_array = json_decode($datasource->options, true);
+        $d = array(
+            'id' => $datasource->id,
+            'name' => $datasource->name,
+            'type' => $datasource->type,
+            'unitid' => $datasource->image,
+            'ip' => $datasource->ip,
+            'port' => $datasource->port,
+            'options' => $datasource->options,
+            'options_array' => $options_array,
+            'data' => $datasource->data,
+            'notes' => $datasource->notes,
+            'active' => $datasource->active,
+            'project_id' => $datasource->project_id,
+            'created_at' => $datasource->created_at,
+            'updated_at' => $datasource->updated_at,
+            'deleted_at' => $datasource->deleted_at,
+            'space_id' => $datasource->space_id,
+            'toggle' => $datasource->toggle,
+            'verification_enable' => $datasource->verification_enable,
+            'verification_digits' => $datasource->verification_digits,
+            'left_coordinate' => $datasource->left_coordinate,
+            'top_coordinate' => $datasource->top_coordinate,
+            'image' => $datasource->image,
+            'datasourcetype' =>$datasourcetype
 
-                    
-         );
-         array_push($datasources_list, $d);
-     }
+
+        );
+        array_push($datasources_list, $d);
+    }
 
 
     return $datasources_list;
@@ -477,39 +477,39 @@ public function getProjectDatasources($project_id) {
     $url = url('/');
     $datasources = Datasource::where('project_id', $project_id)->get();
     $datasources_list = array();
-        foreach ($datasources as $datasource) {
-            $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
-            $options_array = json_decode($datasource->options, true);
-            $d = array(
-                    'id' => $datasource->id,
-                    'name' => $datasource->name,
-                    'type' => $datasource->type,
-                    'unitid' => $datasource->image,
-                    'ip' => $datasource->ip,
-                    'port' => $datasource->port,
-                    'options' => $datasource->options,
-                    'options_array' => $options_array,
-                    'data' => $datasource->data,
-                    'notes' => $datasource->notes,
-                    'active' => $datasource->active,
-                    'project_id' => $datasource->project_id,
-                    'created_at' => $datasource->created_at,
-                    'updated_at' => $datasource->updated_at,
-                    'deleted_at' => $datasource->deleted_at,
-                    'space_id' => $datasource->space_id,
-                    'toggle' => $datasource->toggle,
-                    'verification_enable' => $datasource->verification_enable,
-                    'verification_digits' => $datasource->verification_digits,
-                    'left_coordinate' => $datasource->left_coordinate,
-                    'top_coordinate' => $datasource->top_coordinate,
-                    'image' => $datasource->image,
-                    'datasourcetype' =>$datasourcetype
+    foreach ($datasources as $datasource) {
+        $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
+        $options_array = json_decode($datasource->options, true);
+        $d = array(
+            'id' => $datasource->id,
+            'name' => $datasource->name,
+            'type' => $datasource->type,
+            'unitid' => $datasource->image,
+            'ip' => $datasource->ip,
+            'port' => $datasource->port,
+            'options' => $datasource->options,
+            'options_array' => $options_array,
+            'data' => $datasource->data,
+            'notes' => $datasource->notes,
+            'active' => $datasource->active,
+            'project_id' => $datasource->project_id,
+            'created_at' => $datasource->created_at,
+            'updated_at' => $datasource->updated_at,
+            'deleted_at' => $datasource->deleted_at,
+            'space_id' => $datasource->space_id,
+            'toggle' => $datasource->toggle,
+            'verification_enable' => $datasource->verification_enable,
+            'verification_digits' => $datasource->verification_digits,
+            'left_coordinate' => $datasource->left_coordinate,
+            'top_coordinate' => $datasource->top_coordinate,
+            'image' => $datasource->image,
+            'datasourcetype' =>$datasourcetype
 
-                    
-         );
-         array_push($datasources_list, $d);
-     }
-     $datasources_list = array("datasources" => $datasources_list);
+
+        );
+        array_push($datasources_list, $d);
+    }
+    $datasources_list = array("datasources" => $datasources_list);
 
     return $datasources_list;
 
@@ -545,54 +545,54 @@ public function getProjectHpDatasources($project_id) {
     $url = url('/');
     $datasources = Datasource::where('project_id', $project_id)->get();
     $datasources_list = array();
-        foreach ($datasources as $datasource) {
-            if ($datasource->space_id > 0){
-                $space = Space::find($datasource->space_id);
-                $datasource_space_id = $space->id;
-                $datasource_space_name =  $space->name;
-                $datasource_space_url = "/project/".$space->project_id."/space/".$datasource->space_id;
-                $datasource_space_link = array(
-                                'url' => "/#/project/".$space->project_id."/space/".$datasource->space_id,
-                                'label' => 'Go to space'
-                );
-
-            } else {
-                $datasource_space_id = 0;
-                $datasource_space_name =  null;
-                $datasource_space_url = null;
-                $datasource_space_link = null;
-
-            }
-            $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
-            $options_array = json_decode($datasource->options, true);
-            $position = array(
-                                'left' => $datasource->left_coordinate,
-                                'top' => $datasource->top_coordinate
-
+    foreach ($datasources as $datasource) {
+        if ($datasource->space_id > 0){
+            $space = Space::find($datasource->space_id);
+            $datasource_space_id = $space->id;
+            $datasource_space_name =  $space->name;
+            $datasource_space_url = "/project/".$space->project_id."/space/".$datasource->space_id;
+            $datasource_space_link = array(
+                'url' => "/#/project/".$space->project_id."/space/".$datasource->space_id,
+                'label' => 'Go to space'
             );
 
-            if (($datasource->left_coordinate != null) && ($datasource->top_coordinate != null) && ($datasource->image != null)){
+        } else {
+            $datasource_space_id = 0;
+            $datasource_space_name =  null;
+            $datasource_space_url = null;
+            $datasource_space_link = null;
 
-                $d = array(
-                    'type' => 'text',
-                    'title' => $datasource->name,
-                    'options_array' => $options_array,
-                    'description' => '<img class="picture" src="'.$url.'/datasources/images/'.$datasource->image.'" alt="'.$datasource->name.'"><p class="description">'.$datasource->type.'</p><p><button id="custombtn" onclick="showDataSourceDetail(\''.$datasource->id.'\')">View Datasource</button></p>',
-                    'position' => $position,
-                    // 'picturePath' => $url.'/datasources/images/'.$datasource->image,
-                    'space_id' => $datasource_space_id,
-                    'space_name' => $datasource_space_name,
-                    'space_url' => $datasource_space_url,
-                    'customClassName' => "custom-ii",
-                    'link' => $datasource_space_link,
-                    'sticky' => false,
-                );
-                array_push($datasources_list, $d);
+        }
+        $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
+        $options_array = json_decode($datasource->options, true);
+        $position = array(
+            'left' => $datasource->left_coordinate,
+            'top' => $datasource->top_coordinate
 
-            }
-        
-     }
-     $datasources_list = array("datasources" => $datasources_list);
+        );
+
+        if (($datasource->left_coordinate != null) && ($datasource->top_coordinate != null) && ($datasource->image != null)){
+
+            $d = array(
+                'type' => 'text',
+                'title' => $datasource->name,
+                'options_array' => $options_array,
+                'description' => '<img class="picture" src="'.$url.'/datasources/images/'.$datasource->image.'" alt="'.$datasource->name.'"><p class="description">'.$datasource->type.'</p><p><button id="custombtn" onclick="showDataSourceDetail(\''.$datasource->id.'\')">View Datasource</button></p>',
+                'position' => $position,
+// 'picturePath' => $url.'/datasources/images/'.$datasource->image,
+                'space_id' => $datasource_space_id,
+                'space_name' => $datasource_space_name,
+                'space_url' => $datasource_space_url,
+                'customClassName' => "custom-ii",
+                'link' => $datasource_space_link,
+                'sticky' => false,
+            );
+            array_push($datasources_list, $d);
+
+        }
+
+    }
+    $datasources_list = array("datasources" => $datasources_list);
 
     return $datasources_list;
 
@@ -630,39 +630,39 @@ public function getActiveProjectDatasources($project_id) {
     ->where('active', 1)
     ->get();
     $datasources_list = array();
-        foreach ($datasources as $datasource) {
-            $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
-            $options_array = json_decode($datasource->options, true);
-            $d = array(
-                    'id' => $datasource->id,
-                    'name' => $datasource->name,
-                    'type' => $datasource->type,
-                    'unitid' => $datasource->image,
-                    'ip' => $datasource->ip,
-                    'port' => $datasource->port,
-                    'options' => $datasource->options,
-                    'options_array' => $options_array,
-                    'data' => $datasource->data,
-                    'notes' => $datasource->notes,
-                    'active' => $datasource->active,
-                    'project_id' => $datasource->project_id,
-                    'created_at' => $datasource->created_at,
-                    'updated_at' => $datasource->updated_at,
-                    'deleted_at' => $datasource->deleted_at,
-                    'space_id' => $datasource->space_id,
-                    'toggle' => $datasource->toggle,
-                    'verification_enable' => $datasource->verification_enable,
-                    'verification_digits' => $datasource->verification_digits,
-                    'left_coordinate' => $datasource->left_coordinate,
-                    'top_coordinate' => $datasource->top_coordinate,
-                    'image' => $datasource->image,
-                    'datasourcetype' =>$datasourcetype
+    foreach ($datasources as $datasource) {
+        $datasourcetype = $this->getDatasourcesTypebyTypeName($datasource->type);
+        $options_array = json_decode($datasource->options, true);
+        $d = array(
+            'id' => $datasource->id,
+            'name' => $datasource->name,
+            'type' => $datasource->type,
+            'unitid' => $datasource->image,
+            'ip' => $datasource->ip,
+            'port' => $datasource->port,
+            'options' => $datasource->options,
+            'options_array' => $options_array,
+            'data' => $datasource->data,
+            'notes' => $datasource->notes,
+            'active' => $datasource->active,
+            'project_id' => $datasource->project_id,
+            'created_at' => $datasource->created_at,
+            'updated_at' => $datasource->updated_at,
+            'deleted_at' => $datasource->deleted_at,
+            'space_id' => $datasource->space_id,
+            'toggle' => $datasource->toggle,
+            'verification_enable' => $datasource->verification_enable,
+            'verification_digits' => $datasource->verification_digits,
+            'left_coordinate' => $datasource->left_coordinate,
+            'top_coordinate' => $datasource->top_coordinate,
+            'image' => $datasource->image,
+            'datasourcetype' =>$datasourcetype
 
-                    
-         );
-         array_push($datasources_list, $d);
-     }
-     $datasources_list = array("datasources" => $datasources_list);
+
+        );
+        array_push($datasources_list, $d);
+    }
+    $datasources_list = array("datasources" => $datasources_list);
 
     return $datasources_list;
 }
@@ -767,47 +767,47 @@ public function deleteDatasource($datasourceId) {
 */
 public function Thingstatus(Request $request) {
     $noderedurl = "https://node-red.tiosplatform.com:1080";
-    // $noderedurl = $request->base_nr;
-    // $options = json_decode($act_datasource->options, true);
+// $noderedurl = $request->base_nr;
+// $options = json_decode($act_datasource->options, true);
     $url_on = $noderedurl.'/thingstatus?topic='.$request->topic.'/control&value='.$request->value;
-    $client = new Client(); //GuzzleHttp\Cliente
-    $response = $client->get($url_on);
-    return $response;
+$client = new Client(); //GuzzleHttp\Cliente
+$response = $client->get($url_on);
+return $response;
 }
 
 /**
-     * Upload new File
-     *
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function uploadImage(Request $request, $datasource_id)
-    {
-       
-        $validator = Validator::make($request->file(), [
-            'file' => 'required|image|max:1000',
-        ]);
+* Upload new File
+*
+* @param Request $request
+*
+* @return \Illuminate\Http\JsonResponse
+*/
+public function uploadImage(Request $request, $datasource_id)
+{
 
-        if ($validator->fails()) {
+    $validator = Validator::make($request->file(), [
+        'file' => 'required|image|max:1000',
+    ]);
 
-            $errors = [];
-            foreach ($validator->messages()->all() as $error) {
-                array_push($errors, $error);
-            }
+    if ($validator->fails()) {
 
-            return response()->json(['errors' => $errors, 'status' => 400], 400);
+        $errors = [];
+        foreach ($validator->messages()->all() as $error) {
+            array_push($errors, $error);
         }
 
-         $datasource = Datasource::find($datasource_id);
-            $datasource->image = $request->file('file')->getClientOriginalName();
-            if (!$datasource->save()) {
-            abort(500, 'Could not update datasources image.');
-            }
-            $request->file('file')->move(__DIR__ . '/../../../public/datasources/images/', $request->file('file')->getClientOriginalName());
+        return response()->json(['errors' => $errors, 'status' => 400], 400);
+    }
 
-        return response()->json(['errors' => [], 'datasources' => Datasource::find($request->datasource_id), 'status' => 200], 200);
-    }   
+    $datasource = Datasource::find($datasource_id);
+    $datasource->image = $request->file('file')->getClientOriginalName();
+    if (!$datasource->save()) {
+        abort(500, 'Could not update datasources image.');
+    }
+    $request->file('file')->move(__DIR__ . '/../../../public/datasources/images/', $request->file('file')->getClientOriginalName());
+
+    return response()->json(['errors' => [], 'datasources' => Datasource::find($request->datasource_id), 'status' => 200], 200);
+}   
 
 
 /**
@@ -817,46 +817,46 @@ public function Thingstatus(Request $request) {
 */
 public function getDatasourceValuesByDateRange($datasourceId, $from_date, $to_date) {
     $datasource = Datasource::find($datasourceId);
-    // $datasource = $this->GetDatasourceByDatapointId($datapoint_id);
+// $datasource = $this->GetDatasourceByDatapointId($datapoint_id);
     $project = $this->GetProjectByDatasourceId($datasourceId)['project'];
     $organization = $this->GetOrganizationByDatasourceId($datasourceId)['organization'];
 
-    // return $project;
+// return $project;
     $triggersnotifications = app('App\Http\Controllers\TriggerController')->getTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
     $toptriggersnotifications = app('App\Http\Controllers\TriggerController')->getTopTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
     $options_array = json_decode($datasource->options, true);
     $topic =  $options_array['topic'];
-    // $sensordata = \DB::table('sensordata')
-    // $sensordata = \DB::table('datasource_sensor_datas')
-    // ->select('created_at', 'created_at as date_created', 'value as data', 'topic')
-    // ->where('topic', "=", $topic)
-    // ->whereBetween('timestamp', [$from_date, $to_date])
-    // ->orderBy('created_at', 'desc')
-    // ->get()
-    // ->reverse();
+// $sensordata = \DB::table('sensordata')
+// $sensordata = \DB::table('datasource_sensor_datas')
+// ->select('created_at', 'created_at as date_created', 'value as data', 'topic')
+// ->where('topic', "=", $topic)
+// ->whereBetween('timestamp', [$from_date, $to_date])
+// ->orderBy('created_at', 'desc')
+// ->get()
+// ->reverse();
 
     $sensordata = \DB::table('datasource_sensor_datas')
-                    ->select('created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
-                    ->where('topic', "=", $topic)
-                    ->whereBetween('timestamp', [$from_date, $to_date])
-                    ->orderBy('created_at', 'desc')
-                    ->take(100)
-                    ->get()
-                    ->reverse();
+    ->select('created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+    ->where('topic', "=", $topic)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->orderBy('created_at', 'desc')
+    ->take(100)
+    ->get()
+    ->reverse();
 
     $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select('topic', \DB::raw('COUNT(id) as total_count'), \DB::raw('MAX(value) as total_max'), \DB::raw('min(value) as total_min'), \DB::raw('AVG(value) as total_average'))
-                        ->groupBy('topic')
-                        ->where('topic', "=", $topic)
-                        ->get();
-                         // return $sensordatatotals;
+    ->select('topic', \DB::raw('COUNT(id) as total_count'), \DB::raw('MAX(value) as total_max'), \DB::raw('min(value) as total_min'), \DB::raw('AVG(value) as total_average'))
+    ->groupBy('topic')
+    ->where('topic', "=", $topic)
+    ->get();
+// return $sensordatatotals;
     $sensordafilteredttotals = \DB::table('datasource_sensor_datas')
-                        ->select('topic', \DB::raw('COUNT(id) as filtered_count'), \DB::raw('MAX(value) as filtered_max'), \DB::raw('min(value) as filtered_min'), \DB::raw('AVG(value) as filtered_average'))
-                        ->groupBy('topic')
-                        ->where('topic', "=", $topic)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
-                        // return $sensordafilteredttotals;
+    ->select('topic', \DB::raw('COUNT(id) as filtered_count'), \DB::raw('MAX(value) as filtered_max'), \DB::raw('min(value) as filtered_min'), \DB::raw('AVG(value) as filtered_average'))
+    ->groupBy('topic')
+    ->where('topic', "=", $topic)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->get();
+// return $sensordafilteredttotals;
 
     if($sensordafilteredttotals){
         $filtered_avg = $sensordafilteredttotals[0]->filtered_average;
@@ -876,65 +876,65 @@ public function getDatasourceValuesByDateRange($datasourceId, $from_date, $to_da
         $total_maxvalue = $sensordatatotals[0]->total_max;
         $total_minvalue = $sensordatatotals[0]->total_min;
         $total_count = $sensordatatotals[0]->total_count;
-         
+
     } else {
         $total_avg = 0; 
         $total_maxvalue = 0;
         $total_minvalue = 0;
         $total_count = 0;
     }
-                   
+
     $sum = 0;
     $count = 0;
     $totalsum = 0;
     $totalcount = 0;  
     $totalmaxvalue = 0;
     $totalminvalue=0;
-    // return $sensordata;
-    // foreach ($sensordata as $datapointvalue) {
-    //     // $sum = $sum + $datapointvalue->data;
-    //     // $totalsum = $totalsum + $datapointvalue->data;
-    //     // $count = $count + 1;
-    //     // $totalcount = $totalcount + 1;
-    //     // if ($totalmaxvalue < $datapointvalue->data){
-    //     //     $totalmaxvalue = $datapointvalue->data;
-    //     // }
-    //     // if ($totalminvalue > $datapointvalue->data){
-    //     //     $totalminvalue = $datapointvalue->data;
-    //     // }
-    //     // $datapointvalue->_blank = "";
-    //     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
+// return $sensordata;
+// foreach ($sensordata as $datapointvalue) {
+//     // $sum = $sum + $datapointvalue->data;
+//     // $totalsum = $totalsum + $datapointvalue->data;
+//     // $count = $count + 1;
+//     // $totalcount = $totalcount + 1;
+//     // if ($totalmaxvalue < $datapointvalue->data){
+//     //     $totalmaxvalue = $datapointvalue->data;
+//     // }
+//     // if ($totalminvalue > $datapointvalue->data){
+//     //     $totalminvalue = $datapointvalue->data;
+//     // }
+//     // $datapointvalue->_blank = "";
+//     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
 
-    // }
+// }
     if(($from_date > 0) && ($to_date > 0)){
         $datasourceValuelist = [];
-        // $datasourceValuelist = (array) $sensordata;
-        // $datasourceValuelist = json_decode(json_encode($sensordata), true);
-        // $filtered_sum = 0;
-        // $filtered_count = 0;
-        // $filtered_maxvalue = 0;
-        // $filtered_minvalue=0;
+// $datasourceValuelist = (array) $sensordata;
+// $datasourceValuelist = json_decode(json_encode($sensordata), true);
+// $filtered_sum = 0;
+// $filtered_count = 0;
+// $filtered_maxvalue = 0;
+// $filtered_minvalue=0;
         foreach ($sensordata as $datapointvalue) {
-        //     $datapointvalue->_blank = "";
-        //     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
-        //     // if(($datapointvalue->date_created > $from_date) && ($datapointvalue->date_created < $to_date)){
-                array_push($datasourceValuelist, $datapointvalue);
-        //         // $filtered_sum = $filtered_sum + $datapointvalue->data;
-        //         // $filtered_count = $filtered_count + 1;
-        //         // if ($filtered_maxvalue < $datapointvalue->data){
-        //         //     $filtered_maxvalue = $datapointvalue->data;
-        //         // }
-        //         // if ($filtered_minvalue > $datapointvalue->data){
-        //         //     $filtered_minvalue = $datapointvalue->data;
-        //         // }
-        //     // }
+//     $datapointvalue->_blank = "";
+//     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
+//     // if(($datapointvalue->date_created > $from_date) && ($datapointvalue->date_created < $to_date)){
+            array_push($datasourceValuelist, $datapointvalue);
+//         // $filtered_sum = $filtered_sum + $datapointvalue->data;
+//         // $filtered_count = $filtered_count + 1;
+//         // if ($filtered_maxvalue < $datapointvalue->data){
+//         //     $filtered_maxvalue = $datapointvalue->data;
+//         // }
+//         // if ($filtered_minvalue > $datapointvalue->data){
+//         //     $filtered_minvalue = $datapointvalue->data;
+//         // }
+//     // }
         }
 
         $datasourceValuelist = array(
             'datasource_name' => $datasource->name,
             'project_name' => $project->name,
             'organization_name' => $organization->name,
-            // 'sum' => $filtered_sum,
+// 'sum' => $filtered_sum,
             'count' => $filtered_count,
             'totalcount' => $total_count,
             'average' => $filtered_avg,
@@ -983,47 +983,47 @@ public function getDatasourceValuesByDateRange($datasourceId, $from_date, $to_da
 */
 public function getDatasourceValuesByDateRangeAnalytics($datasourceId, $from_date, $to_date) {
     $datasource = Datasource::find($datasourceId);
-    // $datasource = $this->GetDatasourceByDatapointId($datapoint_id);
+// $datasource = $this->GetDatasourceByDatapointId($datapoint_id);
     $project = $this->GetProjectByDatasourceId($datasourceId)['project'];
     $organization = $this->GetOrganizationByDatasourceId($datasourceId)['organization'];
     $space = $this->GetSpaceByDatasourceId($datasourceId)['space'];
 
-    // return $project;
-    // $triggersnotifications = app('App\Http\Controllers\TriggerController')->getTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
-    // $toptriggersnotifications = app('App\Http\Controllers\TriggerController')->getTopTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
+// return $project;
+// $triggersnotifications = app('App\Http\Controllers\TriggerController')->getTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
+// $toptriggersnotifications = app('App\Http\Controllers\TriggerController')->getTopTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
     $options_array = json_decode($datasource->options, true);
     $topic =  $options_array['topic'];
-    // $sensordata = \DB::table('sensordata')
-    // $sensordata = \DB::table('datasource_sensor_datas')
-    // ->select('created_at', 'created_at as date_created', 'value as data', 'topic')
-    // ->where('topic', "=", $topic)
-    // ->whereBetween('timestamp', [$from_date, $to_date])
-    // ->orderBy('created_at', 'desc')
-    // ->get()
-    // ->reverse();
+// $sensordata = \DB::table('sensordata')
+// $sensordata = \DB::table('datasource_sensor_datas')
+// ->select('created_at', 'created_at as date_created', 'value as data', 'topic')
+// ->where('topic', "=", $topic)
+// ->whereBetween('timestamp', [$from_date, $to_date])
+// ->orderBy('created_at', 'desc')
+// ->get()
+// ->reverse();
 
     $sensordata = \DB::table('datasource_sensor_datas')
-                    ->select('created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
-                    ->where('topic', "=", $topic)
-                    ->whereBetween('timestamp', [$from_date, $to_date])
-                    ->orderBy('created_at', 'desc')
-                    ->take(100)
-                    ->get()
-                    ->reverse();
+    ->select('created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+    ->where('topic', "=", $topic)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->orderBy('created_at', 'desc')
+    ->take(100)
+    ->get()
+    ->reverse();
 
     $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select('topic', \DB::raw('COUNT(id) as total_count'), \DB::raw('MAX(value) as total_max'), \DB::raw('min(value) as total_min'), \DB::raw('AVG(value) as total_average'))
-                        ->groupBy('topic')
-                        ->where('topic', "=", $topic)
-                        ->get();
-                         // return $sensordatatotals;
+    ->select('topic', \DB::raw('COUNT(id) as total_count'), \DB::raw('MAX(value) as total_max'), \DB::raw('min(value) as total_min'), \DB::raw('AVG(value) as total_average'))
+    ->groupBy('topic')
+    ->where('topic', "=", $topic)
+    ->get();
+// return $sensordatatotals;
     $sensordafilteredttotals = \DB::table('datasource_sensor_datas')
-                        ->select('topic', \DB::raw('COUNT(id) as filtered_count'), \DB::raw('MAX(value) as filtered_max'), \DB::raw('min(value) as filtered_min'), \DB::raw('AVG(value) as filtered_average'))
-                        ->groupBy('topic')
-                        ->where('topic', "=", $topic)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
-                        // return $sensordafilteredttotals;
+    ->select('topic', \DB::raw('COUNT(id) as filtered_count'), \DB::raw('MAX(value) as filtered_max'), \DB::raw('min(value) as filtered_min'), \DB::raw('AVG(value) as filtered_average'))
+    ->groupBy('topic')
+    ->where('topic', "=", $topic)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->get();
+// return $sensordafilteredttotals;
 
     if($sensordafilteredttotals){
         $filtered_avg = $sensordafilteredttotals[0]->filtered_average;
@@ -1043,58 +1043,58 @@ public function getDatasourceValuesByDateRangeAnalytics($datasourceId, $from_dat
         $total_maxvalue = $sensordatatotals[0]->total_max;
         $total_minvalue = $sensordatatotals[0]->total_min;
         $total_count = $sensordatatotals[0]->total_count;
-         
+
     } else {
         $total_avg = 0; 
         $total_maxvalue = 0;
         $total_minvalue = 0;
         $total_count = 0;
     }
-                   
+
     $sum = 0;
     $count = 0;
     $totalsum = 0;
     $totalcount = 0;  
     $totalmaxvalue = 0;
     $totalminvalue=0;
-    // return $sensordata;
-    // foreach ($sensordata as $datapointvalue) {
-    //     // $sum = $sum + $datapointvalue->data;
-    //     // $totalsum = $totalsum + $datapointvalue->data;
-    //     // $count = $count + 1;
-    //     // $totalcount = $totalcount + 1;
-    //     // if ($totalmaxvalue < $datapointvalue->data){
-    //     //     $totalmaxvalue = $datapointvalue->data;
-    //     // }
-    //     // if ($totalminvalue > $datapointvalue->data){
-    //     //     $totalminvalue = $datapointvalue->data;
-    //     // }
-    //     // $datapointvalue->_blank = "";
-    //     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
+// return $sensordata;
+// foreach ($sensordata as $datapointvalue) {
+//     // $sum = $sum + $datapointvalue->data;
+//     // $totalsum = $totalsum + $datapointvalue->data;
+//     // $count = $count + 1;
+//     // $totalcount = $totalcount + 1;
+//     // if ($totalmaxvalue < $datapointvalue->data){
+//     //     $totalmaxvalue = $datapointvalue->data;
+//     // }
+//     // if ($totalminvalue > $datapointvalue->data){
+//     //     $totalminvalue = $datapointvalue->data;
+//     // }
+//     // $datapointvalue->_blank = "";
+//     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
 
-    // }
+// }
     if(($from_date > 0) && ($to_date > 0)){
         $datasourceValuelist = [];
-        // $datasourceValuelist = (array) $sensordata;
-        // $datasourceValuelist = json_decode(json_encode($sensordata), true);
-        // $filtered_sum = 0;
-        // $filtered_count = 0;
-        // $filtered_maxvalue = 0;
-        // $filtered_minvalue=0;
+// $datasourceValuelist = (array) $sensordata;
+// $datasourceValuelist = json_decode(json_encode($sensordata), true);
+// $filtered_sum = 0;
+// $filtered_count = 0;
+// $filtered_maxvalue = 0;
+// $filtered_minvalue=0;
         foreach ($sensordata as $datapointvalue) {
-        //     $datapointvalue->_blank = "";
-        //     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
-        //     // if(($datapointvalue->date_created > $from_date) && ($datapointvalue->date_created < $to_date)){
-                array_push($datasourceValuelist, $datapointvalue);
-        //         // $filtered_sum = $filtered_sum + $datapointvalue->data;
-        //         // $filtered_count = $filtered_count + 1;
-        //         // if ($filtered_maxvalue < $datapointvalue->data){
-        //         //     $filtered_maxvalue = $datapointvalue->data;
-        //         // }
-        //         // if ($filtered_minvalue > $datapointvalue->data){
-        //         //     $filtered_minvalue = $datapointvalue->data;
-        //         // }
-        //     // }
+//     $datapointvalue->_blank = "";
+//     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
+//     // if(($datapointvalue->date_created > $from_date) && ($datapointvalue->date_created < $to_date)){
+            array_push($datasourceValuelist, $datapointvalue);
+//         // $filtered_sum = $filtered_sum + $datapointvalue->data;
+//         // $filtered_count = $filtered_count + 1;
+//         // if ($filtered_maxvalue < $datapointvalue->data){
+//         //     $filtered_maxvalue = $datapointvalue->data;
+//         // }
+//         // if ($filtered_minvalue > $datapointvalue->data){
+//         //     $filtered_minvalue = $datapointvalue->data;
+//         // }
+//     // }
         }
 
         $datasourceValuelist = array(
@@ -1102,7 +1102,7 @@ public function getDatasourceValuesByDateRangeAnalytics($datasourceId, $from_dat
             'space_name' => $space->name,
             'project_name' => $project->name,
             'organization_name' => $organization->name,
-            // 'sum' => $filtered_sum,
+// 'sum' => $filtered_sum,
             'count' => $filtered_count,
             'totalcount' => $total_count,
             'average' => $filtered_avg,
@@ -1111,8 +1111,8 @@ public function getDatasourceValuesByDateRangeAnalytics($datasourceId, $from_dat
             'lowest' => $filtered_minvalue,
             'totalhighest' => $total_maxvalue,
             'totallowest' => $total_minvalue,
-            // 'toptriggersnotifications' => $toptriggersnotifications,
-            // 'triggersnotifications' => $triggersnotifications,
+// 'toptriggersnotifications' => $toptriggersnotifications,
+// 'triggersnotifications' => $triggersnotifications,
             'sensordata' => $datasourceValuelist,
         );
 
@@ -1133,8 +1133,8 @@ public function getDatasourceValuesByDateRangeAnalytics($datasourceId, $from_dat
             'lowest' => $totalminvalue,
             'totalhighest' => $totalmaxvalue,
             'totallowest' => $totalminvalue,
-            // 'toptriggersnotifications' => $toptriggersnotifications,
-            // 'triggersnotifications' => $triggersnotifications,
+// 'toptriggersnotifications' => $toptriggersnotifications,
+// 'triggersnotifications' => $triggersnotifications,
             'sensordata' => $sensordata
         );
 
@@ -1152,47 +1152,47 @@ public function getDatasourceValuesByDateRangeAnalytics($datasourceId, $from_dat
 */
 public function getDatasourceValuesBySpaceByDateRangeAnalytics($datasourceId, $from_date, $to_date) {
     $datasource = Datasource::find($datasourceId);
-    // $datasource = $this->GetDatasourceByDatapointId($datapoint_id);
+// $datasource = $this->GetDatasourceByDatapointId($datapoint_id);
     $project = $this->GetProjectByDatasourceId($datasourceId)['project'];
     $organization = $this->GetOrganizationByDatasourceId($datasourceId)['organization'];
     $space = $this->GetSpaceByDatasourceId($datasourceId)['space'];
 
-    // return $project;
-    // $triggersnotifications = app('App\Http\Controllers\TriggerController')->getTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
-    // $toptriggersnotifications = app('App\Http\Controllers\TriggerController')->getTopTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
+// return $project;
+// $triggersnotifications = app('App\Http\Controllers\TriggerController')->getTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
+// $toptriggersnotifications = app('App\Http\Controllers\TriggerController')->getTopTriggersNotificationsByDatasourceId($datasourceId, $from_date, $to_date);
     $options_array = json_decode($datasource->options, true);
     $topic =  $options_array['topic'];
-    // $sensordata = \DB::table('sensordata')
-    // $sensordata = \DB::table('datasource_sensor_datas')
-    // ->select('created_at', 'created_at as date_created', 'value as data', 'topic')
-    // ->where('topic', "=", $topic)
-    // ->whereBetween('timestamp', [$from_date, $to_date])
-    // ->orderBy('created_at', 'desc')
-    // ->get()
-    // ->reverse();
+// $sensordata = \DB::table('sensordata')
+// $sensordata = \DB::table('datasource_sensor_datas')
+// ->select('created_at', 'created_at as date_created', 'value as data', 'topic')
+// ->where('topic', "=", $topic)
+// ->whereBetween('timestamp', [$from_date, $to_date])
+// ->orderBy('created_at', 'desc')
+// ->get()
+// ->reverse();
 
     $sensordata = \DB::table('datasource_sensor_datas')
-                    ->select('created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
-                    ->where('topic', "=", $topic)
-                    ->whereBetween('timestamp', [$from_date, $to_date])
-                    ->orderBy('created_at', 'desc')
-                    ->take(100)
-                    ->get()
-                    ->reverse();
+    ->select('created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+    ->where('topic', "=", $topic)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->orderBy('created_at', 'desc')
+    ->take(100)
+    ->get()
+    ->reverse();
 
     $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select('topic', \DB::raw('COUNT(id) as total_count'), \DB::raw('MAX(value) as total_max'), \DB::raw('min(value) as total_min'), \DB::raw('AVG(value) as total_average'))
-                        ->groupBy('topic')
-                        ->where('topic', "=", $topic)
-                        ->get();
-                         // return $sensordatatotals;
+    ->select('topic', \DB::raw('COUNT(id) as total_count'), \DB::raw('MAX(value) as total_max'), \DB::raw('min(value) as total_min'), \DB::raw('AVG(value) as total_average'))
+    ->groupBy('topic')
+    ->where('topic', "=", $topic)
+    ->get();
+// return $sensordatatotals;
     $sensordafilteredttotals = \DB::table('datasource_sensor_datas')
-                        ->select('topic', \DB::raw('COUNT(id) as filtered_count'), \DB::raw('MAX(value) as filtered_max'), \DB::raw('min(value) as filtered_min'), \DB::raw('AVG(value) as filtered_average'))
-                        ->groupBy('topic')
-                        ->where('topic', "=", $topic)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
-                        // return $sensordafilteredttotals;
+    ->select('topic', \DB::raw('COUNT(id) as filtered_count'), \DB::raw('MAX(value) as filtered_max'), \DB::raw('min(value) as filtered_min'), \DB::raw('AVG(value) as filtered_average'))
+    ->groupBy('topic')
+    ->where('topic', "=", $topic)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->get();
+// return $sensordafilteredttotals;
 
     if($sensordafilteredttotals){
         $filtered_avg = $sensordafilteredttotals[0]->filtered_average;
@@ -1212,58 +1212,58 @@ public function getDatasourceValuesBySpaceByDateRangeAnalytics($datasourceId, $f
         $total_maxvalue = $sensordatatotals[0]->total_max;
         $total_minvalue = $sensordatatotals[0]->total_min;
         $total_count = $sensordatatotals[0]->total_count;
-         
+
     } else {
         $total_avg = 0; 
         $total_maxvalue = 0;
         $total_minvalue = 0;
         $total_count = 0;
     }
-                   
+
     $sum = 0;
     $count = 0;
     $totalsum = 0;
     $totalcount = 0;  
     $totalmaxvalue = 0;
     $totalminvalue=0;
-    // return $sensordata;
-    // foreach ($sensordata as $datapointvalue) {
-    //     // $sum = $sum + $datapointvalue->data;
-    //     // $totalsum = $totalsum + $datapointvalue->data;
-    //     // $count = $count + 1;
-    //     // $totalcount = $totalcount + 1;
-    //     // if ($totalmaxvalue < $datapointvalue->data){
-    //     //     $totalmaxvalue = $datapointvalue->data;
-    //     // }
-    //     // if ($totalminvalue > $datapointvalue->data){
-    //     //     $totalminvalue = $datapointvalue->data;
-    //     // }
-    //     // $datapointvalue->_blank = "";
-    //     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
+// return $sensordata;
+// foreach ($sensordata as $datapointvalue) {
+//     // $sum = $sum + $datapointvalue->data;
+//     // $totalsum = $totalsum + $datapointvalue->data;
+//     // $count = $count + 1;
+//     // $totalcount = $totalcount + 1;
+//     // if ($totalmaxvalue < $datapointvalue->data){
+//     //     $totalmaxvalue = $datapointvalue->data;
+//     // }
+//     // if ($totalminvalue > $datapointvalue->data){
+//     //     $totalminvalue = $datapointvalue->data;
+//     // }
+//     // $datapointvalue->_blank = "";
+//     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
 
-    // }
+// }
     if(($from_date > 0) && ($to_date > 0)){
         $datasourceValuelist = [];
-        // $datasourceValuelist = (array) $sensordata;
-        // $datasourceValuelist = json_decode(json_encode($sensordata), true);
-        // $filtered_sum = 0;
-        // $filtered_count = 0;
-        // $filtered_maxvalue = 0;
-        // $filtered_minvalue=0;
+// $datasourceValuelist = (array) $sensordata;
+// $datasourceValuelist = json_decode(json_encode($sensordata), true);
+// $filtered_sum = 0;
+// $filtered_count = 0;
+// $filtered_maxvalue = 0;
+// $filtered_minvalue=0;
         foreach ($sensordata as $datapointvalue) {
-        //     $datapointvalue->_blank = "";
-        //     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
-        //     // if(($datapointvalue->date_created > $from_date) && ($datapointvalue->date_created < $to_date)){
-                array_push($datasourceValuelist, $datapointvalue);
-        //         // $filtered_sum = $filtered_sum + $datapointvalue->data;
-        //         // $filtered_count = $filtered_count + 1;
-        //         // if ($filtered_maxvalue < $datapointvalue->data){
-        //         //     $filtered_maxvalue = $datapointvalue->data;
-        //         // }
-        //         // if ($filtered_minvalue > $datapointvalue->data){
-        //         //     $filtered_minvalue = $datapointvalue->data;
-        //         // }
-        //     // }
+//     $datapointvalue->_blank = "";
+//     // $datapointvalue->date_created = strtotime($datapointvalue->created_at);
+//     // if(($datapointvalue->date_created > $from_date) && ($datapointvalue->date_created < $to_date)){
+            array_push($datasourceValuelist, $datapointvalue);
+//         // $filtered_sum = $filtered_sum + $datapointvalue->data;
+//         // $filtered_count = $filtered_count + 1;
+//         // if ($filtered_maxvalue < $datapointvalue->data){
+//         //     $filtered_maxvalue = $datapointvalue->data;
+//         // }
+//         // if ($filtered_minvalue > $datapointvalue->data){
+//         //     $filtered_minvalue = $datapointvalue->data;
+//         // }
+//     // }
         }
 
         $datasourceValuelist = array(
@@ -1271,7 +1271,7 @@ public function getDatasourceValuesBySpaceByDateRangeAnalytics($datasourceId, $f
             'space_name' => $space->name,
             'project_name' => $project->name,
             'organization_name' => $organization->name,
-            // 'sum' => $filtered_sum,
+// 'sum' => $filtered_sum,
             'count' => $filtered_count,
             'totalcount' => $total_count,
             'average' => $filtered_avg,
@@ -1280,8 +1280,8 @@ public function getDatasourceValuesBySpaceByDateRangeAnalytics($datasourceId, $f
             'lowest' => $filtered_minvalue,
             'totalhighest' => $total_maxvalue,
             'totallowest' => $total_minvalue,
-            // 'toptriggersnotifications' => $toptriggersnotifications,
-            // 'triggersnotifications' => $triggersnotifications,
+// 'toptriggersnotifications' => $toptriggersnotifications,
+// 'triggersnotifications' => $triggersnotifications,
             'sensordata' => $datasourceValuelist,
         );
 
@@ -1302,8 +1302,8 @@ public function getDatasourceValuesBySpaceByDateRangeAnalytics($datasourceId, $f
             'lowest' => $totalminvalue,
             'totalhighest' => $totalmaxvalue,
             'totallowest' => $totalminvalue,
-            // 'toptriggersnotifications' => $toptriggersnotifications,
-            // 'triggersnotifications' => $triggersnotifications,
+// 'toptriggersnotifications' => $toptriggersnotifications,
+// 'triggersnotifications' => $triggersnotifications,
             'sensordata' => $sensordata
         );
 
@@ -1332,12 +1332,12 @@ public function getDatasourceAverageValueByDateRange(Request $request, $datasour
     }
 
     $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select(\DB::raw('AVG(value) as total_average'))
-                        ->where('datasource_id', "=", $datasourceId)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
+    ->select(\DB::raw('AVG(value) as total_average'))
+    ->where('datasource_id', "=", $datasourceId)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->get();
 
-     if($sensordatatotals){
+    if($sensordatatotals){
         $datasourceValuelist = array(
             'datasource_id' => $datasourceId,
             'from_date' => $from_date,
@@ -1346,24 +1346,572 @@ public function getDatasourceAverageValueByDateRange(Request $request, $datasour
         );
 
     }
-    
-    
+
+
     return $datasourceValuelist;
-    
+
+}
+
+public function getOrganizationDatasourceTypeAverageValueByDateRange(Request $request, $organizationId) {
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get datasources array       
+        foreach($project_id_list as $project_id){
+            $datasources = Datasource::where('type', $request->datasource_type)
+                ->where('project_id', $project_id)
+                ->select('id')
+                ->get();
+                foreach ($datasources as $datasource) {
+                array_push($datasource_id_list, $datasource->id);
+            }
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($organizationId){
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as total_average'))
+        ->where('organization_id',  $organizationId)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
+    }
+     
+if($sensordatatotals){
+        $datasourceValuelist = array(
+            'projects_id' => $project_id_list,
+            'datasources_id' => $datasource_id_list,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'average' => $sensordatatotals[0]->total_average,
+        );
+
+    }
+
+
+    return $datasourceValuelist;
+
+
+
+}
+
+public function getOrganizationDatasourceTypeMaxValueByDateRange(Request $request, $organizationId) {
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get datasources array       
+        foreach($project_id_list as $project_id){
+            $datasources = Datasource::where('type', $request->datasource_type)
+                ->where('project_id', $project_id)
+                ->select('id')
+                ->get();
+                foreach ($datasources as $datasource) {
+                array_push($datasource_id_list, $datasource->id);
+            }
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($organizationId){
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('MAX(value) as max_value'))
+        ->where('organization_id',  $organizationId)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
+    }
+     
+if($sensordatatotals){
+        $datasourceValuelist = array(
+            'projects_id' => $project_id_list,
+            'datasources_id' => $datasource_id_list,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'max_value' => $sensordatatotals[0]->max_value,
+        );
+
+    }
+
+
+    return $datasourceValuelist;
+
+
+
+}
+
+public function getOrganizationDatasourceTypeMinValueByDateRange(Request $request, $organizationId) {
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get datasources array       
+        foreach($project_id_list as $project_id){
+            $datasources = Datasource::where('type', $request->datasource_type)
+                ->where('project_id', $project_id)
+                ->select('id')
+                ->get();
+                foreach ($datasources as $datasource) {
+                array_push($datasource_id_list, $datasource->id);
+            }
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($organizationId){
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('MIN(value) as min_value'))
+        ->where('organization_id',  $organizationId)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
+    }
+     
+if($sensordatatotals){
+        $datasourceValuelist = array(
+            'projects_id' => $project_id_list,
+            'datasources_id' => $datasource_id_list,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'min_value' => $sensordatatotals[0]->min_value,
+        );
+
+    }
+
+
+    return $datasourceValuelist;
+
+
+
+}
+
+public function getOrganizationDatasourceTypeCountValueByDateRange(Request $request, $organizationId) {
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get datasources array       
+        foreach($project_id_list as $project_id){
+            $datasources = Datasource::where('type', $request->datasource_type)
+                ->where('project_id', $project_id)
+                ->select('id')
+                ->get();
+                foreach ($datasources as $datasource) {
+                array_push($datasource_id_list, $datasource->id);
+            }
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($organizationId){
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('COUNT(value) as count_value'))
+        ->where('organization_id',  $organizationId)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
+    }
+     
+if($sensordatatotals){
+        $datasourceValuelist = array(
+            'projects_id' => $project_id_list,
+            'datasources_id' => $datasource_id_list,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'count_value' => $sensordatatotals[0]->count_value,
+        );
+
+    }
+
+
+    return $datasourceValuelist;
+
+
+
+}
+
+public function getOrganizationDatasourceTypeValuesByDateRange(Request $request, $organizationId) {
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get datasources array       
+        foreach($project_id_list as $project_id){
+            $datasources = Datasource::where('type', $request->datasource_type)
+                ->where('project_id', $project_id)
+                ->select('id')
+                ->get();
+                foreach ($datasources as $datasource) {
+                array_push($datasource_id_list, $datasource->id);
+            }
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($organizationId){
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select('datasource_id', 'project_id', 'created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+        ->wherein('project_id', $project_id_list)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->orderBy('created_at', 'desc')
+        ->get();
+    }
+
+
+    return $sensordata;
+
+
+
+}
+
+public function getOrganizationDatasourceTypeValuesByDateRangeMinute(Request $request, $organizationId) {
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get datasources array       
+        foreach($project_id_list as $project_id){
+            $datasources = Datasource::where('type', $request->datasource_type)
+                ->where('project_id', $project_id)
+                ->select('id')
+                ->get();
+                foreach ($datasources as $datasource) {
+                array_push($datasource_id_list, $datasource->id);
+            }
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($organizationId){
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i") as date_minute'))
+        ->wherein('project_id', $project_id_list)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i")'))
+        ->get();
+
+    }
+
+
+    return $sensordata;
+
+
+
+}
+
+public function getOrganizationDatasourceTypeValuesByDateRangeHour(Request $request, $organizationId) {
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get datasources array       
+        foreach($project_id_list as $project_id){
+            $datasources = Datasource::where('type', $request->datasource_type)
+                ->where('project_id', $project_id)
+                ->select('id')
+                ->get();
+                foreach ($datasources as $datasource) {
+                array_push($datasource_id_list, $datasource->id);
+            }
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($organizationId){
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H") as date_hour'))
+        ->wherein('project_id', $project_id_list)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H")'))
+        ->get();
+
+    }
+
+
+    return $sensordata;
+
+
+
+}
+
+public function getOrganizationDatasourceTypeValuesByDateRangeDay(Request $request, $organizationId) {
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get datasources array       
+        foreach($project_id_list as $project_id){
+            $datasources = Datasource::where('type', $request->datasource_type)
+                ->where('project_id', $project_id)
+                ->select('id')
+                ->get();
+                foreach ($datasources as $datasource) {
+                array_push($datasource_id_list, $datasource->id);
+            }
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($organizationId){
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date_day'))
+        ->wherein('project_id', $project_id_list)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'))
+        ->get();
+
+    }
+
+
+    return $sensordata;
+
+
+
+}
+
+public function getOrganizationDatasourceTypeValuesByDateRangeMonth(Request $request, $organizationId) {
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get datasources array       
+        foreach($project_id_list as $project_id){
+            $datasources = Datasource::where('type', $request->datasource_type)
+                ->where('project_id', $project_id)
+                ->select('id')
+                ->get();
+                foreach ($datasources as $datasource) {
+                array_push($datasource_id_list, $datasource->id);
+            }
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($organizationId){
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m") as date_month'))
+        ->wherein('project_id', $project_id_list)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m")'))
+        ->get();
+
+    }
+
+
+    return $sensordata;
+
+
+
 }
 
 public function getProjectDatasourceTypeAverageValueByDateRange(Request $request, $projectId) {
     $spaces_id = 0;
     if ($request->datasource_type){
         $datasources = Datasource::where('type', $request->datasource_type)
-                                    ->where('project_id', $projectId)
-                                    ->select('id')
-                                    ->get();
-    $datasource_id_list = array();
-    foreach ($datasources as $datasource) {
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
 
             array_push($datasource_id_list, $datasource->id);
-    }
+        }
     } else {
         return "datasource type not provided";
     }
@@ -1384,21 +1932,21 @@ public function getProjectDatasourceTypeAverageValueByDateRange(Request $request
     if ($request->spaces){
         $spaces_id = $request->spaces;
         $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select(\DB::raw('AVG(value) as total_average'))
-                        ->wherein('space_id', $request->spaces)
-                        ->wherein('datasource_id',  $datasource_id_list)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
-        
+        ->select(\DB::raw('AVG(value) as total_average'))
+        ->wherein('space_id', $request->spaces)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
+
     } else {
         $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select(\DB::raw('AVG(value) as total_average'))
-                        ->wherein('datasource_id',  $datasource_id_list)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
+        ->select(\DB::raw('AVG(value) as total_average'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
     }
 
-     if($sensordatatotals){
+    if($sensordatatotals){
         $datasourceValuelist = array(
             'datasources_id' => $datasource_id_list,
             'spaces_id' => $spaces_id,
@@ -1408,24 +1956,24 @@ public function getProjectDatasourceTypeAverageValueByDateRange(Request $request
         );
 
     }
-    
-    
+
+
     return $datasourceValuelist;
-    
+
 }
 
 public function getProjectDatasourceTypeMinValueByDateRange(Request $request, $projectId) {
     $spaces_id = 0;
     if ($request->datasource_type){
         $datasources = Datasource::where('type', $request->datasource_type)
-                                    ->where('project_id', $projectId)
-                                    ->select('id')
-                                    ->get();
-    $datasource_id_list = array();
-    foreach ($datasources as $datasource) {
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
 
             array_push($datasource_id_list, $datasource->id);
-    }
+        }
     } else {
         return "datasource type not provided";
     }
@@ -1446,110 +1994,48 @@ public function getProjectDatasourceTypeMinValueByDateRange(Request $request, $p
     if ($request->spaces){
         $spaces_id = $request->spaces;
         $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select(\DB::raw('MIN(value) as total_min'))
-                        ->wherein('space_id', $request->spaces)
-                        ->wherein('datasource_id',  $datasource_id_list)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
-        
+        ->select(\DB::raw('MIN(value) as total_min'))
+        ->wherein('space_id', $request->spaces)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
+
     } else {
         $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select(\DB::raw('MIN(value) as total_min'))
-                        ->wherein('datasource_id',  $datasource_id_list)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
+        ->select(\DB::raw('MIN(value) as total_min'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
     }
 
-     if($sensordatatotals){
+    if($sensordatatotals){
         $datasourceValuelist = array(
             'datasources_id' => $datasource_id_list,
-            'spaces' => $spaces_id,
+            'spaces_id' => $spaces_id,
             'from_date' => $from_date,
             'to_date' => $to_date,
             'min_value' => $sensordatatotals[0]->total_min,
         );
 
     }
-    
-    
+
+
     return $datasourceValuelist;
-    
+
 }
 
 public function getProjectDatasourceTypeMaxValueByDateRange(Request $request, $projectId) {
     $spaces_id = 0;
     if ($request->datasource_type){
         $datasources = Datasource::where('type', $request->datasource_type)
-                                    ->where('project_id', $projectId)
-                                    ->select('id')
-                                    ->get();
-    $datasource_id_list = array();
-    foreach ($datasources as $datasource) {
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
 
             array_push($datasource_id_list, $datasource->id);
-    }
-    } else {
-        return "datasource type not provided";
-    }
-    if($request->from_date){
-        $from_date = $request->from_date;
-    } else
-    {
-        $from_date = 0;
-    }
-    if($request->to_date){
-        $to_date = $request->to_date;
-    } else
-    {
-        $to_date = 99999999999;
-    }
-
-
-     if ($request->spaces){
-        $spaces_id = $request->spaces;
-        $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select(\DB::raw('MAX(value) as total_max'))
-                        ->wherein('space_id', $request->spaces)
-                        ->wherein('datasource_id',  $datasource_id_list)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
-        
-    } else {
-        $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select(\DB::raw('MAX(value) as total_max'))
-                        ->wherein('datasource_id',  $datasource_id_list)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
-    }
-
-     if($sensordatatotals){
-        $datasourceValuelist = array(
-            'datasources_id' => $datasource_id_list,
-            'soaces_id' => $spaces_id,
-            'from_date' => $from_date,
-            'to_date' => $to_date,
-            'max_value' => $sensordatatotals[0]->total_max,
-        );
-
-    }
-    
-    
-    return $datasourceValuelist;
-    
-}
-
-public function getProjectDatasourceTypeValueCountByDateRange(Request $request, $projectId) {
-     $spaces_id = 0;
-    if ($request->datasource_type){
-        $datasources = Datasource::where('type', $request->datasource_type)
-                                    ->where('project_id', $projectId)
-                                    ->select('id')
-                                    ->get();
-    $datasource_id_list = array();
-    foreach ($datasources as $datasource) {
-
-            array_push($datasource_id_list, $datasource->id);
-    }
+        }
     } else {
         return "datasource type not provided";
     }
@@ -1570,21 +2056,83 @@ public function getProjectDatasourceTypeValueCountByDateRange(Request $request, 
     if ($request->spaces){
         $spaces_id = $request->spaces;
         $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select(\DB::raw('COUNT(value) as total_count'))
-                        ->wherein('space_id', $request->spaces)
-                        ->wherein('datasource_id',  $datasource_id_list)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
-        
+        ->select(\DB::raw('MAX(value) as total_max'))
+        ->wherein('space_id', $request->spaces)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
+
     } else {
         $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select(\DB::raw('COUNT(value) as total_count'))
-                        ->wherein('datasource_id',  $datasource_id_list)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
+        ->select(\DB::raw('MAX(value) as total_max'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
     }
 
-     if($sensordatatotals){
+    if($sensordatatotals){
+        $datasourceValuelist = array(
+            'datasources_id' => $datasource_id_list,
+            'spaces_id' => $spaces_id,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'max_value' => $sensordatatotals[0]->total_max,
+        );
+
+    }
+
+
+    return $datasourceValuelist;
+
+}
+
+public function getProjectDatasourceTypeValueCountByDateRange(Request $request, $projectId) {
+    $spaces_id = 0;
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+
+    if ($request->spaces){
+        $spaces_id = $request->spaces;
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('COUNT(value) as total_count'))
+        ->wherein('space_id', $request->spaces)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
+
+    } else {
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('COUNT(value) as total_count'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
+    }
+
+    if($sensordatatotals){
         $datasourceValuelist = array(
             'datasources_id' => $datasource_id_list,
             'spaces_id' => $spaces_id,
@@ -1594,24 +2142,24 @@ public function getProjectDatasourceTypeValueCountByDateRange(Request $request, 
         );
 
     }
-    
-    
+
+
     return $datasourceValuelist;
-    
+
 }
 
 public function getProjectDatasourceTypeValuesByDateRange(Request $request, $projectId) {
     $spaces_id=0;
     if ($request->datasource_type){
         $datasources = Datasource::where('type', $request->datasource_type)
-                                    ->where('project_id', $projectId)
-                                    ->select('id')
-                                    ->get();
-    $datasource_id_list = array();
-    foreach ($datasources as $datasource) {
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
 
             array_push($datasource_id_list, $datasource->id);
-    }
+        }
     } else {
         return "datasource type not provided";
     }
@@ -1630,34 +2178,250 @@ public function getProjectDatasourceTypeValuesByDateRange(Request $request, $pro
 
 
     $sensordata = \DB::table('datasource_sensor_datas')
-                    ->select('datasource_id', 'created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
-                    ->wherein('datasource_id',  $datasource_id_list)
-                    ->whereBetween('timestamp', [$from_date, $to_date])
-                    ->orderBy('created_at', 'desc')
-                    ->get();
+    ->select('datasource_id', 'project_id', 'created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+    ->wherein('datasource_id',  $datasource_id_list)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->orderBy('created_at', 'desc')
+    ->get();
 
     if ($request->spaces){
         $spaces_id = $request->spaces;
         $sensordata = \DB::table('datasource_sensor_datas')
-                    ->select('datasource_id', 'created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
-                    ->wherein('space_id', $request->spaces)
-                    ->wherein('datasource_id',  $datasource_id_list)
-                    ->whereBetween('timestamp', [$from_date, $to_date])
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-        
+        ->select('datasource_id', 'project_id', 'created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+        ->wherein('space_id', $request->spaces)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->orderBy('created_at', 'desc')
+        ->get();
+
     } else {
         $sensordata = \DB::table('datasource_sensor_datas')
-                    ->select('datasource_id', 'created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
-                    ->wherein('datasource_id',  $datasource_id_list)
-                    ->whereBetween('timestamp', [$from_date, $to_date])
-                    ->orderBy('created_at', 'desc')
-                    ->get();
+        ->select('datasource_id', 'project_id', 'created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->orderBy('created_at', 'desc')
+        ->get();
     }
-    
-    
+
+
     return $sensordata;
-    
+
+}
+
+public function getProjectDatasourceTypeValuesByDateRangeMinute(Request $request, $projectId) {
+    $spaces_id=0;
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($request->spaces){
+        $spaces_id = $request->spaces;
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i") as date_minute'))
+        ->wherein('space_id', $request->spaces)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+// ->orderBy('created_at', 'desc')
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i")'))
+        ->get();
+
+    } else {
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i") as date_minute'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+// ->orderBy('created_at', 'desc')
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i")'))
+        ->get();
+    }
+
+
+    return $sensordata;
+
+}
+
+public function getProjectDatasourceTypeValuesByDateRangeHour(Request $request, $projectId) {
+    $spaces_id=0;
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($request->spaces){
+        $spaces_id = $request->spaces;
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H") as date_hour'))
+        ->wherein('space_id', $request->spaces)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+// ->orderBy('created_at', 'desc')
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H")'))
+        ->get();
+
+    } else {
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H") as date_hour'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+// ->orderBy('created_at', 'desc')
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H")'))
+        ->get();
+    }
+
+
+    return $sensordata;
+
+}
+
+public function getProjectDatasourceTypeValuesByDateRangeDay(Request $request, $projectId) {
+    $spaces_id=0;
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($request->spaces){
+        $spaces_id = $request->spaces;
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date_day'))
+        ->wherein('space_id', $request->spaces)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+// ->orderBy('created_at', 'desc')
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'))
+        ->get();
+
+    } else {
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date_day'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+// ->orderBy('created_at', 'desc')
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'))
+        ->get();
+    }
+
+
+    return $sensordata;
+
+}
+
+public function getProjectDatasourceTypeValuesByDateRangeMonth(Request $request, $projectId) {
+    $spaces_id=0;
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    if ($request->spaces){
+        $spaces_id = $request->spaces;
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m") as date_month'))
+        ->wherein('space_id', $request->spaces)
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+// ->orderBy('created_at', 'desc')
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m")'))
+        ->get();
+
+    } else {
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m") as date_month'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+// ->orderBy('created_at', 'desc')
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m")'))
+        ->get();
+    }
+
+
+    return $sensordata;
+
 }
 
 public function getDatasourceMaxValueByDateRange(Request $request, $datasourceId) {
@@ -1677,10 +2441,10 @@ public function getDatasourceMaxValueByDateRange(Request $request, $datasourceId
     }
 
     $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select(\DB::raw('MAX(value) as max_value'))
-                        ->where('datasource_id', "=", $datasourceId)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
+    ->select(\DB::raw('MAX(value) as max_value'))
+    ->where('datasource_id', "=", $datasourceId)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->get();
 
     if($sensordatatotals){
         $datasourceValuelist = array(
@@ -1691,8 +2455,8 @@ public function getDatasourceMaxValueByDateRange(Request $request, $datasourceId
         );
 
     }
-    
-    
+
+
     return $datasourceValuelist;
 }
 
@@ -1713,10 +2477,10 @@ public function getDatasourceMinValueByDateRange(Request $request, $datasourceId
     }
 
     $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select(\DB::raw('min(value) as min_value'))
-                        ->where('datasource_id', "=", $datasourceId)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
+    ->select(\DB::raw('min(value) as min_value'))
+    ->where('datasource_id', "=", $datasourceId)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->get();
 
     if($sensordatatotals){
         $datasourceValuelist = array(
@@ -1727,11 +2491,11 @@ public function getDatasourceMinValueByDateRange(Request $request, $datasourceId
         );
 
     }
-    
-    
+
+
     return $datasourceValuelist;
-    
-    }
+
+}
 
 public function getDatasourceValueCountByDateRange(Request $request, $datasourceId) {
     $datasourceValuelist = 0;
@@ -1750,10 +2514,10 @@ public function getDatasourceValueCountByDateRange(Request $request, $datasource
     }
 
     $sensordatatotals = \DB::table('datasource_sensor_datas')
-                        ->select(\DB::raw('COUNT(value) as count_value'))
-                        ->where('datasource_id', "=", $datasourceId)
-                        ->whereBetween('timestamp', [$from_date, $to_date])
-                        ->get();
+    ->select(\DB::raw('COUNT(value) as count_value'))
+    ->where('datasource_id', "=", $datasourceId)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->get();
 
     if($sensordatatotals){
         $datasourceValuelist = array(
@@ -1764,11 +2528,11 @@ public function getDatasourceValueCountByDateRange(Request $request, $datasource
         );
 
     }
-    
-    
+
+
     return $datasourceValuelist;
-    
-    }
+
+}
 
 public function getDatasourceValuesNewByDateRange(Request $request, $datasourceId) {
     $sensordata = 0;
@@ -1786,17 +2550,133 @@ public function getDatasourceValuesNewByDateRange(Request $request, $datasourceI
         $to_date = 99999999999;
     }
 
-     $sensordata = \DB::table('datasource_sensor_datas')
-                    ->select('datasource_id', 'created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
-                    ->where('datasource_id', "=", $datasourceId)
-                    ->whereBetween('timestamp', [$from_date, $to_date])
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-    
-    
+    $sensordata = \DB::table('datasource_sensor_datas')
+    ->select('datasource_id', 'created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value', 'topic', \DB::raw('"" as _blank'))
+    ->where('datasource_id', "=", $datasourceId)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->orderBy('created_at', 'desc')
+    ->get();
+
+
     return $sensordata;
-    
+
+}
+
+public function getDatasourceAverageValuesNewByDateRangeHour(Request $request, $datasourceId) {
+    $sensordata = 0;
+    $datasource = Datasource::find($datasourceId);
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
     }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    $sensordata = \DB::table('datasource_sensor_datas')
+    ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H") as date_and_hour'), 'topic')
+    ->where('datasource_id', "=", $datasourceId)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H")'))
+    ->groupBy('topic')
+    ->get();
+
+
+    return $sensordata;
+
+}
+
+public function getDatasourceAverageValuesNewByDateRangeDay(Request $request, $datasourceId) {
+    $sensordata = 0;
+    $datasource = Datasource::find($datasourceId);
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    $sensordata = \DB::table('datasource_sensor_datas')
+    ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date'), 'topic')
+    ->where('datasource_id', "=", $datasourceId)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'))
+    ->groupBy('topic')
+    ->get();
+
+
+    return $sensordata;
+
+}
+
+public function getDatasourceAverageValuesNewByDateRangeMinute(Request $request, $datasourceId) {
+    $sensordata = 0;
+    $datasource = Datasource::find($datasourceId);
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    $sensordata = \DB::table('datasource_sensor_datas')
+    ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i") as date_minute'), 'topic')
+    ->where('datasource_id', "=", $datasourceId)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i")'))
+    ->groupBy('topic')
+    ->get();
+
+
+    return $sensordata;
+
+}
+
+public function getDatasourceAverageValuesNewByDateRangeMonth(Request $request, $datasourceId) {
+    $sensordata = 0;
+    $datasource = Datasource::find($datasourceId);
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+    $sensordata = \DB::table('datasource_sensor_datas')
+    ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m") as date_month'), 'topic')
+    ->where('datasource_id', "=", $datasourceId)
+    ->whereBetween('timestamp', [$from_date, $to_date])
+    ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m")'))
+    ->groupBy('topic')
+    ->get();
+
+
+    return $sensordata;
+
+}
 
 
 }
