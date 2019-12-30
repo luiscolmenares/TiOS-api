@@ -1899,6 +1899,1160 @@ public function getOrganizationDatasourceTypeValuesByDateRangeMonth(Request $req
 
 
 }
+public function getOrganizationDatasourceTypeAverageByProjectsByDateRange(Request $request, $organizationId){
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get projects average array  
+        $projects_array = array();     
+        foreach($project_id_list as $project_id){
+            $project_name = Project::find($project_id)->name;
+            $ProjectDatasourceTypeAverageValueByDateRange = $this->getProjectDatasourceTypeAverageValueByDateRange($request, $project_id);
+
+            $ProjectDatasourceTypeAverageValueByDateRange['project_name'] = $project_name;
+            array_push($projects_array, $ProjectDatasourceTypeAverageValueByDateRange);
+
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+     return $projects_array;
+
+}
+
+public function getOrganizationDatasourceTypeMinByProjectsByDateRange(Request $request, $organizationId){
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get projects average array  
+        $projects_array = array();     
+        foreach($project_id_list as $project_id){
+            $project = Project::find($project_id);
+            $ProjectDatasourceTypeMinValueByDateRange = $this->getProjectDatasourceTypeMinValueByDateRange($request, $project_id);
+
+            $ProjectDatasourceTypeMinValueByDateRange['project_name'] = $project->name;
+            array_push($projects_array, $ProjectDatasourceTypeMinValueByDateRange);
+
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+     return $projects_array;
+
+}
+
+public function getOrganizationDatasourceTypeMaxByProjectsByDateRange(Request $request, $organizationId){
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get projects average array  
+        $projects_array = array();     
+        foreach($project_id_list as $project_id){
+            $project = Project::find($project_id);
+            $ProjectDatasourceTypeMaxValueByDateRange = $this->getProjectDatasourceTypeMaxValueByDateRange($request, $project_id);
+
+            $ProjectDatasourceTypeMaxValueByDateRange['project_name'] = $project->name;
+            array_push($projects_array, $ProjectDatasourceTypeMaxValueByDateRange);
+
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+     return $projects_array;
+
+}
+
+public function getOrganizationDatasourceTypeCountByProjectsByDateRange(Request $request, $organizationId){
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get projects average array  
+        $projects_array = array();     
+        foreach($project_id_list as $project_id){
+            $project = Project::find($project_id);
+            $ProjectDatasourceTypeCountValueByDateRange = $this->getProjectDatasourceTypeValueCountByDateRange($request, $project_id);
+
+            $ProjectDatasourceTypeCountValueByDateRange['project_name'] = $project->name;
+            array_push($projects_array, $ProjectDatasourceTypeCountValueByDateRange);
+
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+     return $projects_array;
+
+}
+
+
+public function getOrganizationDatasourceTypeValuesByProjectsByDateRange(Request $request, $organizationId){
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get projects average array  
+        $projects_array = array();     
+        foreach($project_id_list as $project_id){
+            $project = Project::find($project_id);
+            $ProjectDatasourceTypeValuesByDateRange = $this->getProjectDatasourceTypeValuesByDateRange($request, $project_id);
+
+            $ProjectDatasourceTypeValuesByDateRange['project_name'] = $project->name;
+            array_push($projects_array, $ProjectDatasourceTypeValuesByDateRange);
+
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+     return $projects_array;
+
+}
+
+public function getOrganizationDatasourceTypeValuesMonthByProjectsByDateRange(Request $request, $organizationId){
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get projects average array  
+        $projects_array = array();     
+        foreach($project_id_list as $project_id){
+            $project = Project::find($project_id);
+            $ProjectDatasourceTypeValuesByDateRangeMonth = $this->getProjectDatasourceTypeValuesByDateRangeMonth($request, $project_id);
+
+            $ProjectDatasourceTypeValuesByDateRangeMonth['project_name'] = $project->name;
+            array_push($projects_array, $ProjectDatasourceTypeValuesByDateRangeMonth);
+
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+     return $projects_array;
+
+}
+
+public function getOrganizationDatasourceTypeValuesDayByProjectsByDateRange(Request $request, $organizationId){
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get projects average array  
+        $projects_array = array();     
+        foreach($project_id_list as $project_id){
+            $project = Project::find($project_id);
+            $ProjectDatasourceTypeValuesByDateRangeDay = $this->getProjectDatasourceTypeValuesByDateRangeDay($request, $project_id);
+
+            $ProjectDatasourceTypeValuesByDateRangeDay['project_name'] = $project->name;
+            array_push($projects_array, $ProjectDatasourceTypeValuesByDateRangeDay);
+
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+     return $projects_array;
+
+}
+
+public function getOrganizationDatasourceTypeValuesHourByProjectsByDateRange(Request $request, $organizationId){
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get projects average array  
+        $projects_array = array();     
+        foreach($project_id_list as $project_id){
+            $project = Project::find($project_id);
+            $ProjectDatasourceTypeValuesByDateRangeHour = $this->getProjectDatasourceTypeValuesByDateRangeHour($request, $project_id);
+
+            $ProjectDatasourceTypeValuesByDateRangeHour['project_name'] = $project->name;
+            array_push($projects_array, $ProjectDatasourceTypeValuesByDateRangeHour);
+
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+     return $projects_array;
+
+}
+
+public function getOrganizationDatasourceTypeValuesMinuteByProjectsByDateRange(Request $request, $organizationId){
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get projects average array  
+        $projects_array = array();     
+        foreach($project_id_list as $project_id){
+            $project = Project::find($project_id);
+            $ProjectDatasourceTypeValuesByDateRangeMinute = $this->getProjectDatasourceTypeValuesByDateRangeMinute($request, $project_id);
+
+            $ProjectDatasourceTypeValuesByDateRangeMinute['project_name'] = $project->name;
+            array_push($projects_array, $ProjectDatasourceTypeValuesByDateRangeMinute);
+
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+     return $projects_array;
+
+}
+
+
+public function getOrganizationDatasourceTypeByProjectsValueByDateRange(Request $request, $organizationId){
+    if ($request->datasource_type){
+        //Get projects id array
+        $orgprojects = app('App\Http\Controllers\OrganizationController')->getOrgProjects($organizationId)['projects'];
+        $project_id_list = array();
+        $datasource_id_list = array();
+        foreach ($orgprojects as $project) {
+            array_push($project_id_list, $project['id']);
+        }
+
+        //get projects average array  
+        $projects_array = array();     
+        foreach($project_id_list as $project_id){
+            $project = Project::find($project_id);
+            $ProjectDatasourceTypeMaxValueByDateRange = $this->getProjectDatasourceTypeMaxValueByDateRange($request, $project_id);
+
+            $ProjectDatasourceTypeMaxValueByDateRange['project_name'] = $project->name;
+            array_push($projects_array, $ProjectDatasourceTypeMaxValueByDateRange);
+
+
+        }       
+        
+    } else {
+        return "datasource type not provided";
+    }
+
+     return $projects_array;
+
+}
+
+public function getSpaceDatasourceTypeAverageValueByDateRange(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as total_average'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
+
+    if($sensordatatotals){
+        $datasourceValuelist = array(
+            'datasources_id' => $datasource_id_list,
+            // 'spaces_id' => $spaces_id,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'average' => $sensordatatotals[0]->total_average,
+        );
+
+    }
+
+
+    return $datasourceValuelist;
+
+}
+
+public function getSpaceDatasourceTypeMaxValueByDateRange(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('MAX(value) as max_value'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
+
+    if($sensordatatotals){
+        $datasourceValuelist = array(
+            'datasources_id' => $datasource_id_list,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'max_value' => $sensordatatotals[0]->max_value,
+        );
+
+    }
+
+
+    return $datasourceValuelist;
+
+}
+
+public function getSpaceDatasourceTypeMinValueByDateRange(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('MIN(value) as min_value'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
+
+    if($sensordatatotals){
+        $datasourceValuelist = array(
+            'datasources_id' => $datasource_id_list,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'min_value' => $sensordatatotals[0]->min_value,
+        );
+
+    }
+
+
+    return $datasourceValuelist;
+
+}
+
+public function getSpaceDatasourceTypeValuesByDateRange(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select('datasource_id', 'project_id', 'space_id', 'created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+
+
+    return $sensordata;
+
+}
+
+public function getSpaceDatasourceTypeValuesByDateRangeMinute(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i") as date_minute'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i")'))
+        ->get();
+
+
+
+    return $sensordata;
+
+}
+
+public function getSpaceDatasourceTypeValuesByDateRangeHour(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H") as date_hour'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H")'))
+        ->get();
+
+
+
+    return $sensordata;
+
+}
+
+public function getSpaceDatasourceTypeValuesByDateRangeDay(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date_day'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'))
+        ->get();
+
+
+
+    return $sensordata;
+
+}
+
+public function getSpaceDatasourceTypeValuesByDateRangeMonth(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+        $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m") as date_month'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m")'))
+        ->get();
+
+
+
+    return $sensordata;
+
+}
+
+public function getSpaceDatasourceTypeValueCountByDateRange(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+        $sensordatatotals = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('COUNT(value) as count_value'))
+        ->wherein('datasource_id',  $datasource_id_list)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->get();
+
+    if($sensordatatotals){
+        $datasourceValuelist = array(
+            'datasources_id' => $datasource_id_list,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+            'count_value' => $sensordatatotals[0]->count_value,
+        );
+
+    }
+
+
+    return $datasourceValuelist;
+
+}
+
+public function getProjectDatasourceTypeAverageValueSpacesByDateRange(Request $request, $projectId) {
+    if ($request->datasource_type){
+        $prospaces = app('App\Http\Controllers\SpaceController')->getSpacesByProjectId($projectId)['spaces'];
+        $spaces_id_list = array();
+        $datasource_id_list = array();
+        foreach ($prospaces as $prospace) {
+            array_push($spaces_id_list, $prospace['id']);
+        }
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+//get spaces average array  
+        $spaces_array = array();     
+        foreach($spaces_id_list as $space_id){
+            $space_name = Space::find($space_id)->name;
+            $SpaceDatasourceTypeAverageValueByDateRange = $this->getSpaceDatasourceTypeAverageValueByDateRange($request, $space_id);
+
+            $SpaceDatasourceTypeAverageValueByDateRange['space_name'] = $space_name;
+            array_push($spaces_array, $SpaceDatasourceTypeAverageValueByDateRange);
+
+
+        }       
+
+    return $spaces_array;
+
+}
+
+public function getProjectDatasourceTypeMaxValueSpacesByDateRange(Request $request, $projectId) {
+    if ($request->datasource_type){
+        $prospaces = app('App\Http\Controllers\SpaceController')->getSpacesByProjectId($projectId)['spaces'];
+        $spaces_id_list = array();
+        $datasource_id_list = array();
+        foreach ($prospaces as $prospace) {
+            array_push($spaces_id_list, $prospace['id']);
+        }
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+//get spaces max value array  
+        $spaces_array = array();     
+        foreach($spaces_id_list as $space_id){
+            $space_name = Space::find($space_id)->name;
+            $SpaceDatasourceTypeMaxValueByDateRange = $this->getSpaceDatasourceTypeMaxValueByDateRange($request, $space_id);
+
+            $SpaceDatasourceTypeMaxValueByDateRange['space_name'] = $space_name;
+            array_push($spaces_array, $SpaceDatasourceTypeMaxValueByDateRange);
+
+
+        }       
+
+    return $spaces_array;
+
+}
+
+public function getProjectDatasourceTypeMinValueSpacesByDateRange(Request $request, $projectId) {
+    if ($request->datasource_type){
+        $prospaces = app('App\Http\Controllers\SpaceController')->getSpacesByProjectId($projectId)['spaces'];
+        $spaces_id_list = array();
+        $datasource_id_list = array();
+        foreach ($prospaces as $prospace) {
+            array_push($spaces_id_list, $prospace['id']);
+        }
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+//get spaces min value array  
+        $spaces_array = array();     
+        foreach($spaces_id_list as $space_id){
+            $space_name = Space::find($space_id)->name;
+            $SpaceDatasourceTypeMinValueByDateRange = $this->getSpaceDatasourceTypeMinValueByDateRange($request, $space_id);
+
+            $SpaceDatasourceTypeMinValueByDateRange['space_name'] = $space_name;
+            array_push($spaces_array, $SpaceDatasourceTypeMinValueByDateRange);
+
+
+        }       
+
+    return $spaces_array;
+
+}
+
+public function getProjectDatasourceTypeValueCountSpacesByDateRange(Request $request, $projectId) {
+    if ($request->datasource_type){
+        $prospaces = app('App\Http\Controllers\SpaceController')->getSpacesByProjectId($projectId)['spaces'];
+        $spaces_id_list = array();
+        $datasource_id_list = array();
+        foreach ($prospaces as $prospace) {
+            array_push($spaces_id_list, $prospace['id']);
+        }
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+//get spaces min value array  
+        $spaces_array = array();     
+        foreach($spaces_id_list as $space_id){
+            $space_name = Space::find($space_id)->name;
+            $SpaceDatasourceTypeValueCountByDateRange = $this->getSpaceDatasourceTypeValueCountByDateRange($request, $space_id);
+
+            $SpaceDatasourceTypeValueCountByDateRange['space_name'] = $space_name;
+            array_push($spaces_array, $SpaceDatasourceTypeValueCountByDateRange);
+
+
+        }       
+
+    return $spaces_array;
+
+}
+
+public function getProjectDatasourceTypeValuesSpacesByDateRange(Request $request, $projectId) {
+    if ($request->datasource_type){
+        $prospaces = app('App\Http\Controllers\SpaceController')->getSpacesByProjectId($projectId)['spaces'];
+        $spaces_id_list = array();
+        $datasource_id_list = array();
+        foreach ($prospaces as $prospace) {
+            array_push($spaces_id_list, $prospace['id']);
+        }
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+//get spaces min value array  
+        $spaces_array = array();     
+        foreach($spaces_id_list as $space_id){
+            $space_name = Space::find($space_id)->name;
+            $SpaceDatasourceTypeValuesByDateRange = $this->getSpaceDatasourceTypeValuesByDateRange($request, $space_id);
+
+            $SpaceDatasourceTypeValuesByDateRange['space_name'] = $space_name;
+            array_push($spaces_array, $SpaceDatasourceTypeValuesByDateRange);
+
+
+        }       
+
+    return $spaces_array;
+
+}
+
+
+public function getProjectDatasourceTypeValuesSpacesByDateRangeMonth(Request $request, $projectId) {
+    if ($request->datasource_type){
+        $prospaces = app('App\Http\Controllers\SpaceController')->getSpacesByProjectId($projectId)['spaces'];
+        $spaces_id_list = array();
+        $datasource_id_list = array();
+        foreach ($prospaces as $prospace) {
+            array_push($spaces_id_list, $prospace['id']);
+        }
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+//get spaces min value array  
+        $spaces_array = array();     
+        foreach($spaces_id_list as $space_id){
+            $space_name = Space::find($space_id)->name;
+            $SpaceDatasourceTypeValuesByDateRangeMonth = $this->getSpaceDatasourceTypeValuesByDateRangeMonth($request, $space_id);
+
+            $SpaceDatasourceTypeValuesByDateRangeMonth['space_name'] = $space_name;
+            array_push($spaces_array, $SpaceDatasourceTypeValuesByDateRangeMonth);
+
+
+        }       
+
+    return $spaces_array;
+
+}
+
+public function getProjectDatasourceTypeValuesSpacesByDateRangeDay(Request $request, $projectId) {
+    if ($request->datasource_type){
+        $prospaces = app('App\Http\Controllers\SpaceController')->getSpacesByProjectId($projectId)['spaces'];
+        $spaces_id_list = array();
+        $datasource_id_list = array();
+        foreach ($prospaces as $prospace) {
+            array_push($spaces_id_list, $prospace['id']);
+        }
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+//get spaces min value array  
+        $spaces_array = array();     
+        foreach($spaces_id_list as $space_id){
+            $space_name = Space::find($space_id)->name;
+            $SpaceDatasourceTypeValuesByDateRangeDay = $this->getSpaceDatasourceTypeValuesByDateRangeDay($request, $space_id);
+
+            $SpaceDatasourceTypeValuesByDateRangeDay['space_name'] = $space_name;
+            array_push($spaces_array, $SpaceDatasourceTypeValuesByDateRangeDay);
+
+
+        }       
+
+    return $spaces_array;
+
+}
+
+public function getProjectDatasourceTypeValuesSpacesByDateRangeHour(Request $request, $projectId) {
+    if ($request->datasource_type){
+        $prospaces = app('App\Http\Controllers\SpaceController')->getSpacesByProjectId($projectId)['spaces'];
+        $spaces_id_list = array();
+        $datasource_id_list = array();
+        foreach ($prospaces as $prospace) {
+            array_push($spaces_id_list, $prospace['id']);
+        }
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+//get spaces min value array  
+        $spaces_array = array();     
+        foreach($spaces_id_list as $space_id){
+            $space_name = Space::find($space_id)->name;
+            $SpaceDatasourceTypeValuesByDateRangeHour = $this->getSpaceDatasourceTypeValuesByDateRangeHour($request, $space_id);
+
+            $SpaceDatasourceTypeValuesByDateRangeHour['space_name'] = $space_name;
+            array_push($spaces_array, $SpaceDatasourceTypeValuesByDateRangeHour);
+
+
+        }       
+
+    return $spaces_array;
+
+}
+
+public function getProjectDatasourceTypeValuesSpacesByDateRangeMinute(Request $request, $projectId) {
+    if ($request->datasource_type){
+        $prospaces = app('App\Http\Controllers\SpaceController')->getSpacesByProjectId($projectId)['spaces'];
+        $spaces_id_list = array();
+        $datasource_id_list = array();
+        foreach ($prospaces as $prospace) {
+            array_push($spaces_id_list, $prospace['id']);
+        }
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('project_id', $projectId)
+        ->select('id')
+        ->get();
+        $datasource_id_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_id_list, $datasource->id);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+//get spaces min value array  
+        $spaces_array = array();     
+        foreach($spaces_id_list as $space_id){
+            $space_name = Space::find($space_id)->name;
+            $SpaceDatasourceTypeValuesByDateRangeMinute = $this->getSpaceDatasourceTypeValuesByDateRangeMinute($request, $space_id);
+
+            $SpaceDatasourceTypeValuesByDateRangeMinute['space_name'] = $space_name;
+            array_push($spaces_array, $SpaceDatasourceTypeValuesByDateRangeMinute);
+
+
+        }       
+
+    return $spaces_array;
+
+}
 
 public function getProjectDatasourceTypeAverageValueByDateRange(Request $request, $projectId) {
     $spaces_id = 0;
