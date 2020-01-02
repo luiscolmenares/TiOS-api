@@ -152,7 +152,6 @@ Route::middleware('auth:api')->post('project/{project_id}/analytics/values/avera
 Route::middleware('auth:api')->post('project/{project_id}/analytics/values/average/hour', 'DatasourceController@getProjectDatasourceTypeValuesByDateRangeHour');
 Route::middleware('auth:api')->post('project/{project_id}/analytics/values/average/day', 'DatasourceController@getProjectDatasourceTypeValuesByDateRangeDay');
 Route::middleware('auth:api')->post('project/{project_id}/analytics/values/average/month', 'DatasourceController@getProjectDatasourceTypeValuesByDateRangeMonth');
-
 Route::middleware('auth:api')->post('project/{project_id}/analytics/average/spaces', 'DatasourceController@getProjectDatasourceTypeAverageValueSpacesByDateRange');
 Route::middleware('auth:api')->post('project/{project_id}/analytics/min/spaces', 'DatasourceController@getProjectDatasourceTypeMinValueSpacesByDateRange');
 Route::middleware('auth:api')->post('project/{project_id}/analytics/max/spaces', 'DatasourceController@getProjectDatasourceTypeMaxValueSpacesByDateRange');
@@ -173,6 +172,16 @@ Route::middleware('auth:api')->post('space/{space_id}/analytics/values/average/m
 Route::middleware('auth:api')->post('space/{space_id}/analytics/values/average/hour', 'DatasourceController@getSpaceDatasourceTypeValuesByDateRangeHour');
 Route::middleware('auth:api')->post('space/{space_id}/analytics/values/average/day', 'DatasourceController@getSpaceDatasourceTypeValuesByDateRangeDay');
 Route::middleware('auth:api')->post('space/{space_id}/analytics/values/average/month', 'DatasourceController@getSpaceDatasourceTypeValuesByDateRangeMonth');
+
+Route::middleware('auth:api')->post('space/{space_id}/analytics/average/datasources', 'DatasourceController@getSpaceDatasourceTypeAverageValueDatasourcesByDateRange');
+Route::middleware('auth:api')->post('space/{space_id}/analytics/min/datasources', 'DatasourceController@getSpaceDatasourceTypeMinValueDatasourcesByDateRange');
+Route::middleware('auth:api')->post('space/{space_id}/analytics/max/datasources', 'DatasourceController@getSpaceDatasourceTypeMaxValueDatasourcesByDateRange');
+Route::middleware('auth:api')->post('space/{space_id}/analytics/count/datasources', 'DatasourceController@getSpaceDatasourceTypeValueCountDatasourcesByDateRange');
+Route::middleware('auth:api')->post('space/{space_id}/analytics/values/datasources', 'DatasourceController@getSpaceDatasourceTypeValuesDatasourcesByDateRange');
+Route::middleware('auth:api')->post('space/{space_id}/analytics/values/average/minute/datasources', 'DatasourceController@getSpaceDatasourceTypeValuesDatasourcesByDateRangeMinute');
+Route::middleware('auth:api')->post('space/{space_id}/analytics/values/average/hour/datasources', 'DatasourceController@getSpaceDatasourceTypeValuesDatasourcesByDateRangeHour');
+Route::middleware('auth:api')->post('space/{space_id}/analytics/values/average/day/datasources', 'DatasourceController@getSpaceDatasourceTypeValuesDatasourcesByDateRangeDay');
+Route::middleware('auth:api')->post('space/{space_id}/analytics/values/average/month/datasources', 'DatasourceController@getSpaceDatasourceTypeValuesDatasourcesByDateRangeMonth');
 
 
 //Datasources analitycs

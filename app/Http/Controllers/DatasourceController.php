@@ -2251,6 +2251,553 @@ public function getSpaceDatasourceTypeAverageValueByDateRange(Request $request, 
 
 }
 
+public function getSpaceDatasourceTypeAverageValueDatasourcesByDateRange(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id', 'name', 'type')
+        ->get();
+        $datasource_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_list, $datasource);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+$datasources_array = array();
+
+        foreach ($datasource_list as $datasource) {
+
+              $sensordatatotals = \DB::table('datasource_sensor_datas')
+            ->select(\DB::raw('AVG(value) as total_average'))
+            ->where('datasource_id',  $datasource->id)
+            ->whereBetween('timestamp', [$from_date, $to_date])
+            ->get();
+
+        if($sensordatatotals){
+            $datasourceValuelist = array(
+                'datasource_id' => $datasource->id,
+                'datasource_name' => $datasource->name,
+                'datasource_type' => $datasource->type,
+                'from_date' => $from_date,
+                'to_date' => $to_date,
+                'average' => $sensordatatotals[0]->total_average,
+            );
+
+        }
+
+         array_push($datasources_array, $datasourceValuelist);
+            
+
+    }
+
+
+    return $datasources_array;
+
+}
+
+public function getSpaceDatasourceTypeMaxValueDatasourcesByDateRange(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id', 'name', 'type')
+        ->get();
+        $datasource_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_list, $datasource);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+$datasources_array = array();
+
+        foreach ($datasource_list as $datasource) {
+
+              $sensordatatotals = \DB::table('datasource_sensor_datas')
+            ->select(\DB::raw('MAX(value) as max_value'))
+            ->where('datasource_id',  $datasource->id)
+            ->whereBetween('timestamp', [$from_date, $to_date])
+            ->get();
+
+        if($sensordatatotals){
+            $datasourceValuelist = array(
+                'datasource_id' => $datasource->id,
+                'datasource_name' => $datasource->name,
+                'datasource_type' => $datasource->type,
+                'from_date' => $from_date,
+                'to_date' => $to_date,
+                'max_value' => $sensordatatotals[0]->max_value,
+            );
+
+        }
+
+         array_push($datasources_array, $datasourceValuelist);
+            
+
+    }
+
+
+    return $datasources_array;
+
+}
+
+public function getSpaceDatasourceTypeMinValueDatasourcesByDateRange(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id', 'name', 'type')
+        ->get();
+        $datasource_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_list, $datasource);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+$datasources_array = array();
+
+        foreach ($datasource_list as $datasource) {
+
+              $sensordatatotals = \DB::table('datasource_sensor_datas')
+            ->select(\DB::raw('MIN(value) as min_value'))
+            ->where('datasource_id',  $datasource->id)
+            ->whereBetween('timestamp', [$from_date, $to_date])
+            ->get();
+
+        if($sensordatatotals){
+            $datasourceValuelist = array(
+                'datasource_id' => $datasource->id,
+                'datasource_name' => $datasource->name,
+                'datasource_type' => $datasource->type,
+                'from_date' => $from_date,
+                'to_date' => $to_date,
+                'min_value' => $sensordatatotals[0]->min_value,
+            );
+
+        }
+
+         array_push($datasources_array, $datasourceValuelist);
+            
+
+    }
+
+
+    return $datasources_array;
+
+}
+
+public function getSpaceDatasourceTypeValueCountDatasourcesByDateRange(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id', 'name', 'type')
+        ->get();
+        $datasource_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_list, $datasource);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+$datasources_array = array();
+
+        foreach ($datasource_list as $datasource) {
+
+              $sensordatatotals = \DB::table('datasource_sensor_datas')
+            ->select(\DB::raw('COUNT(value) as count_value'))
+            ->where('datasource_id',  $datasource->id)
+            ->whereBetween('timestamp', [$from_date, $to_date])
+            ->get();
+
+        if($sensordatatotals){
+            $datasourceValuelist = array(
+                'datasource_id' => $datasource->id,
+                'datasource_name' => $datasource->name,
+                'datasource_type' => $datasource->type,
+                'from_date' => $from_date,
+                'to_date' => $to_date,
+                'count_value' => $sensordatatotals[0]->count_value,
+            );
+
+        }
+
+         array_push($datasources_array, $datasourceValuelist);
+            
+
+    }
+
+
+    return $datasources_array;
+
+}
+
+
+
+public function getSpaceDatasourceTypeValuesDatasourcesByDateRange(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id', 'name', 'type')
+        ->get();
+        $datasource_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_list, $datasource);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+$datasources_array = array();
+
+        foreach ($datasource_list as $datasource) {
+
+         $sensordata = \DB::table('datasource_sensor_datas')
+        ->select('created_at', \DB::raw('UNIX_TIMESTAMP(STR_TO_DATE(created_at, "%Y-%m-%d %H:%i:%s")) as date_created'), 'value as data', 'topic', \DB::raw('"" as _blank'))
+        ->where('datasource_id',  $datasource->id)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        if($sensordata){
+            $datasourceValuelist = array(
+                'datasource_id' => $datasource->id,
+                'datasource_name' => $datasource->name,
+                'datasource_type' => $datasource->type,
+                'from_date' => $from_date,
+                'to_date' => $to_date,
+                'values' => $sensordata,
+            );
+
+        }
+        
+
+
+         array_push($datasources_array, $datasourceValuelist);
+            
+    }
+
+    return $datasources_array;
+
+}
+
+public function getSpaceDatasourceTypeValuesDatasourcesByDateRangeMinute(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id', 'name', 'type')
+        ->get();
+        $datasource_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_list, $datasource);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+$datasources_array = array();
+
+        foreach ($datasource_list as $datasource) {
+
+         $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i") as date_minute'))
+        ->where('datasource_id',  $datasource->id)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i")'))
+        ->get();
+
+        if($sensordata){
+            $datasourceValuelist = array(
+                'datasource_id' => $datasource->id,
+                'datasource_name' => $datasource->name,
+                'datasource_type' => $datasource->type,
+                'from_date' => $from_date,
+                'to_date' => $to_date,
+                'values' => $sensordata,
+            );
+
+        }
+        
+
+
+         array_push($datasources_array, $datasourceValuelist);
+            
+    }
+
+    return $datasources_array;
+
+}
+
+public function getSpaceDatasourceTypeValuesDatasourcesByDateRangeHour(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id', 'name', 'type')
+        ->get();
+        $datasource_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_list, $datasource);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+$datasources_array = array();
+
+        foreach ($datasource_list as $datasource) {
+
+         $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H") as date_hour'))
+        ->where('datasource_id',  $datasource->id)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H")'))
+        ->get();
+
+        if($sensordata){
+            $datasourceValuelist = array(
+                'datasource_id' => $datasource->id,
+                'datasource_name' => $datasource->name,
+                'datasource_type' => $datasource->type,
+                'from_date' => $from_date,
+                'to_date' => $to_date,
+                'values' => $sensordata,
+            );
+
+        }
+        
+
+
+         array_push($datasources_array, $datasourceValuelist);
+            
+    }
+
+    return $datasources_array;
+
+}
+
+public function getSpaceDatasourceTypeValuesDatasourcesByDateRangeDay(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id', 'name', 'type')
+        ->get();
+        $datasource_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_list, $datasource);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+$datasources_array = array();
+
+        foreach ($datasource_list as $datasource) {
+
+         $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date_day'))
+        ->where('datasource_id',  $datasource->id)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'))
+        ->get();
+
+        if($sensordata){
+            $datasourceValuelist = array(
+                'datasource_id' => $datasource->id,
+                'datasource_name' => $datasource->name,
+                'datasource_type' => $datasource->type,
+                'from_date' => $from_date,
+                'to_date' => $to_date,
+                'values' => $sensordata,
+            );
+
+        }
+        
+
+
+         array_push($datasources_array, $datasourceValuelist);
+            
+    }
+
+    return $datasources_array;
+
+}
+
+public function getSpaceDatasourceTypeValuesDatasourcesByDateRangeMonth(Request $request, $spaceId) {
+    if ($request->datasource_type){
+        $datasources = Datasource::where('type', $request->datasource_type)
+        ->where('space_id', $spaceId)
+        ->select('id', 'name', 'type')
+        ->get();
+        $datasource_list = array();
+        foreach ($datasources as $datasource) {
+
+            array_push($datasource_list, $datasource);
+        }
+    } else {
+        return "datasource type not provided";
+    }
+
+    if($request->from_date){
+        $from_date = $request->from_date;
+    } else
+    {
+        $from_date = 0;
+    }
+    if($request->to_date){
+        $to_date = $request->to_date;
+    } else
+    {
+        $to_date = 99999999999;
+    }
+
+$datasources_array = array();
+
+        foreach ($datasource_list as $datasource) {
+
+         $sensordata = \DB::table('datasource_sensor_datas')
+        ->select(\DB::raw('AVG(value) as value'), \DB::raw('DATE_FORMAT(created_at, "%Y-%m") as date_month'))
+        ->where('datasource_id',  $datasource->id)
+        ->whereBetween('timestamp', [$from_date, $to_date])
+        ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%Y-%m")'))
+        ->get();
+
+        if($sensordata){
+            $datasourceValuelist = array(
+                'datasource_id' => $datasource->id,
+                'datasource_name' => $datasource->name,
+                'datasource_type' => $datasource->type,
+                'from_date' => $from_date,
+                'to_date' => $to_date,
+                'values' => $sensordata,
+            );
+
+        }
+        
+
+
+         array_push($datasources_array, $datasourceValuelist);
+            
+    }
+
+    return $datasources_array;
+
+}
+
 public function getSpaceDatasourceTypeMaxValueByDateRange(Request $request, $spaceId) {
     if ($request->datasource_type){
         $datasources = Datasource::where('type', $request->datasource_type)
