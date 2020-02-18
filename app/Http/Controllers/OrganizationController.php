@@ -9,6 +9,8 @@ use App\Dashboard;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Log;
+use Geocoder\Laravel\Facades\Geocoder;
+
 
 class OrganizationController extends Controller {
 
@@ -267,6 +269,14 @@ public function getTotalOrganizationsCount(){
             //$project = Project::find($project->id);
             //$dashboards = Dashboard::where('project_id', $project->id)->get();
             $dashboards = Dashboard::with('panels')->where('project_id', '=', $project->id)->get();
+            if($project->address_1){
+                 $address = $project->address_1." ".$project->address_2." ".$project->city." ".$project->state.", ".$project->zip;
+                 $geo = json_decode(app('geocoder')->geocode($address)->toJson());
+
+             } else {
+                $geo = '';
+             }
+            
 
             $complete_project = array(
                 'id' => $project->id,
@@ -279,6 +289,7 @@ public function getTotalOrganizationsCount(){
                 'organization_id' => $project->organization_id,
                 'address_1' => $project->address_1,
                 'address_2' => $project->address_2,
+                'geolocation' => $geo,
                 'city' => $project->city,
                 'state' => $project->state,
                 'zip' => $project->zip,

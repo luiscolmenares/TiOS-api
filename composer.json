@@ -13,7 +13,8 @@
         "laravel/framework": "5.4.*",
         "laravel/passport": "3.0",
         "laravel/tinker": "~1.0",
-        "pusher/pusher-php-server": "^3.0"
+        "pusher/pusher-php-server": "^3.0",
+        "toin0u/geocoder-laravel": "^4.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -43,11 +44,13 @@
         ],
         "post-install-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "php artisan optimize"
+            "php artisan optimize",
+            "@php artisan cache:clear"
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+            "php artisan optimize",
+            "@php artisan cache:clear"
         ]
     },
     "config": {

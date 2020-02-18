@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Hash;
 use Validator;
 use Illuminate\Routing\UrlGenerator;
 
+use Geocoder\Laravel\Facades\Geocoder;
+
 class ProjectController extends Controller
 {
 /**
@@ -80,9 +82,14 @@ public function getProjects(){
 public function getProject($projectId){
     $url = url('/');
     $project = Project::find($projectId);
+    $address = $project->address_1." ".$project->address_2." ".$project->city." ".$project->state.", ".$project->zip;
+    $geo = json_decode(app('geocoder')->geocode($address)->toJson());
+
     if($project->image != null){
         $project->image = $url.'/projects/images/'.$project->image;
-    }    
+          
+    }  
+    $project->geocode = $geo;  
     $project = array("project" => $project);
     return $project;
 }
