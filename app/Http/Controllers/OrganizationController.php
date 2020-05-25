@@ -271,7 +271,8 @@ public function getTotalOrganizationsCount(){
             $dashboards = Dashboard::with('panels')->where('project_id', '=', $project->id)->get();
             if($project->address_1){
                  $address = $project->address_1." ".$project->address_2." ".$project->city." ".$project->state.", ".$project->zip;
-                 $geo = json_decode(app('geocoder')->geocode($address)->toJson());
+                // $geo = json_decode(app('geocoder')->geocode($address)->toJson());
+                 $geo = json_decode(app('geocoder')->geocode('Los Angeles, CA')->tojson());
 
              } else {
                 $geo = '';
