@@ -82,7 +82,14 @@ public function getProjects(){
 public function getProject($projectId){
     $url = url('/');
     $project = Project::find($projectId);
-    $address = $project->address_1." ".$project->address_2." ".$project->city." ".$project->state.", ".$project->zip;
+    if($project->address_1 != null){
+        $address = $project->address_1." ".$project->address_2." ".$project->city." ".$project->state.", ".$project->zip;
+    } else {
+        $project->address_1 = 'Unites states';
+        $address= $project->address_1;
+    }
+    
+    $organization = $this->getOrganizationByProjectId($projectId);
     $geo = json_decode(app('geocoder')->geocode($address)->toJson());
 
     if($project->image != null){
@@ -90,6 +97,7 @@ public function getProject($projectId){
           
     }  
     $project->geocode = $geo;  
+    $project->organization = $organization;
     $project = array("project" => $project);
     return $project;
 }

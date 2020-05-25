@@ -193,6 +193,10 @@ return [
          * Swagger Provider...
          */
         L5Swagger\L5SwaggerServiceProvider::class,
+        /*
+         * Geocoder Provider...
+         */
+        Geocoder\Laravel\Providers\GeocoderService::class,
 
 
     ],

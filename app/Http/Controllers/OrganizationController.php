@@ -271,7 +271,7 @@ public function getTotalOrganizationsCount(){
             $dashboards = Dashboard::with('panels')->where('project_id', '=', $project->id)->get();
             if($project->address_1){
                  $address = $project->address_1." ".$project->address_2." ".$project->city." ".$project->state.", ".$project->zip;
-                 $geo = json_decode(app('geocoder')->geocode($address)->toJson());
+                 $geo = json_decode(Geocoder::geocode($address)->toJson());
 
              } else {
                 $geo = '';
@@ -305,6 +305,61 @@ public function getTotalOrganizationsCount(){
         return $projects_list;
     }
 
+
+public function getOrgProjectsWithDashboards($organization_id) {
+        //$organization = Organization::where('id', $organization_id)->first();
+        $projects_list = array();
+        $projects = Project::where('organization_id', $organization_id)->get();
+        //return $this->response->array($organization->projects);
+        foreach ($projects  as $project) {
+            # code...   
+            //$project = Project::find($project->id);
+            //$dashboards = Dashboard::where('project_id', $project->id)->get();
+            $dashboardscount = Dashboard::with('panels')->where('project_id', '=', $project->id)->count();
+            if ($dashboardscount == 0 ){
+                return $projects_list;
+            } else {
+
+                $dashboards = Dashboard::with('panels')->where('project_id', '=', $project->id)->get();
+            if($project->address_1){
+                 $address = $project->address_1." ".$project->address_2." ".$project->city." ".$project->state.", ".$project->zip;
+                 $geo = json_decode(Geocoder::geocode($address)->toJson());
+
+             } else {
+                $geo = '';
+             }
+            
+
+            $complete_project = array(
+                'id' => $project->id,
+                'name' => $project->name,
+                'notes' => $project->notes,
+                'active' => $project->active,
+                'created_at' => $project->created_at,
+                'updated_at' => $project->updated_at,
+                'deleted_at' => $project->deleted_at,
+                'organization_id' => $project->organization_id,
+                'address_1' => $project->address_1,
+                'address_2' => $project->address_2,
+                'geolocation' => $geo,
+                'city' => $project->city,
+                'state' => $project->state,
+                'zip' => $project->zip,
+                'photo' => $project->photo,
+                'website' => $project->website,
+                'dashboards' => $dashboards,
+
+                );
+            array_push($projects_list, $complete_project);
+
+        }
+        $projects_list = array("projects" => $projects_list);
+        return $projects_list;
+
+            }
+            
+    }
+
     /**
 * @SWG\Get(
 *      path="/organizations/projects/dashboards",
@@ -329,8 +384,9 @@ public function getTotalOrganizationsCount(){
         $organizations = Organization::all();
         $org_list = array();
         foreach ($organizations as $organization) {
-            $org_projects = $this->getOrgProjects($organization->id);
-            $complete_org = array(
+            $org_projects = $this->getOrgProjectsWithDashboards($organization->id);
+            if(count($org_projects) > 0){
+                 $complete_org = array(
                 'id' => $organization->id,
                 'name' => $organization->name,
                 'address' => $organization->address,
@@ -340,7 +396,11 @@ public function getTotalOrganizationsCount(){
                 'active' => $organization->active,
                 'projects' => $org_projects,
                 );
+    
             array_push($org_list, $complete_org);
+
+            }
+           
         }
         $org_list = array("organizations" => $org_list);
 
