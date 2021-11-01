@@ -1,3 +1,5 @@
+![sample image](https://user-images.githubusercontent.com/218419/139702804-c6c1fa90-fcd7-4e15-80ba-fea0946e58ff.png)
+
 ## What is the TIoS IoT platform?
 
 TIoS is an integrated IoT platform that allows both individuals and industries to effectively connect to their environment.  
