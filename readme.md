@@ -1,51 +1,40 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+## What is the TIoS IoT platform?
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+TIoS is an integrated IoT platform that allows both individuals and industries to effectively connect to their environment.  
 
-## About Laravel
+TIoS offers an end-to-end solution. We have hardware and software to enable any device and connect it to the internet. However, any hardware is potentially compatible with TIoS. It just need to have an internet connection and send HTTPS requests to TIoS API or pre-configured MQTT topics to our secured broker.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+## TIoS app features:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Username / Password authentication: directly handled by TIoS Platform
+- Real time data feed from your enabled devices: TIoS’ components work together to transform real time data from enabled sensors to personalized experiences for users.
+- Real time control over enabled devices: control your connected actuators devices anytime, anywhere, directly from your phone
+- In-app configuration for triggered alerts: triggers are actions based on rules of enabled devices. The moment the criteria is met, the trigger is activated, without delays. Your TIoS account includes sending emails and push notifications (anywhere in the world) and text messages (USA only). Also, you can create triggers that actuate on enabled devices. For example, turn on or off the light with a presence detector or change the temperature of the air conditioning depending on the temperature of the place
+- In-app scheduler: For repetitive activities (for example, turn off the lights every day at 10pm, or send a weekly email report) or single event creation
+- User Profile: update your personal data
+- Extra security layer  (4-digit passcode) for sensitive actuators devices: TIoS adds another layer of security for actuators devices that can be considered sensitive (door locks, water valves, etc)
+- Monitor Multiple spaces: the office, server room, your restaurant, or even your children's room. You can create unlimited Spaces where you can group unlimited number of enabled sensors and actuators devices.
+- High Performance: TIoS is lightweight as most operations are handled over the cloud.
+- In-app Support: Have a problem? You can contact us directly from the app.
+- Security: TIoS takes priority on security. All transactions are encrypted and protected using SSL and authorization protocols.
+- Much more to come!
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+## Installation Steps:
+Clone the project to your local
+Go to project root folder
+Run “composer install”
+Copy db backup to your local mysql
 
-## Learning Laravel
+After bringing all dependencies, rename .env.example to .env, and update database credentials.
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+NOTE: You might need to update permissions in the key files:
+chmod 600 storage/oauth-public.key
+chmod 600 storage/oauth-private.key
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+Run local server in port 5000
 
-## Laravel Sponsors
+php artisan serve --port=5000
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](http://patreon.com/taylorotwell):
-
-- **[Vehikl](http://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Styde](https://styde.net)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+API should be available at http://localhost:5000
+API documentation should be available at http://localhost:5000/api/documentation
+API postman file: https://drive.google.com/open?id=1WrVT85ksze6q9qfIF2l9PBTBnz9z-7UB
